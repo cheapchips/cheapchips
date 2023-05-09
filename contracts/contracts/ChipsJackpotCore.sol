@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./ChipsJackpotCoreInterface.sol";
 
 pragma solidity 0.8.18;
 
-contract ChipsJackpotCore {
+
+contract ChipsJackpotCore is ChipsJackpotCoreInterface {
     
 
     IERC20 public token;
@@ -11,28 +13,8 @@ contract ChipsJackpotCore {
     event Deposit(address indexed _from, uint8 _id, uint256 _amount);
     event RoundEnded(uint256 _roundId, uint256 _randomNumber);
 
-
-    struct Player{
-        uint8 id;
-        bool exists;
-    }
-
-    enum RoundState { DEFAULT, CLOSED, ENDED }
-
-    struct Round {
-        RoundState state; // round state
-        uint256 endTime; // end timestamp
-        uint8[] tickets; // every ticket
-        mapping(address => Player) players; // maps address to player
-        uint8 numberOfPlayers; // how many players joined round
-        uint256 randomNumber; // random number connected with round
-        bool winnerWithdrawedPrize; // prize withdrawed by the winner?
-    }
-
-    
-    uint256 private currentRoundId;
-    mapping(uint256 => Round) private rounds;  // maps id to round
-
+    uint256 internal currentRoundId;
+    mapping(uint256 => Round) internal rounds;  // maps id to round
 
     constructor(address _tokenAddress) 
     {
@@ -54,7 +36,7 @@ contract ChipsJackpotCore {
     }
 
 
-    function closeRound() internal {
+    function _closeRound() internal {
         Round storage round = rounds[currentRoundId];
         require(round.state == RoundState.DEFAULT, "Round can't be closed twice!");
         require(block.timestamp > round.endTime, "Round is still active!");
@@ -66,12 +48,9 @@ contract ChipsJackpotCore {
         Player memory player = round.players[msg.sender];
         
         require(round.state == RoundState.ENDED, "The winner of that round has not been chosen yet!");
-
         require(player.exists, "You haven't participated in that round!");
-        
         // calculate winner id of given round and match it with player's id
         require(round.tickets[round.randomNumber % round.tickets.length] == player.id, "You haven't won that round!");
-
         // check if the prize has been withdrawed by the player
         require(!round.winnerWithdrawedPrize, "Prize has been already withdrawed!");
 
@@ -96,10 +75,8 @@ contract ChipsJackpotCore {
         require(_amount <= 5, "Deposit limit reached! Only 5 tokens per round.");
         require(_amount > 0, "Can't transfer 0 tokens!");
 
-        token.transferFrom(msg.sender, address(this), _amount); // temp
+        token.transferFrom(msg.sender, address(this), _amount);
     
-        
-
         uint8 id = round.numberOfPlayers;
         round.players[msg.sender] = Player(id, true);
         round.numberOfPlayers++;
@@ -114,7 +91,6 @@ contract ChipsJackpotCore {
         }
 
         emit Deposit(msg.sender, id, _amount);
-        
     }
 
 }
