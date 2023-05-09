@@ -21,7 +21,7 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
         rounds[currentRoundId].randomNumber = _randomNumber;
         rounds[currentRoundId].state = RoundState.ENDED;
 
-        emit RoundEnded(currentRoundId, _randomNumber); // modulo op is performed offchain to resolve who the winner is
+        emit RoundEnded(currentRoundId, _randomNumber); // modulo op is performed offchain to resolve who is the winner
         
         currentRoundId++; // next round
     }
