@@ -40,28 +40,28 @@ contract ChipsJackpotCore {
     }
 
 
-    function getCurrentRoundId() public view returns (uint256) {
+    function getCurrentRoundId() external view returns (uint256) {
         return currentRoundId;
     }
 
-    function getRoundData(uint256 _roundId) public view returns (uint8, uint8[] memory, uint256, uint256, uint256){
+    function getRoundData(uint256 _roundId) external view returns (uint8, uint8[] memory, uint256, uint256, uint256){
         Round storage round = rounds[_roundId];
         return (round.numberOfPlayers, round.tickets, round.tickets.length, round.endTime, round.randomNumber);
     }
 
-    function getPlayerIdInRound(uint256 _roundId) public view returns(uint8){
+    function getPlayerIdInRound(uint256 _roundId) external view returns(uint8){
         return rounds[_roundId].players[msg.sender].id;
     }
 
 
-    function closeRound() public {
+    function closeRound() internal {
         Round storage round = rounds[currentRoundId];
         require(round.state == RoundState.DEFAULT, "Round can't be closed twice!");
         require(block.timestamp > round.endTime, "Round is still active!");
         round.state = RoundState.CLOSED;
     }
 
-    function withdrawPrize(uint256 _roundId) public {
+    function withdrawPrize(uint256 _roundId) external {
         Round storage round = rounds[_roundId];
         Player memory player = round.players[msg.sender];
         
