@@ -1,10 +1,19 @@
 import { ethers } from "hardhat"
 import { ChipStable, ChipsJackpot, VRFCoordinatorV2Mock } from "../../typechain-types"
+import { BigNumber } from "ethers";
 export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, ChipsJackpot, ChipStable]>{
 
 
     // VFRCoordinatorV2Mock
     const Coordinator = await ethers.getContractFactory("VRFCoordinatorV2Mock")
+
+    //AggregatorMock
+    const Aggregator = await ethers.getContractFactory("AggregatorMock")
+
+    const aggregator = await Aggregator.deploy();
+    aggregator.fillRoundData(BigNumber.from(10).pow(15).mul(745))
+    
+
     const ChipStable = await ethers.getContractFactory("ChipStable")
     const ChipsJackpot = await ethers.getContractFactory("ChipsJackpot")
 
@@ -40,7 +49,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     /**
      * Deploying ChipsJackpot contract (consumer)
      */
-    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1)
+    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, aggregator.address)
     // test keyhash - 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc
 
 

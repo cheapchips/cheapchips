@@ -5,11 +5,11 @@ pragma solidity 0.8.18;
 
 
 contract AggregatorMock is AggregatorV3Interface {
-    function decimals() external view override returns (uint8) {}
+    function decimals() external view returns (uint8) {}
 
-    function description() external view override returns (string memory) {}
+    function description() external view returns (string memory) {}
 
-    function version() external view override returns (uint256) {}
+    function version() external view returns (uint256) {}
 
     struct Round {
         uint80 roundId;
@@ -22,12 +22,13 @@ contract AggregatorMock is AggregatorV3Interface {
     uint80 private currentRoundId;
     mapping(uint80 => Round) private rounds;
 
+    constructor(){}
+
     function getRoundData(
         uint80 _roundId
     )
         external
         view
-        override
         returns (
             uint80 roundId,
             int256 answer,
@@ -48,7 +49,6 @@ contract AggregatorMock is AggregatorV3Interface {
     function latestRoundData()
         external
         view
-        override
         returns (
             uint80 roundId,
             int256 answer,
@@ -66,7 +66,11 @@ contract AggregatorMock is AggregatorV3Interface {
         );
     }
 
-    function fillRoundData(int256 _answer) external{
+    function fillRoundData(
+        int256 _answer
+    ) 
+        external
+    {
         Round storage round = rounds[currentRoundId];
         round.roundId = currentRoundId;
         round.answer = _answer;
