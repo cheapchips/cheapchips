@@ -59,7 +59,7 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
         token.transfer(msg.sender, rounds[_roundId].tickets.length);
     }
 
-    function deposit(uint256 _amount) external payable {
+    function _deposit(uint256 _amount) internal {
 
         // require(msg.value == requiredFees); // fees required for buying link tokens
 

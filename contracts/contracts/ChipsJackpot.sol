@@ -2,9 +2,11 @@
 pragma solidity 0.8.18;
 import "./ChipsJackpotCore.sol";
 import "./ChipsJackpotConsumer.sol";
+import "./ChipsJackpotMaintenance.sol";
 
 
-contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
+contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMaintenance {
+
     constructor(
         address _tokenAddress,
         address _coordinatorAddress,
@@ -12,6 +14,7 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
     )
         ChipsJackpotCore(_tokenAddress)
         ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId)
+        ChipsJackpotMaintenance(_coordinatorAddress)
     {}
 
     function addRandomNumberToRound(
@@ -24,6 +27,11 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
         emit RoundEnded(currentRoundId, _randomNumber); // modulo op is performed offchain to resolve who is the winner
         
         currentRoundId++; // next round
+    }
+
+    function deposit(uint256 _amount) external payable {
+        require(msg.value >= calculateTotalRequestCost() / 5, "Insufficient service fee!");
+        _deposit(_amount);
     }
 
     function closeRound() external {

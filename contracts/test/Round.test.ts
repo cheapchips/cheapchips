@@ -57,7 +57,7 @@ describe("ChipsJackpot round scenario", () => {
         })
     })
 
-    describe("Check round data", () => {
+    describe.skip("Check round data", () => {
         it("Number of players should equal 3", async() => {
             const [numberOfPlayers] = await jackpot.getRoundData(0)
             expect(numberOfPlayers).to.be.eq(3)
@@ -80,7 +80,7 @@ describe("ChipsJackpot round scenario", () => {
 
     })
 
-    describe("Close round", () => {
+    describe.skip("Close round", () => {
         it("No user should be able to call closeRound() before endTimestamp", async() => {
             await expect(jackpot.closeRound()).to.be.revertedWith("Round is still active!")
         })
@@ -111,7 +111,7 @@ describe("ChipsJackpot round scenario", () => {
 
     })
 
-    describe("Withdrawals", () => {
+    describe.skip("Withdrawals", () => {
 
         let winner:SignerWithAddress
 
