@@ -1,6 +1,7 @@
 import { ethers } from "hardhat"
 import { ChipStable, ChipsJackpot, VRFCoordinatorV2Mock } from "../../typechain-types"
 import { BigNumber } from "ethers";
+import getPrice from "./getPrice";
 export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, ChipsJackpot, ChipStable]>{
 
 
@@ -11,7 +12,8 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     const Aggregator = await ethers.getContractFactory("AggregatorMock")
 
     const aggregator = await Aggregator.deploy();
-    aggregator.fillRoundData(BigNumber.from(10).pow(15).mul(745))
+    const currentLINKPriceInMATIC = getPrice()
+    aggregator.fillRoundData(currentLINKPriceInMATIC)
     
 
     const ChipStable = await ethers.getContractFactory("ChipStable")

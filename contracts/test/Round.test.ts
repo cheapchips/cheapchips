@@ -4,18 +4,24 @@ import { ChipStable, ChipsJackpot, VRFCoordinatorV2Mock } from "../typechain-typ
 import { ethers } from "hardhat";
 import { time } from "@nomicfoundation/hardhat-network-helpers"
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import calculateServiceFee from "./utils/calculateServiceFee";
+import { BigNumber } from "ethers";
+
 
 describe("ChipsJackpot round scenario", () => {
     
     let coordinator:VRFCoordinatorV2Mock
     let jackpot:ChipsJackpot
     let token:ChipStable
+    let serviceFee:BigNumber
     
 
     describe("Init", () => {
         it("Deploy contracts (token and jackpot) (tokens are sent to user1 & user2)", async() => {
             [coordinator, jackpot, token] = await localDeploy()
+        })
+
+        it("Get service fee", async() => {
+            serviceFee = await jackpot.calculateTotalRequestCost()
         })
 
         it("Round id should be equal 0", async() => {
@@ -38,33 +44,33 @@ describe("ChipsJackpot round scenario", () => {
 
         it("User0 can deposit 3 tokens (service fee included)", async() => {
             const [user0] = await ethers.getSigners()
-            await jackpot.connect(user0).deposit(3, {value: calculateServiceFee()})
+            await jackpot.connect(user0).deposit(3, {value: serviceFee})
         })
     
         it("User0 can't deposit more in this round", async() => {
             const [user0] = await ethers.getSigners()
-            await expect(jackpot.connect(user0).deposit(2, {value: calculateServiceFee()})).to.be.revertedWith("You have already joined to this round!")
+            await expect(jackpot.connect(user0).deposit(2, {value: serviceFee})).to.be.revertedWith("You have already joined to this round!")
         })
     
         it("User1 can't deposit more that 5 tokens", async() => {
             const [ , user1] = await ethers.getSigners()
-            await expect(jackpot.connect(user1).deposit(6, {value: calculateServiceFee()})).to.be.revertedWith("Deposit limit reached! Only 5 tokens per round.")
+            await expect(jackpot.connect(user1).deposit(6, {value: serviceFee})).to.be.revertedWith("Deposit limit reached! Only 5 tokens per round.")
         })
     
         it("User3 (without tokens) can't enter the round", async() => {
             const[,,,user3] = await ethers.getSigners()
-            await expect(jackpot.connect(user3).deposit(6, {value: calculateServiceFee()})).to.be.revertedWith("Insufficient token balance!")
+            await expect(jackpot.connect(user3).deposit(6, {value: serviceFee})).to.be.revertedWith("Insufficient token balance!")
         })
     
         it("User1 can deposit for 4 tokens and User2 can deposit for 1 token", async() => {
             const [,user1, user2] = await ethers.getSigners()
     
-            await jackpot.connect(user1).deposit(4, {value: calculateServiceFee()})
-            await jackpot.connect(user2).deposit(1, {value: calculateServiceFee()})
+            await jackpot.connect(user1).deposit(4, {value: serviceFee})
+            await jackpot.connect(user2).deposit(1, {value: serviceFee})
         })
 
         it("Contract should have some service fees", async() => {
-            expect(await jackpot.provider.getBalance(jackpot.address)).to.be.eq(calculateServiceFee().mul(3))
+            expect(await jackpot.provider.getBalance(jackpot.address)).to.be.eq(serviceFee.mul(3))
         })
     })
 

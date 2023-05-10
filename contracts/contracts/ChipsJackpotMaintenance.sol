@@ -20,7 +20,7 @@ contract ChipsJackpotMaintenance {
         Coordinator = VRFCoordinatorV2FeeConfigInterface(_coordinatorAddress);
         /**
         * Network: Mumbai Testnet
-        * Aggregator: BTC/USD
+        * Aggregator: LINK/MATIC
         * Address: 0x12162c3E810393dEC01362aBf156D7ecf6159528
         */
         priceFeed = AggregatorV3Interface(
@@ -32,7 +32,6 @@ contract ChipsJackpotMaintenance {
 
 
     function calculateLinkCostInNative(uint256 _amount) internal view returns(uint256) {
-        // 1 LINK = 7.42 MATIC
         (,int price,,,) = priceFeed.latestRoundData(); 
         return  uint256(price) * _amount / 10**6; // breaks only if price is 10^77
     }
@@ -42,7 +41,7 @@ contract ChipsJackpotMaintenance {
     function calculateTotalRequestCost() public view returns(uint256) {
         (uint256 premiumInLINKMillionths,,,,,,,,) = Coordinator.getFeeConfig();
         uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths);
-        return totalGasCostPerRequest + premiumCostInNative;
+        return totalGasCostPerRequest + premiumCostInNative; 
     }
 
     
