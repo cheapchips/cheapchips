@@ -13,9 +13,9 @@ describe("ChipsJackpotMaintenance", () => {
         [coordinator,contract] = await localDeploy()
     })
 
-    // it("Check coordinator config", async() => {
-    //     console.log(await coordinator.getFeeConfig())
-    // })
+    it("Check coordinator config", async() => {
+        console.log(await coordinator.getFeeConfig())
+    })
 
     it("Total request cost should be equal 0.15 * 10^18 (gas) + 7.42 * 0.1 * 10^18 (link)", async() => {
         const expectedGasCost = BigNumber.from(10).pow(16).mul(15)
