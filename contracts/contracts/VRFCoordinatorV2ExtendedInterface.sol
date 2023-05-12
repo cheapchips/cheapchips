@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 pragma solidity 0.8.18;
 
-interface VRFCoordinatorV2FeeConfigInterface {
+interface VRFCoordinatorV2ExtendedInterface {
 
     struct FeeConfig {
         // Flat fee charged per fulfillment in millionths of link
@@ -32,4 +33,9 @@ interface VRFCoordinatorV2FeeConfigInterface {
         uint24 reqsForTier5
         );
 
+    function fundSubscription(
+        uint64 _subId, 
+        uint96 _amount
+        )
+        external;
 }

@@ -1,11 +1,11 @@
 import { ethers } from "hardhat"
-import { ChipStable, ChipsJackpot, VRFCoordinatorV2Mock } from "../../typechain-types"
+import { ChipStable, ChipsJackpot, VRFCoordinatorV2Mock, MockLinkToken } from "../../typechain-types"
 import { BigNumber } from "ethers";
 import getPrice from "./getPrice";
-export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, ChipsJackpot, ChipStable]>{
+export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, ChipsJackpot, ChipStable, MockLinkToken]>{
 
-    // LinkTokenMock
-    const LinkTokenMock = await ethers.getContractFactory("LinkTokenMock")
+    // MockLinkToken
+    const MockLinkToken = await ethers.getContractFactory("MockLinkToken")
 
     // VFRCoordinatorV2Mock
     const Coordinator = await ethers.getContractFactory("VRFCoordinatorV2Mock")
@@ -48,7 +48,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
      /**
      * Deploying ChipStable
      */
-    const linkTokenMock = await LinkTokenMock.deploy()
+    const mockLinkToken = await MockLinkToken.deploy()
 
 
     // Send tokens to others
@@ -59,7 +59,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     /**
      * Deploying ChipsJackpot contract (consumer)
      */
-    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, aggregator.address, linkTokenMock.address)
+    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, aggregator.address, mockLinkToken.address)
     // test keyhash - 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc
 
 
@@ -68,6 +68,6 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
      */
     await coordinator.addConsumer(1, jackpot.address)
 
-    return [coordinator, jackpot, token]
+    return [coordinator, jackpot, token, mockLinkToken]
 
 }

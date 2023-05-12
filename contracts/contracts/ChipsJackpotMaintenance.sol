@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-import "./VRFCoordinatorV2FeeConfigInterface.sol";
+import "./VRFCoordinatorV2ExtendedInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
@@ -16,16 +16,19 @@ contract ChipsJackpotMaintenance {
     // (500 gwei) * ( 100 000 max callback gas + 200 000 max verification gas)
     uint256 internal totalGasCostPerRequest = 150000000 gwei;
 
-    VRFCoordinatorV2FeeConfigInterface private Coordinator;
+    VRFCoordinatorV2ExtendedInterface private Coordinator;
 
     AggregatorV3Interface internal priceFeed;
 
     LinkTokenInterface internal LinkToken;
 
+    uint64 private subscriptionId;
 
-    constructor(address _coordinatorAddress, address _aggregatorAddress, address _linkTokenAddress)
+
+    constructor(address _coordinatorAddress, address _aggregatorAddress, address _linkTokenAddress, uint64 _subscriptionId)
     {
-        Coordinator = VRFCoordinatorV2FeeConfigInterface(_coordinatorAddress);
+        Coordinator = VRFCoordinatorV2ExtendedInterface(_coordinatorAddress);
+        subscriptionId = _subscriptionId;
         LinkToken = LinkTokenInterface(_linkTokenAddress);
         /**
         * Network: Mumbai Testnet
@@ -53,8 +56,15 @@ contract ChipsJackpotMaintenance {
         return totalGasCostPerRequest + premiumCostInNative; 
     }
 
-    // function deliverLINK() external {
-    // }
+    function deliverLINK(uint256 _amount) external {
+        // user sends link -> contract sends native
+        LinkToken.transferAndCall(address(Coordinator), _amount, abi.encode(subscriptionId));
+
+        uint256 refund = calculateLinkCostInNative(_amount/10**12);
+
+        payable(msg.sender).transfer(refund);
+
+    }
 
     
 
