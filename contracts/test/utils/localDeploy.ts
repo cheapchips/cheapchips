@@ -4,6 +4,8 @@ import { BigNumber } from "ethers";
 import getPrice from "./getPrice";
 export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, ChipsJackpot, ChipStable]>{
 
+    // LinkTokenMock
+    const LinkTokenMock = await ethers.getContractFactory("LinkTokenMock")
 
     // VFRCoordinatorV2Mock
     const Coordinator = await ethers.getContractFactory("VRFCoordinatorV2Mock")
@@ -13,7 +15,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
 
     const aggregator = await Aggregator.deploy();
     const currentLINKPriceInMATIC = getPrice()
-    aggregator.fillRoundData(currentLINKPriceInMATIC)
+    await aggregator.fillRoundData(currentLINKPriceInMATIC)
     
 
     const ChipStable = await ethers.getContractFactory("ChipStable")
@@ -43,6 +45,12 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
      */
     const token = await ChipStable.deploy()
 
+     /**
+     * Deploying ChipStable
+     */
+    const linkTokenMock = await LinkTokenMock.deploy()
+
+
     // Send tokens to others
     const [addr0, addr1, addr2] = (await ethers.getSigners()).map((signer) => signer.address)
     await token.transfer(addr1, 300)
@@ -51,7 +59,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     /**
      * Deploying ChipsJackpot contract (consumer)
      */
-    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, aggregator.address)
+    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, aggregator.address, linkTokenMock.address)
     // test keyhash - 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc
 
 

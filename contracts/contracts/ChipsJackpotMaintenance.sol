@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 import "./VRFCoordinatorV2FeeConfigInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts/utils/math/SafeCast.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
+
+using SafeCast for int256;
+
 
 pragma solidity 0.8.18;
 
@@ -15,9 +20,13 @@ contract ChipsJackpotMaintenance {
 
     AggregatorV3Interface internal priceFeed;
 
-    constructor(address _coordinatorAddress, address _aggregatorAddress)
+    LinkTokenInterface internal LinkToken;
+
+
+    constructor(address _coordinatorAddress, address _aggregatorAddress, address _linkTokenAddress)
     {
         Coordinator = VRFCoordinatorV2FeeConfigInterface(_coordinatorAddress);
+        LinkToken = LinkTokenInterface(_linkTokenAddress);
         /**
         * Network: Mumbai Testnet
         * Aggregator: LINK/MATIC
@@ -33,7 +42,7 @@ contract ChipsJackpotMaintenance {
 
     function calculateLinkCostInNative(uint256 _amount) internal view returns(uint256) {
         (,int price,,,) = priceFeed.latestRoundData(); 
-        return  uint256(price) * _amount / 10**6; // breaks only if price is 10^77
+        return price.toUint256() * _amount / 10**6;
     }
 
     
@@ -43,6 +52,9 @@ contract ChipsJackpotMaintenance {
         uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths);
         return totalGasCostPerRequest + premiumCostInNative; 
     }
+
+    // function deliverLINK() external {
+    // }
 
     
 

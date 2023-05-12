@@ -11,11 +11,12 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
         address _tokenAddress,
         address _coordinatorAddress,
         uint64 _subscriptionId,
-        address _aggregatorAddress
+        address _aggregatorAddress,
+        address _linkTokenAddress
     )
         ChipsJackpotCore(_tokenAddress)
         ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId)
-        ChipsJackpotMaintenance(_coordinatorAddress, _aggregatorAddress)
+        ChipsJackpotMaintenance(_coordinatorAddress, _aggregatorAddress, _linkTokenAddress)
     {}
 
     function addRandomNumberToRound(
