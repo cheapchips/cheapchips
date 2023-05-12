@@ -58,11 +58,11 @@ contract AggregatorMock is AggregatorV3Interface {
         )
     {
         return (
-            rounds[currentRoundId].roundId,
-            rounds[currentRoundId].answer,
-            rounds[currentRoundId].startedAt,
-            rounds[currentRoundId].updatedAt,
-            rounds[currentRoundId].answeredInRound
+            rounds[currentRoundId-1].roundId,
+            rounds[currentRoundId-1].answer,
+            rounds[currentRoundId-1].startedAt,
+            rounds[currentRoundId-1].updatedAt,
+            rounds[currentRoundId-1].answeredInRound
         );
     }
 

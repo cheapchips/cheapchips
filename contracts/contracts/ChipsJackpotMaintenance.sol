@@ -4,6 +4,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 
+import "hardhat/console.sol";
+
 using SafeCast for int256;
 
 
@@ -40,33 +42,26 @@ contract ChipsJackpotMaintenance {
         );
     }
 
-
-
-
     function calculateLinkCostInNative(uint256 _amount) internal view returns(uint256) {
-        (,int price,,,) = priceFeed.latestRoundData(); 
-        return price.toUint256() * _amount / 10**6;
+        (,int price,,,) = priceFeed.latestRoundData();
+        return price.toUint256() * _amount;
     }
-
-    
 
     function calculateTotalRequestCost() public view returns(uint256) {
         (uint256 premiumInLINKMillionths,,,,,,,,) = Coordinator.getFeeConfig();
-        uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths);
+        uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths) / 10**6;
         return totalGasCostPerRequest + premiumCostInNative; 
     }
 
     function deliverLINK(uint256 _amount) external {
         // user sends link -> contract sends native
+        LinkToken.transferFrom(msg.sender, address(this), _amount);
         LinkToken.transferAndCall(address(Coordinator), _amount, abi.encode(subscriptionId));
 
-        uint256 refund = calculateLinkCostInNative(_amount/10**12);
-
+        uint256 refund = calculateLinkCostInNative(_amount) / 1 ether;
         payable(msg.sender).transfer(refund);
-
     }
 
-    
-
+    receive() external payable {}
 }
 

@@ -14,7 +14,7 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     const Aggregator = await ethers.getContractFactory("AggregatorMock")
 
     const aggregator = await Aggregator.deploy();
-    const currentLINKPriceInMATIC = getPrice()
+    const currentLINKPriceInMATIC = await getPrice()
     await aggregator.fillRoundData(currentLINKPriceInMATIC)
     
 

@@ -17,6 +17,8 @@ contract MockLinkToken {
   }
 
   mapping(address => uint256) public balances;
+  mapping(address => mapping(address => uint256)) public allowances;
+  
 
   function totalSupply() external pure returns (uint256 totalTokensIssued) {
     return TOTAL_SUPPLY; // 1 billion LINK -> 1e27 Juels
@@ -39,9 +41,10 @@ contract MockLinkToken {
 
   function transferAndCall(address _to, uint256 _value, bytes calldata _data) public returns (bool success) {
     transfer(_to, _value);
-    if (isContract(_to)) {
-      contractFallback(_to, _value, _data);
-    }
+    _data;
+    // if (isContract(_to)) {
+    //   contractFallback(_to, _value, _data);
+    // }
     return true;
   }
 
@@ -57,4 +60,17 @@ contract MockLinkToken {
     ERC677ReceiverInterface receiver = ERC677ReceiverInterface(_to);
     receiver.onTokenTransfer(msg.sender, _value, _data);
   }
+
+
+  function approve(address _spender, uint256 _amount) external returns(bool success) {
+     allowances[msg.sender][_spender] = _amount;
+    return true;
+  }
+
+  function transferFrom(address _from, address _to, uint256 _amount) external returns(bool success) {
+    balances[_from] = balances[_from] - _amount;
+    balances[_to] = balances[_to] + _amount;
+    return true;
+  }
+
 }
