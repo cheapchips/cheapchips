@@ -5,12 +5,12 @@ const WalletButton = (props:ButtonProps) => {
     const walletButtonFunction = props.clickable === true ? props.onClickFunction : undefined
     const walletButtonStyles = {
         button: `
-            text-xs break-normal
-            text-white font-bold py-2 px-12 rounded
-            bg-blue-500 hover:bg-blue-700
+        bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
+        hover:
+        text-white text-xs font-bold py-1.5 px-4 rounded
         `
     }
-
+    
     return (
         <button className={walletButtonStyles.button} onClick={() => walletButtonFunction}>{props.text}</button>    
     )
