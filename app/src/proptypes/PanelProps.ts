@@ -1,4 +1,5 @@
 export default interface PanelProps {
-    children: any,
+    children: any
     panelType: "nav" | "side" | "main"
+    additionalClasses?: string
 }

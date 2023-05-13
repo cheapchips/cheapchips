@@ -1,4 +1,4 @@
 export default interface MainWrapperProps {
-    children:any,
-    theme: "light" | "dark",
+    children: any
+    theme: "light" | "dark"
 }
