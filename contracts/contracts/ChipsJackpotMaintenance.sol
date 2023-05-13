@@ -13,10 +13,27 @@ pragma solidity 0.8.18;
 
 contract ChipsJackpotMaintenance {
 
-    // will use Chainlink datafeeds
+    /**
+     * @dev Calulated gas cost for Chainlink VFR request:
+     * @dev 500 gwei - max gas price (selected gas lane) 
+     * @dev 100 000 gas units - max callback gas
+     * @dev 200 000 gas units - max verification gas
+     * @dev vfr_gas_cost = 500 gwei * (100 000  + 200 000) = 150 000 000 gwei
 
-    // (500 gwei) * ( 100 000 max callback gas + 200 000 max verification gas)
-    uint256 internal totalGasCostPerRequest = 150000000 gwei;
+     * @dev Calculated gas cost for Chainlink Automation:
+     * @dev 300 gwei - average gas price (on the Polygon)
+     * @dev 150000 gas units - closeRound() gas usage
+     * @dev 80000 gas units - gas overhead
+     * @dev 0.7 - payment premium
+     * @dev automation_gas_cost = (300 gwei * 150 000) * (1 + 0.7) + (300 gwei * 80 000) = 76 636 000 gwei 
+     * 
+     * @dev Total gas cost per round:
+     * @dev total_gas_cost_per_round = vfr_gas_cost + automation_gas_cost = 226 636 000 gwei -> 240 000 000 gwei
+     */
+    uint256 internal totalGasCostPerRound = 240000000 gwei;
+
+
+
 
     VRFCoordinatorV2ExtendedInterface private Coordinator;
 
@@ -47,14 +64,13 @@ contract ChipsJackpotMaintenance {
         return price.toUint256() * _amount;
     }
 
-    function calculateTotalRequestCost() public view returns(uint256) {
+    function calculateTotalRoundCost() public view returns(uint256) {
         (uint256 premiumInLINKMillionths,,,,,,,,) = Coordinator.getFeeConfig();
         uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths) / 10**6;
-        return totalGasCostPerRequest + premiumCostInNative; 
+        return totalGasCostPerRound + premiumCostInNative; 
     }
 
     function deliverLINK(uint256 _amount) external {
-        // user sends link -> contract sends native
         LinkToken.transferFrom(msg.sender, address(this), _amount);
         LinkToken.transferAndCall(address(Coordinator), _amount, abi.encode(subscriptionId));
 

@@ -81,7 +81,7 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
         round.players[msg.sender] = Player(id, true);
         round.numberOfPlayers++;
 
-        for (uint i = 0; i < _amount; i++) {
+        for (uint i; i < _amount; ++i) {
             round.tickets.push(id);
         }
 

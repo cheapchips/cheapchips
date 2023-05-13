@@ -21,7 +21,8 @@ describe("ChipsJackpot round scenario", () => {
         })
 
         it("Get service fee", async() => {
-            serviceFee = await jackpot.calculateTotalRequestCost()
+            const totalRoundCost = await jackpot.calculateTotalRoundCost()
+            serviceFee = totalRoundCost.div(5).add(1000)
         })
 
         it("Round id should be equal 0", async() => {

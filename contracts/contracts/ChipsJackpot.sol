@@ -28,11 +28,11 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
 
         emit RoundEnded(currentRoundId, _randomNumber); // modulo op is performed offchain to resolve who is the winner
         
-        currentRoundId++; // next round
+        ++currentRoundId; // next round
     }
 
     function deposit(uint256 _amount) external payable {
-        require(msg.value >= calculateTotalRequestCost() / 5, "Insufficient service fee!");
+        require(msg.value >= calculateTotalRoundCost() / 5, "Insufficient service fee!");
         _deposit(_amount);
     }
 
