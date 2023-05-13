@@ -37,6 +37,33 @@ const Navbar = (props:NavbarProps) => {
         `,
     }
 
+    const navDropdownData = {
+        support: [
+            {
+                title: "Live Support",
+                url: "discord.com",
+            },
+            {
+                title: "FAQ",
+                url: "cheapchips.xyz/faq",
+            },
+        ],
+        community: [
+            {
+                title: "Governance",
+                url: "cheapchips.xyz/governance",
+            },
+            {
+                title: "Discord Server",
+                url: "discord.com/invite/sldjhkflidfjsdf",
+            },
+            {
+                title: "Twitter",
+                url: "twitter.com",
+            }
+        ]
+    }
+
     return (
         <Panel panelType='nav' additionalClasses={navbarStyles.panelCtn}>
             <div className={navbarStyles.leftContentCtn}>
@@ -48,24 +75,27 @@ const Navbar = (props:NavbarProps) => {
                     <p>PLAY</p>
                     <p>BUY TOKENS</p>
                 </div>
+                
             </div>
 
             <div className={navbarStyles.rightContentCtn}>
 
                 <div className={navbarStyles.rightContentItemsCtn}>
-                    <div className={navbarStyles.contentText}>TEst</div>
                     <div className={navbarStyles.contentText}>
-                        <NavbarDropdownMenu buttonText="SUPPORT" dropdownOptions={["DOCS", "GITHUB", "TUMER KOX"]}/>
+                        <NavbarDropdownMenu buttonText="SUPPORT" dropdownOpts={navDropdownData.support}/>
+                    </div>
+                    <div className={navbarStyles.contentText}>
+                        <NavbarDropdownMenu buttonText="COMMUNITY" dropdownOpts={navDropdownData.community}/>
                     </div>
                 </div>
 
                 <div className={navbarStyles.rightContentButtonCtn}>
-                        <WalletButton
-                            clickable={props.connectWalletProps.clickable}
-                            active={props.connectWalletProps.active}
-                            text={props.connectWalletProps.text}
-                            onClickFunction={() => props.connectWalletProps.onClickFunction}
-                        />
+                    <WalletButton
+                        clickable={props.connectWalletProps.clickable}
+                        active={props.connectWalletProps.active}
+                        text={props.connectWalletProps.text}
+                        onClickFunction={() => props.connectWalletProps.onClickFunction}
+                    />
                 </div>
 
             </div>
