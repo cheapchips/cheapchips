@@ -12,15 +12,16 @@ const Navbar = (props:NavbarProps) => {
             text-white
         `, // grid-flow-col somehow fucks up the height of navbar?
         leftContentCtn: `
-            grid grid-flow-col
             w-fit w-max-1/3
+            flex
         `,
         leftContentItemsCtn: `
             grid grid-flow-col
-            gap-10
+            gap-4
             content-center
         `,
         rightContentCtn: `
+            flex
         `,
         rightContentItemsCtn: `
         `,
@@ -28,10 +29,11 @@ const Navbar = (props:NavbarProps) => {
             p-1
         `,
         logoContainer: `
-            w-14 w-max-14 h-fit
+            flex justify-center place-items-center content-center
+            w-14 w-max-14 h-full
         `,
         logo: `
-            p-3
+            h-8 p-1
         `,
     }
 
@@ -46,7 +48,12 @@ const Navbar = (props:NavbarProps) => {
                     />
                 </div>
                 <div className={navbarStyles.leftContentItemsCtn}>
-                    <div className={navbarStyles.contentItem}>CHEAPCHIPS</div>
+                    
+                    <p>CHEAPCHIPS</p>
+                    <p>PLAY</p>
+                    <p>DEX</p>
+                    
+                    {/* <div className={navbarStyles.contentItem}>CHEAPCHIPS</div>
                     <div className={navbarStyles.contentItem}>PLAY</div>
                     <div className={navbarStyles.contentItem}>DEX</div>
                     <div className={navbarStyles.contentItem}>
@@ -56,7 +63,7 @@ const Navbar = (props:NavbarProps) => {
                             text={props.connectWalletProps.text}
                             onClickFunction={() => props.connectWalletProps.onClickFunction}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </Panel>
