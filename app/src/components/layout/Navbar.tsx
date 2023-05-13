@@ -2,7 +2,7 @@ import Panel from "./Panel"
 import WalletButton from "../logical/WalletButton"
 import NavbarProps from "../../proptypes/NavbarProps"
 import NavbarLogo from "./NavbarLogo"
-import NavbarDropdownMenu from "./NavbarDropdownMenu"
+import NavbarDropdownMenu from "../logical/NavbarDropdownMenu"
 
 const Navbar = (props:NavbarProps) => {
 
@@ -22,18 +22,19 @@ const Navbar = (props:NavbarProps) => {
             content-center
         `,
         rightContentCtn: `
-            grid grid-flow-col grid-cols-2 grid-cols-[4fr,1.5fr]
+            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.5fr]
         `,
         rightContentItemsCtn: `
             grid grid-flow-col
             content-center
             text-sm font-bold
+            w-fit
         `,
         rightContentButtonCtn: `
             flex place-items-center
         `,
         contentText: `
-            p-1 w-fit
+            p-1 px-4 w-fit
         `,
     }
 
@@ -75,7 +76,7 @@ const Navbar = (props:NavbarProps) => {
                     <p>PLAY</p>
                     <p>BUY TOKENS</p>
                 </div>
-                
+
             </div>
 
             <div className={navbarStyles.rightContentCtn}>
