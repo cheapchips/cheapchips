@@ -3,9 +3,10 @@ pragma solidity 0.8.18;
 import "./ChipsJackpotCore.sol";
 import "./ChipsJackpotConsumer.sol";
 import "./ChipsJackpotMaintenance.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
 
-contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMaintenance {
+contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMaintenance, AutomationCompatibleInterface {
 
     constructor(
         address _tokenAddress,
@@ -36,7 +37,17 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
         _deposit(_amount);
     }
 
-    function closeRound() external {
+    function checkUpkeep(bytes calldata /* checkData */) external view override returns(bool upkeepNeeded, bytes memory perfomData){
+        upkeepNeeded = rounds[currentRoundId].endTime > block.timestamp && rounds[currentRoundId].state == RoundState.DEFAULT;
+        perfomData = "";
+    }
+
+    function performUpkeep(bytes calldata) external override {
+        closeRound();
+    }
+
+    // manual - safety valve
+    function closeRound() public {
         _closeRound();
         requestRandomWords();
     }
