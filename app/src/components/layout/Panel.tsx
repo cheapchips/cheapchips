@@ -6,7 +6,7 @@ const Panel = (props:PanelProps) => {
         panel: `
             rounded-md border
             bg-opacity-20
-            dark:bg-slate-900 dark:border-gray-700
+            dark:bg-slate-900 dark:border-slate-700
             ${props.panelType === "nav" ? "col-span-full" : ""}
             ${props.panelType === "side" ? "side" : ""}
             ${props.panelType === "main" ? "main" : ""}
