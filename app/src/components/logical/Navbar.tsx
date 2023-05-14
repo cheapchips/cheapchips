@@ -10,7 +10,8 @@ const Navbar = (props:NavbarProps) => {
         panelCtn: `
             flex flex-flow-col justify-between
             px-3
-            text-white
+            text-black
+            dark:text-white
         `,
         leftContentCtn: `
             w-fit w-max-1/3

@@ -4,9 +4,9 @@ const Panel = (props:PanelProps) => {
 
     const panelStyles = {
         panel: `
-            rounded-md
-            bg-zinc-200 border-zinc-100
-            dark:bg-zinc-800 dark:border-zinc-700
+            rounded-md border
+            bg-opacity-20
+            dark:bg-slate-900 dark:border-gray-700
             ${props.panelType === "nav" ? "col-span-full" : ""}
             ${props.panelType === "side" ? "side" : ""}
             ${props.panelType === "main" ? "main" : ""}

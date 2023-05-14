@@ -10,7 +10,9 @@ export default {
     conicGradients: ['hover', 'responsive'],
   },
   theme: {
-    extend: {},
+    extend: {
+      'textShadow': "drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
+    },
   },
   plugins: [],
 }
