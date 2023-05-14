@@ -1,7 +1,7 @@
 const NavbarDropdownIcon = () => {
     
     const dropdownIconStyles = {
-        arrow: `w-4 h-4 ml-1.5 self-center fill-white`
+        arrow: `w-2.5 h-2.5 ml-1.5 self-center fill-white`
     }
 
     return (

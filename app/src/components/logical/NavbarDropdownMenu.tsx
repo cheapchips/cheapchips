@@ -10,22 +10,27 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
         mainCtn: `flex flex-row`,
         dropdownCtn: `
         absolute flex flex-col
-        w-24 h-fit mt-5
-        bg-zinc-800 rounded-lg
-        border-2 border-zinc-700
+        w-24 h-fit mt-8 rounded-lg
+        bg-slate-900
+        border border-slate-700
+        shadow-2xl
         `,
         dropdownItem: `
         text-xs
         self-center p-2
-        hover:text-slate-300
+        hover:text-amber-400
         `,
+        dropdownBtn: `
+        text-xs text-white
+        py-2
+        `
     }
 
     const dropdownOptions = props.dropdownOpts.map(opt => <button onClick={() => window.open(opt.url, '_blank')} className={navDropdownStyles.dropdownItem}>{opt.title}</button>)
   
     return (
         <div className={navDropdownStyles.mainCtn} onMouseOver={() => setVisible(true)}  onMouseOut={() => setVisible(false)}>
-            <button>{props.buttonText}</button>
+            <button className={navDropdownStyles.dropdownBtn}>{props.buttonText}</button>
             <NavbarDropdownIcon />
             {visible ?
             <>

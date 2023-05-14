@@ -35,7 +35,7 @@ const Navbar = (props:NavbarProps) => {
             flex place-items-center w-fit
         `,
         contentText: `
-            p-1 px-4 w-fit
+            p-1 px-2 w-fit text-xs
         `,
     }
 
@@ -73,9 +73,9 @@ const Navbar = (props:NavbarProps) => {
                 <NavbarLogo />
 
                 <div className={navbarStyles.leftContentItemsCtn}>
-                    <p>CHEAPCHIPS</p>
-                    <p>PLAY</p>
-                    <p>BUY TOKENS</p>
+                    <div className={navbarStyles.contentText}>CHEAPCHIPS</div>
+                    <div className={navbarStyles.contentText}>PLAY</div>
+                    <div className={navbarStyles.contentText}>BUY TOKENS</div>
                 </div>
 
             </div>

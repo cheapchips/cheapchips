@@ -7,7 +7,7 @@ const WalletButton = (props:ButtonProps) => {
         button: `
         bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
         text-white text-xs font-bold
-        py-1 px-4
+        py-1 px-2 mx-1
         rounded
         `
     }
