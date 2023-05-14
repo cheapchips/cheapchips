@@ -11,7 +11,9 @@ export default {
   },
   theme: {
     extend: {
-      'textShadow': "drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
+      accentColorGlow: {
+        'sm': 'box-shadow: 0 4px 6px -1px rgb(255 255 255 / 0.1), 0 2px 4px -2px rgb(255 255 255 / 0.1)'
+      }
     },
   },
   plugins: [],

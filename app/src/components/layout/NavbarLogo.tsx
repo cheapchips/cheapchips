@@ -3,8 +3,10 @@ import logo from "../../assets/logo.png"
 const NavbarLogo = () => {
 
     const navbarLogoStyles = {
-        container: `flex justify-center place-items-center w-10 w-max-10 h-full`,
-        img: `p-1 w-fit`
+        container: `
+        flex justify-center place-items-center w-10
+        `,
+        img: `p-1.5 w-fit`,
     }
 
     return (

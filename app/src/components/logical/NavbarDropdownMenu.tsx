@@ -1,6 +1,6 @@
 import { useState } from "react"
 import NavbarDropdownProps from "../../proptypes/NavbarDropdownProps"
-import NavbarDropdownIcon from "../layout/NavbarDropdownIcon"
+import SvgIcon from "../layout/SvgIcon"
 
 const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
 
@@ -14,6 +14,9 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
         bg-slate-900
         border border-slate-700
         shadow-2xl
+        `,
+        dropdownIcon: `
+        w-2.5 h-2.5 ml-1.5 self-center fill-white
         `,
         dropdownItem: `
         text-xs
@@ -31,14 +34,14 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
     return (
         <div className={navDropdownStyles.mainCtn} onMouseOver={() => setVisible(true)}  onMouseOut={() => setVisible(false)}>
             <button className={navDropdownStyles.dropdownBtn}>{props.buttonText}</button>
-            <NavbarDropdownIcon />
+            <SvgIcon style={navDropdownStyles.dropdownIcon} viewBox="0 0 512 298.04" pathD="M12.08 70.78c-16.17-16.24-16.09-42.54.15-58.7 16.25-16.17 42.54-16.09 58.71.15L256 197.76 441.06 12.23c16.17-16.24 42.46-16.32 58.71-.15 16.24 16.16 16.32 42.46.15 58.7L285.27 285.96c-16.24 16.17-42.54 16.09-58.7-.15L12.08 70.78z" />
             {visible ?
             <>
                 <div className={navDropdownStyles.dropdownCtn}>
                     {dropdownOptions}
                 </div>
             </>
-            : ""} 
+            : null} 
         </div>
     )
 
