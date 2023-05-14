@@ -1,8 +1,8 @@
-import Panel from "./Panel"
-import WalletButton from "../logical/WalletButton"
+import Panel from "../layout/Panel"
+import WalletButton from "./WalletButton"
 import NavbarProps from "../../proptypes/NavbarProps"
-import NavbarLogo from "./NavbarLogo"
-import NavbarDropdownMenu from "../logical/NavbarDropdownMenu"
+import NavbarLogo from "../layout/NavbarLogo"
+import NavbarDropdownMenu from "./NavbarDropdownMenu"
 
 const Navbar = (props:NavbarProps) => {
 
@@ -22,7 +22,7 @@ const Navbar = (props:NavbarProps) => {
             content-center
         `,
         rightContentCtn: `
-            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.5fr]
+            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.25fr] justify-items-end
         `,
         rightContentItemsCtn: `
             grid grid-flow-col
@@ -31,7 +31,7 @@ const Navbar = (props:NavbarProps) => {
             w-fit
         `,
         rightContentButtonCtn: `
-            flex place-items-center
+            flex place-items-center w-fit
         `,
         contentText: `
             p-1 px-4 w-fit

@@ -1,7 +1,7 @@
 import './App.css'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
-import Navbar from './components/layout/Navbar'
+import Navbar from './components/logical/Navbar'
 import useConnectWallet from './hooks/useConnectWallet'
 
 function App() {
