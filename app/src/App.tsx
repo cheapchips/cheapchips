@@ -3,6 +3,7 @@ import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
 import useConnectWallet from './hooks/useConnectWallet'
+import LobbyHeader from './components/layout/LobbyHeader'
 
 function App() {
 
@@ -24,6 +25,16 @@ function App() {
       />
       
       <Panel panelType='side'>
+
+        <LobbyHeader
+          theme='dark'
+          title='Test lobby'
+          playerCount={12}
+          maxPlayerCount={100}
+          timeTillRaffleStartPercentage={44}
+          lobbyId='0' />
+        {/* </LobbyHeader> */}
+
       </Panel>
       
       <Panel panelType='main'>

@@ -1,4 +1,4 @@
-import MainWrapperProps from "../../proptypes/MainWrapperProps"
+import MainWrapperProps from "../../proptypes/WrapperProps"
 
 const MainWrapper = (props:MainWrapperProps) => {
 
