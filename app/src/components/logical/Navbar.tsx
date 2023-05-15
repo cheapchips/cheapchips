@@ -37,7 +37,23 @@ const Navbar = (props:NavbarProps) => {
         contentText: `
             p-1 px-2 w-fit text-xs
         `,
+        contentButton: `active:opacity-75`
     }
+
+    const navMainLinksData = [
+        {
+            text: "CHEAPCHIPS",
+            url: "#",
+        },
+        {
+            text: "PLAY",
+            url: "#",
+        },
+        {
+            text: "BUY TOKENS",
+            url: "#",
+        }
+    ]
 
     const navDropdownData = {
         support: [
@@ -66,6 +82,12 @@ const Navbar = (props:NavbarProps) => {
         ]
     }
 
+    const MainLinks = navMainLinksData.map((button, index) => 
+        <button key={index} className={navbarStyles.contentText + navbarStyles.contentButton} onClick={() => window.open(button.url, "_self")}>
+            {button.text}
+        </button>
+    )
+
     return (
         <Panel panelType='nav' additionalClasses={navbarStyles.panelCtn}>
             <div className={navbarStyles.leftContentCtn}>
@@ -73,9 +95,7 @@ const Navbar = (props:NavbarProps) => {
                 <NavbarLogo />
 
                 <div className={navbarStyles.leftContentItemsCtn}>
-                    <div className={navbarStyles.contentText}>CHEAPCHIPS</div>
-                    <div className={navbarStyles.contentText}>PLAY</div>
-                    <div className={navbarStyles.contentText}>BUY TOKENS</div>
+                   {MainLinks}
                 </div>
 
             </div>

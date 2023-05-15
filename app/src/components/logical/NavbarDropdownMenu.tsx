@@ -21,7 +21,9 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
         dropdownItem: `
         text-xs
         self-center p-2
-        hover:text-amber-400
+        hover:text-amber-300
+        hover:underline
+        active:opacity-75
         `,
         dropdownBtn: `
         text-xs text-white
@@ -29,7 +31,7 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
         `
     }
 
-    const dropdownOptions = props.dropdownOpts.map(opt => <button onClick={() => window.open(opt.url, '_blank')} className={navDropdownStyles.dropdownItem}>{opt.title}</button>)
+    const dropdownOptions = props.dropdownOpts.map((opt, index) => <button key={index} onClick={() => window.open(opt.url, '_blank')} className={navDropdownStyles.dropdownItem}>{opt.title}</button>)
   
     return (
         <div className={navDropdownStyles.mainCtn} onMouseOver={() => setVisible(true)}  onMouseOut={() => setVisible(false)}>
