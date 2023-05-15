@@ -33,13 +33,17 @@ const Navbar = (props:NavbarProps) => {
         `,
         rightContentButtonCtn: `
             flex place-items-center w-fit
+            text-black
         `,
         contentText: `
             p-1 px-2 w-fit text-xs
+            text-black
+            dark:text-white
         `,
         contentButton: `active:opacity-75`
     }
 
+    // main links (nav left side)
     const navMainLinksData = [
         {
             text: "CHEAPCHIPS",
@@ -55,6 +59,7 @@ const Navbar = (props:NavbarProps) => {
         }
     ]
 
+    // links, data, customization (nav right side)
     const navDropdownData = {
         support: [
             {

@@ -8,6 +8,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         w-full h-fit
         rounded-t-md
         border-b
+        border-blue-200
         dark:border-slate-700
         `,
         titleCtn: `
@@ -15,6 +16,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         w-full h-12
         p-2
         border-b
+        border-blue-200
         dark:border-slate-700
         `,
         playerInfoCtn: `
@@ -25,7 +27,9 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         w-full p-2
         `,
         playerInfoBar:`
-        w-full h-full bg-amber-200 rounded-md
+        w-full h-full rounded-md
+        bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
+        shadow-sm
         `,
         lineCtn: `
         flex justify-start align-middle content-center

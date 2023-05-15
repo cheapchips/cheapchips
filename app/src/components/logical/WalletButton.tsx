@@ -9,7 +9,7 @@ const WalletButton = (props:ButtonProps) => {
         active:opacity-75
         text-white text-xs font-bold
         py-1 px-2 mx-1
-        rounded shadow-inner
+        rounded shadow-inner shadow-md
         `
     }
     

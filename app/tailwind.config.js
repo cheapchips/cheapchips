@@ -4,11 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  variants: {
-    linearGradients: ['hover', 'responsive'],
-    radialGradients: ['hover', 'responsive'],
-    conicGradients: ['hover', 'responsive'],
-  },
+  darkMode: "class",
   theme: {
     extend: {},
   },
