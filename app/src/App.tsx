@@ -6,9 +6,8 @@ import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
 import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
-import RaffleCtn from './components/layout/RaffleCtn'
-import RaffleDepositCtn from './components/layout/RaffleDepositCtn'
-import RaffleInfoCtn from './components/layout/RaffleInfoCtn'
+import RaffleMainCtn from './components/layout/RaffleMainCtn'
+import RaffleBottomCtn from './components/layout/RaffleBottomCtn'
 
 // logical components
 import LobbyHeader from './components/logical/LobbyHeader'
@@ -57,24 +56,18 @@ function App() {
 
         <MainContentCtn>
 
-          <RaffleCtn>
-         
+          <RaffleMainCtn>
             {theme}
             <button onClick={() => toggleTheme()}>Toggle theme</button>
-             
-          </RaffleCtn>
+          </RaffleMainCtn>
 
-          <RaffleDepositCtn>
-
+          <RaffleBottomCtn>
             <p>Deposit Container</p>
+          </RaffleBottomCtn>
 
-          </RaffleDepositCtn>
-
-          <RaffleInfoCtn>
-
+          <RaffleBottomCtn>
             <p>Raffle Info Container</p>
-            
-          </RaffleInfoCtn>
+          </RaffleBottomCtn>
          
          
         </MainContentCtn>

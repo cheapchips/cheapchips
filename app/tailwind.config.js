@@ -17,7 +17,7 @@ export default {
         'lightMainWrapperFrom': '#c4daf5',
         'lightMainWrapperVia': '#bcd5f7',
         'lightMainWrapperTo': '#bcd6f5',
-        'lightText': '#0f0f0f',
+        'lightText': '#000826',
         'lightBg': '#eff6ff',
         'lightBorder': '#b4cef0'
       },

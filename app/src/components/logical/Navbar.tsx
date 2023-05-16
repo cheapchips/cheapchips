@@ -13,14 +13,15 @@ const Navbar = (props:NavbarProps) => {
             dark:text-darkText
         `,
         leftContentCtn: `
-        flex items-center
+            grid grid-flow-col
+            content-center
         `,
         leftContentItemsCtn: `
-            grid grid-flow-col gap-4 pr-2
+            grid grid-flow-col gap-4
             text-sm font-bold
         `,
         rightContentCtn: `
-            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.25fr]
+            grid grid-flow-col grid-cols-2 grid-cols-[auto,1.25fr]
             justify-items-end
         `,
         rightContentItemsCtn: `
@@ -33,10 +34,12 @@ const Navbar = (props:NavbarProps) => {
         `,
         contentText: `
             p-1 px-2 w-fit text-xs
-            text-black
-            dark:text-white
+            text-lightText
+            dark:text-darkText
         `,
-        contentButton: `active:opacity-75`
+        contentButton: `
+            active:opacity-75
+        `,
     }
 
     // main links (nav left side)
@@ -91,14 +94,12 @@ const Navbar = (props:NavbarProps) => {
 
     return (
         <Panel panelType='nav' additionalClasses={navbarStyles.panelCtn}>
+
             <div className={navbarStyles.leftContentCtn}>
-
                 <NavbarLogo />
-
                 <div className={navbarStyles.leftContentItemsCtn}>
                    {MainLinks}
                 </div>
-
             </div>
 
             <div className={navbarStyles.rightContentCtn}>
@@ -122,7 +123,7 @@ const Navbar = (props:NavbarProps) => {
                 </div>
 
             </div>
-
+            
         </Panel>
     )
 }

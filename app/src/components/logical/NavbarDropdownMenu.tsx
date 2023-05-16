@@ -7,34 +7,34 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
     const [visible, setVisible] = useState(false)
 
     const navDropdownStyles = {
-        mainCtn: `flex flex-row`,
+        mainCtn: `
+            flex flex-row`,
         dropdownCtn: `
-        absolute flex flex-col
-        w-24 h-fit mt-8 rounded-lg
-        bg-blue-100
-        dark:bg-slate-900
-        border
-        border-blue-200
-        dark:border-slate-700
-        shadow-md
+            absolute flex flex-col
+            w-24 h-fit mt-8 rounded-lg
+            bg-lightBg
+            dark:bg-darkBg
+            border-lightBorder
+            dark:border-darkBorder
+            shadow-md border
         `,
         dropdownIcon: `
-        w-2.5 h-2.5 ml-1.5 self-center fill-black dark:fill-white
+            w-2.5 h-2.5 ml-1.5 self-center
+            fill-lightText
+            dark:fill-darkText
         `,
         dropdownItem: `
-        text-xs
-        self-center p-2
-        hover:text-amber-500
-        dark:hover:text-amber-400
-        hover:underline
-        active:opacity-/75
+            text-xs
+            self-center p-2
+            hover:underline
+            active:opacity-75
         `,
         dropdownBtn: `
-        text-xs py-2
-        text-black
-        dark:text-white
-        cursor-default
-        `
+            text-xs py-2
+            text-lightText
+            dark:text-darkText
+            cursor-default
+        `,
     }
 
     const dropdownOptions = props.dropdownOpts.map((opt, index) => <button key={index} onClick={() => window.open(opt.url, '_blank')} className={navDropdownStyles.dropdownItem}>{opt.title}</button>)

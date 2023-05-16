@@ -4,11 +4,11 @@ const LobbyCtn = (props:WrapperProps) => {
 
     const lobbyCtnStyles = {
         ctn: `
-        w-full h-full
-        flex justify-center items-center content-center
-        text-lightText
-        dark:text-darkText
-        p-2
+            w-full h-full
+            flex justify-center items-center content-center
+            text-lightText
+            dark:text-darkText
+            p-2
         `,
     }
 
