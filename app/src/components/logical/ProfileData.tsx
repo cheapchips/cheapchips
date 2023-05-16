@@ -40,7 +40,7 @@ const ProfileData = (props:ProfileDataProps) => {
             overflow-hidden
         `,
         profileIcon: `
-            w-full h-full
+            w-full h-full p-2 rounded-full
         `,
         profileBalancesCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr] col-span-2
@@ -98,7 +98,6 @@ const ProfileData = (props:ProfileDataProps) => {
                 {/* Profile icon */}
                 <div className={profileStyles.profileIconCtn}>
                     <Blockies seed={props.address} className={profileStyles.profileIcon} size={24}/>
-                    {/* Make blockies size responsive later! Scaling page fucks it up */}
                 </div>
                 
                 {/* Balance list */}
@@ -113,7 +112,7 @@ const ProfileData = (props:ProfileDataProps) => {
                         <span className={profileStyles.profileBalancesValue}>{props.linkBalance}</span>
                     </div>
                 </div>
-
+            
             </div>
 
             {/* Address, details button */}
@@ -125,7 +124,7 @@ const ProfileData = (props:ProfileDataProps) => {
                 </div>
 
                 <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>Details</button>
+                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
                 </div>
 
             </div>
