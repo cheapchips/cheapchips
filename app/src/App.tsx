@@ -77,7 +77,7 @@ function App() {
 
       <Panel panelType='profile'>
 
-          <ProfileData title="Profile" address='0xTeaver' chipsBalance={105} linkBalance={12} />
+          <ProfileData title="Profile" address='0x748912caD3137E208483281929779A45f3C9Eb55' chipsBalance={105} linkBalance={12} />
           
           <div className='flex justify-center items-center'>Raffle History Container</div>
           

@@ -43,7 +43,7 @@ const ProfileData = (props:ProfileDataProps) => {
             w-full h-full p-2 rounded-full
         `,
         profileBalancesCtn: `
-            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2
+            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
             p-1
         `,
         profileBalancesContent: `
@@ -57,11 +57,11 @@ const ProfileData = (props:ProfileDataProps) => {
         `,
         profileSecondaryContentCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr]
-            justify-center items-center
+            items-center
             border-t
             border-lightBorder
             dark:border-darkBorder
-            px-2
+            p-2
         `,
         profileSecondaryContent: `
             px-1
@@ -70,11 +70,10 @@ const ProfileData = (props:ProfileDataProps) => {
             font-bold
         `,
         profileSecondaryContentValue: `
-            font-normal
+            text-xxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
-            flex justify-center content-center items-center
-            pb-2
+            flex justify-center content-center items-center gap-2
         `,
         profileSecondaryContentDetailsBtn: `
             px-6 py-1
@@ -125,6 +124,7 @@ const ProfileData = (props:ProfileDataProps) => {
 
                 <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
                     <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
+                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>Copy address</button>
                 </div>
 
             </div>
