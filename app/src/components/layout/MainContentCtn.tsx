@@ -5,7 +5,7 @@ const MainContentCtn = (props:WrapperProps) => {
     const raffleCtnStyles = {
         ctn: `
             grid justify-center content-center
-            grid grid-flow-col grid-cols-[1fr,2fr] grid-rows-[4fr,2fr]
+            grid grid-flow-col grid-cols-[1fr,2fr] grid-rows-[3.75fr,2.25fr]
             w-4/5 h-full p-6 gap-2
         `,
     }

@@ -10,11 +10,16 @@ const Panel = (props:PanelProps) => {
             text-lightText
             dark:text-darkText
             ${props.panelType === "nav" ? `col-span-full` : ""}
-            ${props.panelType === "main" ? `flex justify-center items-center` : ""}
+            ${props.panelType === "main" ? `
+            flex justify-center items-center content-center
+            ` : ""}
             ${props.panelType === "lobby" ? `
             grid grid-flow-row grid-rows-[auto,1fr]
             ` : ""}
             ${props.panelType === "profile" ? `
+            grid grid-flow-row grid-rows-[auto,1fr]
+            divide-y
+            divide-lightBorder dark:divide-darkBorder
             ` : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `

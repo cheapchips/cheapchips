@@ -11,6 +11,7 @@ import RaffleBottomCtn from './components/layout/RaffleBottomCtn'
 
 // logical components
 import LobbyHeader from './components/logical/LobbyHeader'
+import ProfileData from './components/logical/ProfileData'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -76,8 +77,10 @@ function App() {
 
       <Panel panelType='profile'>
 
-
-
+          <ProfileData title="Profile" address='0xTeaver' chipsBalance={105} linkBalance={12} />
+          
+          <div className='flex justify-center items-center'>Raffle History Container</div>
+          
       </Panel>
 
     </MainWrapper>

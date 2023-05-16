@@ -36,16 +36,17 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         `,
         textTitle:`
             flex justify-start
-            text-sm font-bold
+            text-sm font-semibold
             lightText
             dark:text-darkText
             p-1
         `,
         textLobbyId:`
-            font-normal
+            text-sm font-normal
+            p-1
         `,
         text: `
-            text-sm
+            text-sm font-normal
             text-lightText
             dark:text-darkText
         `,
@@ -62,7 +63,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             
             <div className={lobbyHeaderStyles.titleCtn}>
                 <span className={lobbyHeaderStyles.textTitle}>{props.title}</span>
-                <span className={lobbyHeaderStyles.textTitle + lobbyHeaderStyles.textLobbyId}>id: {props.lobbyId}</span>
+                <span className={lobbyHeaderStyles.textLobbyId}>id: {props.lobbyId}</span>
             </div>
 
             <div className={lobbyHeaderStyles.playerInfoCtn}>
