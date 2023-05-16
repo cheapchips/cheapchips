@@ -54,7 +54,6 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
     function playerInfoBar():string {
         if(props.playerCount < 10) return "2"
         const perc = (Math.floor(props.playerCount / 10) * 10).toString() + "p"
-        console.log(perc)
         return perc
     }
 

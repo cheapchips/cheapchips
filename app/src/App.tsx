@@ -1,9 +1,15 @@
 import './App.css'
 
-// components
+// layout components
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
+import MainContentCtn from './components/layout/MainContentCtn'
+import RaffleCtn from './components/layout/RaffleCtn'
+import RaffleDepositCtn from './components/layout/RaffleDepositCtn'
+import RaffleInfoCtn from './components/layout/RaffleInfoCtn'
+
+// logical components
 import LobbyHeader from './components/logical/LobbyHeader'
 
 // hooks
@@ -33,7 +39,6 @@ function App() {
       <Panel panelType='side'>
 
         <LobbyHeader
-          theme='dark'
           title='Lobby'
           playerCount={45}
           maxPlayerCount={100}
@@ -44,10 +49,32 @@ function App() {
       </Panel>
       
       <Panel panelType='main'>
-        <div className='w-full h-full flex justify-center items-center dark:text-white flex-col'>
-          {theme}
-          <button onClick={() => toggleTheme()}>Toggle theme</button>
-        </div>
+
+        <MainContentCtn>
+
+          <RaffleCtn>
+         
+            {theme}
+            <button onClick={() => toggleTheme()}>Toggle theme</button>
+             
+          </RaffleCtn>
+
+          <RaffleDepositCtn>
+
+            <p>Deposit Container</p>
+
+          </RaffleDepositCtn>
+
+          <RaffleInfoCtn>
+
+            <p>Raffle Info Container</p>
+            
+          </RaffleInfoCtn>
+         
+         
+        </MainContentCtn>
+        
+
       </Panel>
 
       <Panel panelType='side'>

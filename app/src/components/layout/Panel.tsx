@@ -8,8 +8,8 @@ const Panel = (props:PanelProps) => {
             bg-lightBg border-lightBorder
             dark:bg-darkBg dark:border-darkBorder
             ${props.panelType === "nav" ? "col-span-full" : ""}
+            ${props.panelType === "main" ? "flex justify-center items-center" : ""}
             ${props.panelType === "side" ? "" : ""}
-            ${props.panelType === "main" ? "" : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `
     }
