@@ -10,7 +10,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         dark:border-darkBorder
         `,
         titleCtn: `
-        w-full h-10.5 grid grid-cols-2
+        w-full grid grid-cols-2
         p-2
         border-b
         border-lightBorder

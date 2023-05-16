@@ -7,9 +7,15 @@ const Panel = (props:PanelProps) => {
             rounded-md border
             bg-lightBg border-lightBorder
             dark:bg-darkBg dark:border-darkBorder
-            ${props.panelType === "nav" ? "col-span-full" : ""}
-            ${props.panelType === "main" ? "flex justify-center items-center" : ""}
-            ${props.panelType === "side" ? "" : ""}
+            text-lightText
+            dark:text-darkText
+            ${props.panelType === "nav" ? `col-span-full` : ""}
+            ${props.panelType === "main" ? `flex justify-center items-center` : ""}
+            ${props.panelType === "lobby" ? `
+            grid grid-flow-row grid-rows-[auto,1fr]
+            ` : ""}
+            ${props.panelType === "profile" ? `
+            ` : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `
     }

@@ -15,7 +15,7 @@ export default {
         'darkBg': '#0f172a',
         'darkBorder': '#334155',
         'lightMainWrapperFrom': '#c4daf5',
-        'lightMainWrapperVia': '#dbeafe',
+        'lightMainWrapperVia': '#bcd5f7',
         'lightMainWrapperTo': '#bcd6f5',
         'lightText': '#0f0f0f',
         'lightBg': '#eff6ff',

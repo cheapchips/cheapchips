@@ -4,6 +4,7 @@ import './App.css'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
+import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
 import RaffleCtn from './components/layout/RaffleCtn'
 import RaffleDepositCtn from './components/layout/RaffleDepositCtn'
@@ -36,7 +37,7 @@ function App() {
         }
       />
       
-      <Panel panelType='side'>
+      <Panel panelType='lobby'>
 
         <LobbyHeader
           title='Lobby'
@@ -45,6 +46,10 @@ function App() {
           timeTillRaffleStartPercentage={44}
           lobbyId='0'
         />
+
+        <LobbyCtn>
+          <p>Lobby Container</p>
+        </LobbyCtn>
 
       </Panel>
       
@@ -73,11 +78,13 @@ function App() {
          
          
         </MainContentCtn>
-        
 
       </Panel>
 
-      <Panel panelType='side'>
+      <Panel panelType='profile'>
+
+
+
       </Panel>
 
     </MainWrapper>
