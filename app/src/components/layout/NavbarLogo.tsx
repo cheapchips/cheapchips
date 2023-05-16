@@ -4,9 +4,12 @@ const NavbarLogo = () => {
 
     const navbarLogoStyles = {
         container: `
-        flex justify-center place-items-center w-10
+        flex justify-center place-items-center w-10 h-10 rounded-full
+        border
+        border-lightBorder
+        dark:border-darkBorder
         `,
-        img: `p-1.5 w-fit`,
+        img: `p-1`,
     }
 
     return (

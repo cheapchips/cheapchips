@@ -8,32 +8,28 @@ const Navbar = (props:NavbarProps) => {
 
     const navbarStyles = {
         panelCtn: `
-            flex flex-flow-col justify-between
-            px-3
-            text-black
-            dark:text-white
+            flex flex-flow-col justify-between px-3
+            text-lightText
+            dark:text-darkText
         `,
         leftContentCtn: `
-            w-fit w-max-1/3
-            flex
+        flex items-center
         `,
         leftContentItemsCtn: `
-            grid grid-flow-col gap-4 px-2
+            grid grid-flow-col gap-4 pr-2
             text-sm font-bold
-            content-center
         `,
         rightContentCtn: `
-            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.25fr] justify-items-end
+            grid grid-flow-col grid-cols-2 grid-cols-[2.5fr,1.25fr]
+            justify-items-end
         `,
         rightContentItemsCtn: `
             grid grid-flow-col
-            content-center
+            w-fit content-center
             text-sm font-bold
-            w-fit
         `,
         rightContentButtonCtn: `
-            flex place-items-center w-fit
-            text-black
+            flex place-items-center
         `,
         contentText: `
             p-1 px-2 w-fit text-xs

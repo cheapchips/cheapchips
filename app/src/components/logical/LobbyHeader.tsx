@@ -5,50 +5,57 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
     const lobbyHeaderStyles = {
         ctn: `
         flex flex-col gap-1
-        w-full h-fit
-        rounded-t-md
         border-b
-        border-blue-200
-        dark:border-slate-700
+        border-lightBorder
+        dark:border-darkBorder
         `,
         titleCtn: `
-        grid grid-cols-2
-        w-full h-12
+        w-full h-10.5 grid grid-cols-2
         p-2
         border-b
-        border-blue-200
-        dark:border-slate-700
+        border-lightBorder
+        dark:border-darkBorder
         `,
         playerInfoCtn: `
-        grid grid-rows-2
-        w-full h-20 p-2
+        grid grid-rows-2 grid-rows-[1fr,0.5fr]
+        px-2
         `,
         playerInfoBarCtn: `
-        w-full p-2
+        w-full h-fit py-2
+        px-1
         `,
         playerInfoBar:`
-        w-full h-full rounded-md
+        w-${playerInfoBar()}
+        h-2.5 rounded-md
         bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
         shadow-sm
         `,
         lineCtn: `
-        flex justify-start align-middle content-center
-        px-2
+        flex
+        p-1
         `,
         textTitle:`
         flex justify-start
-        text-sm
-        font-bold
-        dark:text-white
-        p-2
+        text-sm font-bold
+        lightText
+        dark:text-darkText
+        p-1
         `,
         textLobbyId:`
         font-normal
         `,
         text: `
         text-sm
-        dark:text-white
+        text-lightText
+        dark:text-darkText
         `,
+    }
+
+    function playerInfoBar():string {
+        if(props.playerCount < 10) return "2"
+        const perc = (Math.floor(props.playerCount / 10) * 10).toString() + "p"
+        console.log(perc)
+        return perc
     }
 
     return (

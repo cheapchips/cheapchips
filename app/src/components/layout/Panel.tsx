@@ -5,11 +5,11 @@ const Panel = (props:PanelProps) => {
     const panelStyles = {
         panel: `
             rounded-md border
-            bg-blue-100 border-blue-200
-            dark:bg-slate-900 dark:border-slate-700
+            bg-lightBg border-lightBorder
+            dark:bg-darkBg dark:border-darkBorder
             ${props.panelType === "nav" ? "col-span-full" : ""}
-            ${props.panelType === "side" ? "side" : ""}
-            ${props.panelType === "main" ? "main" : ""}
+            ${props.panelType === "side" ? "" : ""}
+            ${props.panelType === "main" ? "" : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `
     }
