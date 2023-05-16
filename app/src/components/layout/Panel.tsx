@@ -4,22 +4,23 @@ const Panel = (props:PanelProps) => {
 
     const panelStyles = {
         panel: `
-            rounded-md border
-            bg-lightBg border-lightBorder
-            dark:bg-darkBg dark:border-darkBorder
-            text-lightText
-            dark:text-darkText
+                rounded-md border
+                bg-lightBg border-lightBorder
+                dark:bg-darkBg dark:border-darkBorder
+                text-lightText
+                dark:text-darkText
             ${props.panelType === "nav" ? `col-span-full` : ""}
             ${props.panelType === "main" ? `
-            flex justify-center items-center content-center
+                flex justify-center items-center content-center
             ` : ""}
             ${props.panelType === "lobby" ? `
-            grid grid-flow-row grid-rows-[auto,1fr]
+                grid grid-flow-row grid-rows-[auto,1fr]
             ` : ""}
             ${props.panelType === "profile" ? `
-            grid grid-flow-row grid-rows-[auto,1fr]
-            divide-y
-            divide-lightBorder dark:divide-darkBorder
+                grid grid-flow-row grid-rows-[auto,1fr]
+                divide-y
+                divide-lightBorder
+                dark:divide-darkBorder
             ` : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `

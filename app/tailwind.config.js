@@ -34,7 +34,7 @@ export default {
         '100p': '100%',
       },
       fontSize: {
-        'xxs': '0.6rem'
+        'xxs': '0.7rem'
       }
     }
   },

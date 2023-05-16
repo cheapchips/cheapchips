@@ -6,13 +6,12 @@ const ProfileData = (props:ProfileDataProps) => {
     const profileStyles = {
         ctn: `
             grid grid-flow-row grid-rows-[auto,fit,auto]
-            w-full h-fit
             gap-2
             text-lightText
             dark:text-darkText
             text-sm
         `,
-        profileTitleCtn: `
+            profileTitleCtn: `
             flex justify-start content-center w-full h-fit
             border-b
             border-lightBorder
@@ -40,7 +39,8 @@ const ProfileData = (props:ProfileDataProps) => {
             overflow-hidden
         `,
         profileIcon: `
-            w-full h-full p-2 rounded-full
+            rounded-full
+            p-2
         `,
         profileBalancesCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
