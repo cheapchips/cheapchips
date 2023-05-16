@@ -5,12 +5,13 @@ const NavbarLogo = () => {
     const navbarLogoStyles = {
         container: `
             flex justify-center place-items-center w-10 h-10 rounded-full
+            aspect-square
             border
             border-lightBorder
             dark:border-darkBorder
         `,
         img: `
-            p-1
+            p-1.5
         `,
     }
 

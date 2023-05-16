@@ -1,8 +1,8 @@
 import ButtonProps from "./ButtonProps"
 
 export default interface NavbarProps {
-    address?: string
-    balance?: number
+    theme: string
+    themeBtnOnClick: () => void
     walletConnected: boolean
     connectWalletProps: ButtonProps
 }

@@ -26,6 +26,8 @@ function App() {
     <MainWrapper>
 
       <Navbar
+        theme={theme}
+        themeBtnOnClick={() => toggleTheme()}
         walletConnected={connected}
         connectWalletProps={
           {

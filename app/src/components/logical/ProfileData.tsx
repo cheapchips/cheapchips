@@ -81,6 +81,8 @@ const ProfileData = (props:ProfileDataProps) => {
             border-lightBorder
             dark:border-darkBorder
             rounded-md
+            hover:bg-lightBgActive
+            dark:hover:bg-darkBgActive
         `,
     }
 
