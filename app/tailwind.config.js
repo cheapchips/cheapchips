@@ -22,7 +22,8 @@ export default {
         'lightText': '#000826',
         'lightBg': '#eff6ff',
         'lightBgActive': '#deecfc',
-        'lightBorder': '#b4cef0'
+        'lightBorder': '#b4cef0',
+        'accentColor': '#fbbf24'
       },
       fontSize: {
         'xxs': '0.7rem'

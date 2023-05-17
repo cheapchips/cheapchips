@@ -56,7 +56,7 @@ function App() {
 
         <LobbyHeader
           title='Lobby'
-          playerCount={44}
+          playerCount={14}
           maxPlayerCount={100}
           timeTillRaffleStartPercentage={44}
           lobbyId='0'

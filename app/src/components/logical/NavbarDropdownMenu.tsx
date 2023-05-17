@@ -11,12 +11,13 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
             flex flex-row`,
         dropdownCtn: `
             absolute flex flex-col
-            w-24 h-fit mt-8 rounded-lg
+            w-24 h-fit mt-8 rounded-md
             bg-lightBg
             dark:bg-darkBg
             border-lightBorder
             dark:border-darkBorder
             shadow-md border
+            overflow-hidden
         `,
         dropdownIcon: `
             w-2.5 h-2.5 ml-1.5 self-center
@@ -24,10 +25,13 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
             dark:fill-darkText
         `,
         dropdownItem: `
+            w-full
             text-xs
             self-center p-2
-            hover:underline
             active:opacity-75
+            hover:bg-lightBgActive
+            dark:hover:bg-darkBgActive
+            hover:text-accentColor
         `,
         dropdownBtn: `
             text-xs py-2

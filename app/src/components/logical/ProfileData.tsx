@@ -33,6 +33,8 @@ const ProfileData = (props:ProfileDataProps) => {
             flex justify-center items-center content-center
             rounded-full
             border
+            bg-lightBgActive
+            dark:bg-darkBgActive
             border-lightBorder
             dark:border-darkBorder
             aspect-square
@@ -51,9 +53,13 @@ const ProfileData = (props:ProfileDataProps) => {
             flex-flow-col flex-wrap
             font-semibold
             p-1
+            border-b
+            border-lightBorder
+            dark:border-darkBorder
         `,
         profileBalancesValue: `
-            font-normal
+            font-extrabold
+            text-accentColor
         `,
         profileSecondaryContentCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr]
@@ -83,6 +89,8 @@ const ProfileData = (props:ProfileDataProps) => {
             rounded-md
             hover:bg-lightBgActive
             dark:hover:bg-darkBgActive
+            hover:text-black
+            dark:hover:text-accentColor
         `,
     }
 
@@ -126,7 +134,7 @@ const ProfileData = (props:ProfileDataProps) => {
 
                 <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
                     <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
-                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>Copy address</button>
+                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Tokens</button>
                 </div>
 
             </div>

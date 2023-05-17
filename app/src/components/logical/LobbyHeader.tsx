@@ -25,9 +25,12 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             px-1
         `,
         playerInfoBarBorder: `
+            bg-lightBgActive
+            dark:bg-darkBgActive
             rounded-md
             border
-            border-lightBorder dark:border-darkBorder
+            border-lightBorder
+            dark:border-darkBorder
         `,
         // This part is insanely ugly, but for now this is the only way.
         playerInfoBar:`
