@@ -61,15 +61,13 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
 
     function _deposit(uint256 _amount) internal {
 
-        // require(msg.value == requiredFees); // fees required for buying link tokens
+        // protects contract from calling VRF while gas is above 500 gwei
+        require(tx.gasprice < 500, "Too high gas price!");
 
         Round storage round = rounds[currentRoundId];
 
         require(block.timestamp < round.endTime || round.endTime == 0, "Deposits are closed, wait for the next round...");
-        
-
-        // TODO: check if round has max cap (100 users) if so -> close round 
-        
+        require(round.numberOfPlayers < 100, "Player limit per round reached!");
         require(!round.players[msg.sender].exists, "You have already joined to this round!");
         require(token.balanceOf(msg.sender) >= _amount, "Insufficient token balance!"); 
         require(_amount <= 5, "Deposit limit reached! Only 5 tokens per round.");
