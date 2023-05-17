@@ -1,6 +1,7 @@
 import './App.css'
 
 // layout components
+import LoadingScreen from './components/layout/LoadingScreen'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
@@ -16,13 +17,25 @@ import ProfileData from './components/logical/ProfileData'
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
 import useTheme from './hooks/useTheme'
+import useLoadingScreen from './hooks/useLoadingScreen'
+
+import { useEffect } from "react"
 
 function App() {
 
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
+  const loading = useLoadingScreen()
 
-  return (
+  useEffect(() => {
+    console.log('loading ', loading)
+  }, [loading])
+
+
+  if(loading){
+    return <LoadingScreen />
+  }
+  else return (
     <MainWrapper>
 
       <Navbar

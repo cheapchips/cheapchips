@@ -48,7 +48,7 @@ const Navbar = (props:NavbarProps) => {
             cursor-pointer
         `,
         themeBtn: `
-            w-6 h-6
+            w-5 h-5
             fill-lightText
             stroke-lightText
             dark:fill-darkText
