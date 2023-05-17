@@ -19,18 +19,11 @@ import useConnectWallet from './hooks/useConnectWallet'
 import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
 
-import { useEffect } from "react"
-
 function App() {
 
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
-
-  useEffect(() => {
-    console.log('loading ', loading)
-  }, [loading])
-
 
   if(loading){
     return <LoadingScreen />
@@ -73,8 +66,7 @@ function App() {
         <MainContentCtn>
 
           <RaffleMainCtn>
-            {theme}
-            <button onClick={() => toggleTheme()}>Toggle theme</button>
+            <p>Raffle Container</p>
           </RaffleMainCtn>
 
           <RaffleBottomCtn>
