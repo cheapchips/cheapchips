@@ -13,10 +13,7 @@ const Panel = (props:PanelProps) => {
             ${props.panelType === "main" ? `
                 flex justify-center items-center content-center
             ` : ""}
-            ${props.panelType === "lobby" ? `
-                grid grid-flow-row grid-rows-[auto,1fr]
-            ` : ""}
-            ${props.panelType === "profile" ? `
+            ${props.panelType === "side" ? `
                 grid grid-flow-row grid-rows-[auto,1fr]
                 divide-y
                 divide-lightBorder

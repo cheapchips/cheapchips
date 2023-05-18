@@ -5,9 +5,6 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
     const lobbyHeaderStyles = {
         ctn: `
             flex flex-col gap-2
-            border-b
-            border-lightBorder
-            dark:border-darkBorder
         `,
         titleCtn: `
             w-full grid grid-cols-2
@@ -28,13 +25,16 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
-            border
+            borderor
             border-lightBorder
             dark:border-darkBorder
         `,
         // This part is insanely ugly, but for now this is the only way.
         playerInfoBar:`
-            ${props.playerCount > 90
+            ${
+                props.active === false ? "w-0"
+                :
+                props.playerCount > 90
                 ? 'w-[95%]'
                 : props.playerCount > 80
                 ? 'w-[85%]'
@@ -69,7 +69,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             h-2.5 rounded-md
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
             shadow-sm
-            `,
+        `,
         lineCtn: `
             flex
             px-1
@@ -81,6 +81,11 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             dark:text-darkText
             p-1
         `,
+        textTitleInactive: `
+            rounded-md
+            w-1/2 h-7
+            p-1
+        `,
         textLobbyId:`
             text-sm font-normal
             p-1
@@ -90,26 +95,62 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             text-lightText
             dark:text-darkText
         `,
+        textInactive: `
+            rounded-md
+            w-1/3 h-6
+        `,
+        inactiveBg: `
+            bg-lightBgActive
+            dark:bg-darkBgActive
+        `,
     }
 
     return (
+
         <div className={lobbyHeaderStyles.ctn}>
+
             
             <div className={lobbyHeaderStyles.titleCtn}>
-                <span className={lobbyHeaderStyles.textTitle}>{props.title}</span>
-                <span className={lobbyHeaderStyles.textLobbyId}>id: {props.lobbyId}</span>
+            
+                {props.active
+                    ?
+                        <span className={lobbyHeaderStyles.textTitle}>
+                            {props.title}
+                        </span>
+                    :
+                        <span className={lobbyHeaderStyles.textTitleInactive + lobbyHeaderStyles.inactiveBg}></span>
+                }
+                
+                {props.active
+                    ?
+                        <span className={lobbyHeaderStyles.textLobbyId}>
+                            id: {props.lobbyId}
+                        </span>
+                    :
+                        <span className={lobbyHeaderStyles.textTitleInactive + lobbyHeaderStyles.inactiveBg}></span>
+                }
+            
             </div>
 
             <div className={lobbyHeaderStyles.playerInfoCtn}>
-                <span className={lobbyHeaderStyles.lineCtn + lobbyHeaderStyles.text}>Players: {props.playerCount} / {props.maxPlayerCount}</span>
+                
+                {props.active
+                    ?
+                        <span className={lobbyHeaderStyles.lineCtn + lobbyHeaderStyles.text}>Players: {props.playerCount} / {props.maxPlayerCount}</span>
+                    :
+                        <span className={lobbyHeaderStyles.lineCtn + lobbyHeaderStyles.textInactive + lobbyHeaderStyles.inactiveBg}></span>
+                }
+                
                 <div className={lobbyHeaderStyles.playerInfoBarCtn}>
                     <div className={lobbyHeaderStyles.playerInfoBarBorder}>
                         <div className={lobbyHeaderStyles.playerInfoBar}></div>
                     </div>
                 </div>
+                
             </div>
         
         </div>
+       
     )
 }
 

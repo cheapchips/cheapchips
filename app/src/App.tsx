@@ -1,4 +1,5 @@
 import './App.css'
+import { useState } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
@@ -24,6 +25,7 @@ function App() {
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
+  const [active, setActive] = useState(true)
 
   if(loading){
     return <LoadingScreen />
@@ -45,7 +47,7 @@ function App() {
         }
       />
       
-      <Panel panelType='lobby'>
+      <Panel panelType='side'>
 
         <LobbyHeader
           title='Lobby'
@@ -53,6 +55,7 @@ function App() {
           maxPlayerCount={100}
           timeTillRaffleStartPercentage={44}
           lobbyId='0'
+          active={active}
         />
 
         <LobbyCtn>
@@ -66,7 +69,8 @@ function App() {
         <MainContentCtn>
 
           <RaffleMainCtn>
-            <p>Raffle Container</p>
+            {/* <p>Raffle Container</p> */}
+            <button onClick={() => setActive(!active)}>Toggle panel activeness</button>
           </RaffleMainCtn>
 
           <RaffleBottomCtn>
@@ -77,12 +81,11 @@ function App() {
             <p>Raffle Info Container</p>
           </RaffleBottomCtn>
          
-         
         </MainContentCtn>
 
       </Panel>
 
-      <Panel panelType='profile'>
+      <Panel panelType='side'>
 
           <ProfileData title="Profile" address='0x748912caD3137E208483281929779A45f3C9Eb55' chipsBalance={105} linkBalance={12} />
           
