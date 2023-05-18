@@ -15,9 +15,8 @@ const config: HardhatUserConfig = {
   networks: {
     localhost: {
       gas: 2100000,
-      gasPrice: 8000000000,
+      gasPrice: 8000000000000000,
       forking: {
-        enabled: process.env.FORK === "true" ? true : false,
         url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`
       }
     }
