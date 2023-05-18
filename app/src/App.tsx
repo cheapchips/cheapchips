@@ -13,7 +13,8 @@ import RaffleBottomCtn from './components/layout/RaffleBottomCtn'
 
 // logical components
 import LobbyHeader from './components/logical/LobbyHeader'
-import ProfileData from './components/logical/ProfileData'
+import ProfileHeader from './components/logical/ProfileHeader'
+import Deposit from './components/logical/Deposit'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -59,7 +60,6 @@ function App() {
         />
 
         <LobbyCtn>
-          <p>Lobby Container</p>
         </LobbyCtn>
 
       </Panel>
@@ -69,16 +69,16 @@ function App() {
         <MainContentCtn>
 
           <RaffleMainCtn>
-            {/* <p>Raffle Container</p> */}
-            <button onClick={() => setActive(!active)}>Toggle panel activeness</button>
+            <button onClick={() => setActive(!active)}>Toggle activeness</button>
           </RaffleMainCtn>
 
           <RaffleBottomCtn>
-            <p>Deposit Container</p>
+          
+            <Deposit />         
+          
           </RaffleBottomCtn>
 
           <RaffleBottomCtn>
-            <p>Raffle Info Container</p>
           </RaffleBottomCtn>
          
         </MainContentCtn>
@@ -87,9 +87,7 @@ function App() {
 
       <Panel panelType='side'>
 
-          <ProfileData title="Profile" address='0x748912caD3137E208483281929779A45f3C9Eb55' chipsBalance={105} linkBalance={12} />
-          
-          <div className='flex justify-center items-center'>Raffle History Container</div>
+          <ProfileHeader title="Profile" address='0x748912caD3137E208483281929779A45f3C9Eb55' chipsBalance={105} linkBalance={12} />
           
       </Panel>
 

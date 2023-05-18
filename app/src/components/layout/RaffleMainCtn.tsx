@@ -13,6 +13,8 @@ const RaffleMainCtn = (props:WrapperProps) => {
             text-lightText
             dark:text-darkText
             p-2
+
+            flex-col
         `,
     }
 

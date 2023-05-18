@@ -12,9 +12,9 @@ export default function useLoadingScreen(): boolean {
 
         if (document.readyState === 'complete') {
             // timeout to test
-            setTimeout(() => {
+            // setTimeout(() => {
                 onPageLoad()
-            }, 1500);
+            // }, 1500);
         } else {
             window.addEventListener('load', onPageLoad, false)
             return () => window.removeEventListener('load', onPageLoad)

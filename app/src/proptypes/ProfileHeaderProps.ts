@@ -1,4 +1,4 @@
-export default interface ProfileDataProps {
+export default interface ProfileHeaderProps {
     title: string
     address: string
     chipsBalance: number

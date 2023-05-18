@@ -1,7 +1,7 @@
-import ProfileDataProps from "../../proptypes/ProfileDataProps"
+import ProfileHeaderProps from "../../proptypes/ProfileHeaderProps"
 import Blockies from "react-blockies"
 
-const ProfileData = (props:ProfileDataProps) => {
+const ProfileHeader = (props:ProfileHeaderProps) => {
 
     const profileStyles = {
         ctn: `
@@ -9,7 +9,12 @@ const ProfileData = (props:ProfileDataProps) => {
             gap-2
             text-lightText
             dark:text-darkText
-            text-sm
+            md:text-xxxs
+            lg:text-xxs
+            xl:text-sm
+            border-b
+            border-lightBorder
+            dark:border-darkBorder
         `,
             profileTitleCtn: `
             flex justify-start content-center w-full h-fit
@@ -70,13 +75,12 @@ const ProfileData = (props:ProfileDataProps) => {
             p-2
         `,
         profileSecondaryContent: `
-            px-1
+            px-1 break-normal truncate
         `,
         profileSecondaryContentTitle: `
             font-bold
         `,
         profileSecondaryContentValue: `
-            text-xxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
             flex justify-center content-center items-center gap-2
@@ -145,4 +149,4 @@ const ProfileData = (props:ProfileDataProps) => {
 }
 
 
-export default ProfileData
+export default ProfileHeader

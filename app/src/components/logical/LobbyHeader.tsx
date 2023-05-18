@@ -5,6 +5,9 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
     const lobbyHeaderStyles = {
         ctn: `
             flex flex-col gap-2
+            md:text-xxxs
+            lg:text-xxs
+            xl:text-sm
         `,
         titleCtn: `
             w-full grid grid-cols-2
@@ -76,7 +79,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         `,
         textTitle:`
             flex justify-start
-            text-sm font-semibold
+            font-semibold
             lightText
             dark:text-darkText
             p-1
@@ -87,11 +90,11 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             p-1
         `,
         textLobbyId:`
-            text-sm font-normal
+            font-normal
             p-1
         `,
         text: `
-            text-sm font-normal
+            font-normal
             text-lightText
             dark:text-darkText
         `,

@@ -6,13 +6,11 @@ const RaffleBottomCtn = (props:WrapperProps) => {
     const raffleInfoStlyes = {
         ctn: `
             w-full h-full
-            flex justify-center items-center
             rounded-md border
             border-lightBorder
             dark:border-darkBorder
             text-lightText
             dark:text-darkText
-            p-2
         `
     }
 

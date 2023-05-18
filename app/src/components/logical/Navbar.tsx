@@ -12,6 +12,9 @@ const Navbar = (props:NavbarProps) => {
             flex flex-flow-col justify-between px-3
             text-lightText
             dark:text-darkText
+             md:text-xxxs
+            lg:text-xxs
+            xl:text-sm
         `,
         leftContentCtn: `
             grid grid-flow-col
@@ -19,7 +22,7 @@ const Navbar = (props:NavbarProps) => {
         `,
         leftContentItemsCtn: `
             grid grid-flow-col gap-4
-            text-sm font-bold
+            font-bold
         `,
         rightContentCtn: `
             grid grid-flow-col grid-cols-2 grid-cols-[auto,1.25fr]
@@ -28,13 +31,13 @@ const Navbar = (props:NavbarProps) => {
         rightContentItemsCtn: `
             grid grid-flow-col
             w-fit content-center
-            text-sm font-bold
+            font-bold
         `,
         rightContentButtonCtn: `
             flex place-items-center
         `,
         contentText: `
-            p-1 px-2 w-fit text-xs
+            p-1 px-2 w-fit
             text-lightText
             dark:text-darkText
             select-none

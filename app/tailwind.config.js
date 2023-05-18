@@ -26,7 +26,8 @@ export default {
         'accentColor': '#fbbf24'
       },
       fontSize: {
-        'xxs': '0.7rem'
+        'xxxs': '0.55rem',
+        'xxs': '0.7rem',
       }
     }
   },
