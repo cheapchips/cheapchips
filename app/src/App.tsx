@@ -60,7 +60,7 @@ function App() {
         />
 
         <LobbyCtn>
-          
+
         </LobbyCtn>
 
       </Panel>
@@ -70,7 +70,9 @@ function App() {
         <MainContentCtn>
 
           <RaffleMainCtn>
-            <button onClick={() => setActive(!active)}>Toggle activeness</button>
+            <button onClick={() => setActive(!active)}>
+              <span className="text-xxs">Toggle active</span>
+            </button>
           </RaffleMainCtn>
 
           <RaffleBottomCtn>
