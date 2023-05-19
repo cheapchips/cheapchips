@@ -12,7 +12,7 @@ const Navbar = (props:NavbarProps) => {
             flex flex-flow-col justify-between px-3
             text-lightText
             dark:text-darkText
-             md:text-xxxs
+            md:text-xxxs
             lg:text-xxs
             xl:text-sm
         `,
@@ -21,8 +21,11 @@ const Navbar = (props:NavbarProps) => {
             content-center
         `,
         leftContentItemsCtn: `
-            grid grid-flow-col gap-4
+            grid grid-flow-col
             font-bold
+            gap-4
+            lg:gap-2
+            md:gap-0
         `,
         rightContentCtn: `
             grid grid-flow-col grid-cols-2 grid-cols-[auto,1.25fr]
@@ -54,7 +57,9 @@ const Navbar = (props:NavbarProps) => {
             cursor-pointer
         `,
         themeBtn: `
-            w-5 h-5
+            xl:w-5 xl:h-5
+            lg:w-4 lg:h-4
+            md:w-4 md:h-4
             fill-lightText
             stroke-lightText
             dark:fill-darkText
