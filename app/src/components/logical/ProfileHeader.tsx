@@ -21,11 +21,10 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             border-b
             border-lightBorder
             dark:border-darkBorder
-            font-bold
+            font-semibold
             p-2
         `,
         profileTitleContent: `
-            font-bold
             p-1
         `,
         profileMainContentCtn: `
@@ -78,9 +77,10 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             px-1 break-normal truncate
         `,
         profileSecondaryContentTitle: `
-            font-bold
         `,
         profileSecondaryContentValue: `
+            font-thin
+            text-xxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
             flex justify-center content-center items-center gap-2

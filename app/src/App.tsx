@@ -27,6 +27,7 @@ function App() {
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
   const [active, setActive] = useState(true)
+  const [deposit, setDeposit] = useState<number>(0)
 
   if(loading){
     return <LoadingScreen />
@@ -72,12 +73,22 @@ function App() {
           <RaffleMainCtn>
             <button onClick={() => setActive(!active)}>
               <span className="text-xxs">Toggle active</span>
+              <br />
+              <span>{deposit}</span>
             </button>
           </RaffleMainCtn>
 
           <RaffleBottomCtn>
           
-            <Deposit />         
+            <Deposit
+              active={true}
+              depositAmount={deposit}
+              defaultDepositAmount={1}
+              minDepositAmount={0}
+              maxDepositAmount={5}
+              handleImageDepositChange={""}
+              handleInputDepositValueChange={setDeposit}
+            />        
           
           </RaffleBottomCtn>
 

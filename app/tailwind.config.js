@@ -8,6 +8,8 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+      },
       colors: {
         'darkMainWrapperFrom': '#0c2159',
         'darkMainWrapperVia': '#050f26',
@@ -26,6 +28,7 @@ export default {
         'accentColor': '#fbbf24'
       },
       fontSize: {
+        'xxxxs': '0.4rem',
         'xxxs': '0.55rem',
         'xxs': '0.7rem',
       }
