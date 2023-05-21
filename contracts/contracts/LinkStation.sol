@@ -5,11 +5,11 @@ import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "./PegSwapInterface.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "hardhat/console.sol";
+
 
 pragma solidity 0.8.18;
 
-contract ChipsSupplier{
+contract LinkStation {
 
     /**
      * @dev TOKEN ADDRESSES IN THE POLYGON MAINNET
@@ -23,8 +23,6 @@ contract ChipsSupplier{
 
     IUniswapV2Router02 private router;
     IUniswapV2Factory private factory;
-
-    event Wow(uint256 amount);
 
     constructor(){
         router = IUniswapV2Router02(ROUTER_ADDRESS);
@@ -41,12 +39,16 @@ contract ChipsSupplier{
         path[0] = WETH_ADDRESS;
         path[1] = LINK_ERC20_ADDRESS;
 
-        router.swapExactETHForTokens{value: msg.value}(0, path, address(this), block.timestamp + 10 minutes);
+        uint256[] memory amounts = router.swapExactETHForTokens{value: msg.value}(0, path, address(this), block.timestamp + 10 seconds);
+        // amounts[1] - LINK amount
+        uint256 link_amount = amounts[1];
 
+        // swap ERC20 LINK to ERC677 LINK
+        IERC20(LINK_ERC20_ADDRESS).approve(PEG_SWAP_ADDRESS, link_amount);
+        PegSwapInterface(PEG_SWAP_ADDRESS).swap(link_amount, LINK_ERC20_ADDRESS, LINK_ERC677_ADDRESS);
 
-        IERC20(LINK_ERC20_ADDRESS).approve(PEG_SWAP_ADDRESS, 1 ether);
-
-        PegSwapInterface(PEG_SWAP_ADDRESS).swap(1 ether, LINK_ERC20_ADDRESS, LINK_ERC677_ADDRESS);
+        // sending ERC677 LINK to caller
+        IERC20(LINK_ERC677_ADDRESS).transfer(msg.sender, amounts[1]);
 
     }
 

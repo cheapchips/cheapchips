@@ -13,10 +13,12 @@ const config: HardhatUserConfig = {
     coinmarketcap: process.env.COINMARKETCAP_API_KEY
   },
   networks: {
-    localhost: {
+    hardhat: {
       gas: 2100000,
       gasPrice: 8000000000000000,
       forking: {
+        enabled: process.env.FORK === "true" ? true : false,
+        blockNumber: 42981138,
         url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`
       }
     }
