@@ -28,6 +28,7 @@ function App() {
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
+  const depositData = useDeposit()
   const [
     depositAmount,
     defaultDepositAmount,
@@ -36,7 +37,7 @@ function App() {
     handleDepositPercentage,
     handleDepositInput,
     handleDepositTx
-  ] = useDeposit()
+  ] = depositData
   const [active, setActive] = useState(true)
 
   if(loading){
@@ -49,14 +50,12 @@ function App() {
         theme={theme}
         themeBtnOnClick={() => toggleTheme()}
         walletConnected={connected}
-        connectWalletProps={
-          {
-            onClickFunction: connect,
-            text: "CONNECT WALLET",
-            clickable: true,
-            active: true
-          }
-        }
+        connectWalletProps={{
+          onClickFunction: connect,
+          text: "CONNECT WALLET",
+          clickable: true,
+          active: true
+        }}
       />
       
       <Panel panelType='side'>
@@ -91,13 +90,7 @@ function App() {
           <JackpotBottomCtn>
             <Deposit
               active={active}
-              depositAmount={depositAmount}
-              defaultDepositAmount={defaultDepositAmount}
-              minDepositAmount={minDepositAmount}
-              maxDepositAmount={maxDepositAmount}
-              handleDepositPercentageChange={handleDepositPercentage}
-              handleDepositInputChange={handleDepositInput}
-              handleDepositTx={handleDepositTx}
+              depositData={depositData}
             />
           </JackpotBottomCtn>
 

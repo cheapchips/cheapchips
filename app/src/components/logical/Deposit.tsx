@@ -2,6 +2,14 @@ import logo from "../../assets/logo.png"
 import DepositProps from "../../proptypes/DepositProps"
 
 const Deposit = (props:DepositProps) => {
+
+    const [depositAmount,
+    defaultDepositAmount,
+    minDepositAmount,
+    maxDepositAmount,
+    handleDepositPercentage,
+    handleDepositInput,
+    handleDepositTx] = props.depositData
     
     const depositStyles = {
         ctn: `
@@ -150,8 +158,8 @@ const Deposit = (props:DepositProps) => {
 
     const chipsPercentages = [20, 40, 60, 80, 100]
     const DepositChips = chipsPercentages.map((percentage, index) =>
-        <div key={index} onClick={() => props.handleDepositPercentageChange(percentage)}
-            className={(props.depositAmount >= ((percentage / 100) * props.maxDepositAmount))
+        <div key={index} onClick={() => handleDepositPercentage(percentage)}
+            className={(depositAmount >= ((percentage / 100) * maxDepositAmount))
                     ? 
                         depositStyles.chipsImgAndIndicatorCtn
                     :
@@ -183,8 +191,8 @@ const Deposit = (props:DepositProps) => {
             <div className={depositStyles.inputCtn}>
                 {props.active
                     ?
-                        <input value={props.depositAmount} onChange={(e) => {
-                                props.handleDepositInputChange(+e.target.value)
+                        <input value={depositAmount} onChange={(e) => {
+                                handleDepositInput(+e.target.value)
                             }} type="number" className={depositStyles.input}>
                         </input>
                     :
@@ -195,7 +203,7 @@ const Deposit = (props:DepositProps) => {
             <div className={depositStyles.depositBtnCtn}>
                 {props.active
                     ?
-                        <button onClick={() => props.handleDepositTx()} className={depositStyles.depositBtn}>
+                        <button onClick={() => handleDepositTx()} className={depositStyles.depositBtn}>
                             DEPOSIT
                         </button>
                     :

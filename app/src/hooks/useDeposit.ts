@@ -9,7 +9,7 @@ export default function useDeposit(): [number, number, number, number,(value:num
     const [depositAmount, setDepositAmount] = useState<number>(DEFAULT_DEPOSIT)
 
     const handleDepositTx = (): void => {
-        if(depositAmount < MINIMUM_DEPOSIT || depositAmount > MAX_DEPOSIT || depositAmount === 0) return
+        if(depositAmount > MINIMUM_DEPOSIT || depositAmount < MAX_DEPOSIT || depositAmount === 0) return
         // display modal with deposit tx
         console.log("Deposit tx", depositAmount)
     }
