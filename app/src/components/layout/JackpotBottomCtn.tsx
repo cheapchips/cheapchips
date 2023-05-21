@@ -1,9 +1,9 @@
 import WrapperProps from "../../proptypes/WrapperProps"
 
 
-const RaffleBottomCtn = (props:WrapperProps) => {
+const JackpotBottomCtn = (props:WrapperProps) => {
 
-    const raffleInfoStlyes = {
+    const jackpotInfoStlyes = {
         ctn: `
             w-full h-full
             rounded-md border
@@ -15,11 +15,11 @@ const RaffleBottomCtn = (props:WrapperProps) => {
     }
 
     return (
-        <div className={raffleInfoStlyes.ctn}>
+        <div className={jackpotInfoStlyes.ctn}>
             {props.children}
         </div>
     )
 
 }
 
-export default RaffleBottomCtn
+export default JackpotBottomCtn

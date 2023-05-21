@@ -1,8 +1,8 @@
 import WrapperProps from "../../proptypes/WrapperProps"
 
-const RaffleMainCtn = (props:WrapperProps) => {
+const JackpotMainCtn = (props:WrapperProps) => {
 
-    const raffleCtnStyles = {
+    const jackpotCtnStyles = {
         ctn: `
             w-full h-full
             flex justify-center items-center
@@ -19,7 +19,7 @@ const RaffleMainCtn = (props:WrapperProps) => {
     }
 
     return (
-        <div className={raffleCtnStyles.ctn}>
+        <div className={jackpotCtnStyles.ctn}>
             {props.children}
         </div>
     )
@@ -27,4 +27,4 @@ const RaffleMainCtn = (props:WrapperProps) => {
 
 }
 
-export default RaffleMainCtn
+export default JackpotMainCtn

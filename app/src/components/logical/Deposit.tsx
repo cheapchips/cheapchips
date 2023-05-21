@@ -77,10 +77,14 @@ const Deposit = (props:DepositProps) => {
             object-contain
             -rotate-6
         `,
+        chipsImgGreyedOut: `
+            opacity-[20%]
+            contrast-0
+        `,
         chipsImgBottomIndicator: `
             pt-1
-            2xl:w-3 2xl:h-1
-            lg:w-2 lg:h-1
+            2xl:w-2 2xl:h-1
+            lg:w-1 lg:h-1
             md:w-1 md:h-[1%]
             rounded-md
             bg-accentColor
@@ -121,6 +125,7 @@ const Deposit = (props:DepositProps) => {
         depositBtn: `
             w-full
             flex justify-center items-center
+            text-darkText
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-600 to-yellow-300
             font-bold
             border rounded-md
@@ -144,8 +149,14 @@ const Deposit = (props:DepositProps) => {
     }
 
     const chipsPercentages = [20, 40, 60, 80, 100]
-    const DepositChips = chipsPercentages.map((percentage, index) => 
-        <div key={index} onClick={() => props.handleDepositPercentageChange(percentage)} className={depositStyles.chipsImgAndIndicatorCtn}>
+    const DepositChips = chipsPercentages.map((percentage, index) =>
+        <div key={index} onClick={() => props.handleDepositPercentageChange(percentage)}
+            className={(props.depositAmount >= ((percentage / 100) * props.maxDepositAmount))
+                    ? 
+                        depositStyles.chipsImgAndIndicatorCtn
+                    :
+                        depositStyles.chipsImgAndIndicatorCtn + depositStyles.chipsImgGreyedOut
+                }>
             <img draggable={false} src={logo} alt="ChipsToken" className={depositStyles.chipsImg} />
             <span className={depositStyles.chipsImgBottomIndicator}></span>
         </div>

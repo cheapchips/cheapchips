@@ -8,13 +8,14 @@ import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
 import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
-import RaffleMainCtn from './components/layout/RaffleMainCtn'
-import RaffleBottomCtn from './components/layout/RaffleBottomCtn'
+import JackpotMainCtn from './components/layout/JackpotMainCtn'
+import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
 
 // logical components
 import LobbyHeader from './components/logical/LobbyHeader'
 import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
+import JackpotInfo from './components/logical/JackpotInfo'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -79,16 +80,15 @@ function App() {
 
         <MainContentCtn>
 
-          <RaffleMainCtn>
+          <JackpotMainCtn>
             <button onClick={() => setActive(!active)}>
               <span className="text-xxs">Toggle active</span>
               <br />
               <span>{depositAmount}</span>
             </button>
-          </RaffleMainCtn>
+          </JackpotMainCtn>
 
-          <RaffleBottomCtn>
-          
+          <JackpotBottomCtn>
             <Deposit
               active={active}
               depositAmount={depositAmount}
@@ -99,11 +99,15 @@ function App() {
               handleDepositInputChange={handleDepositInput}
               handleDepositTx={handleDepositTx}
             />
-          
-          </RaffleBottomCtn>
+          </JackpotBottomCtn>
 
-          <RaffleBottomCtn>
-          </RaffleBottomCtn>
+          <JackpotBottomCtn>
+            <JackpotInfo
+              active={active}
+              prizePool={40}  
+              jackpotRoundId={2}
+            />
+          </JackpotBottomCtn>
          
         </MainContentCtn>
 
@@ -111,7 +115,12 @@ function App() {
 
       <Panel panelType='side'>
 
-          <ProfileHeader title="Profile" address='0x748912caD3137E208483281929779A45f3C9Eb55' chipsBalance={105} linkBalance={12} />
+          <ProfileHeader
+            title="Profile"
+            address='0x748912caD3137E208483281929779A45f3C9Eb55'
+            chipsBalance={105}
+            linkBalance={12}
+          />
           
       </Panel>
 
