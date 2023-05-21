@@ -27,6 +27,16 @@ const Deposit = (props:DepositProps) => {
             xl:p-1
             md:p-0
         `,
+        depositTitleInactive: `
+            w-1/3
+            2xl:h-7
+            xl:h-6
+            lg:h-5
+            md:h-4
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            rounded-md
+        `,
         chipsSelectorCtn: `
             xl:p-2
             lg:p-1.5
@@ -42,6 +52,17 @@ const Deposit = (props:DepositProps) => {
             border
             border-lightBorder
             dark:border-darkBorder
+        `,
+        chipsSelectorContentInactive: `
+            w-full
+            2xl:h-14
+            xl:h-8
+            lg:h-6
+            md:h-2
+            border-none
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            rounded-md
         `,
         chipsImgAndIndicatorCtn: `
             grid grid-flow-row
@@ -82,6 +103,16 @@ const Deposit = (props:DepositProps) => {
             lg:h-6
             md:h-3
         `,
+        inactiveInput: `
+            w-full
+            2xl:h-10
+            xl:h-8
+            lg:h-6
+            md:h-5
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            rounded-md
+        `,
         depositBtnCtn: `
             flex justify-center items-center h-full
             lg:p-2
@@ -100,6 +131,16 @@ const Deposit = (props:DepositProps) => {
             lg:h-6
             md:h-[120%]
         `,
+        depositBtnInactive: `
+            w-full
+            2xl:h-12
+            xl:h-8
+            lg:h-6
+            md:h-4
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            rounded-md
+        `,
     }
 
     const chipsPercentages = [20, 40, 60, 80, 100]
@@ -114,26 +155,41 @@ const Deposit = (props:DepositProps) => {
         <div className={depositStyles.ctn}>
             
             <div className={depositStyles.depositTitleCtn}>
-                <span className={depositStyles.depositTitleText}>Deposit</span>
+                {props.active ? <span className={depositStyles.depositTitleText}>Deposit</span> : <span className={depositStyles.depositTitleText + depositStyles.depositTitleInactive}></span>}
             </div>
 
             <div className={depositStyles.chipsSelectorCtn}>
-                <div className={depositStyles.chipsSelectorContentCtn}>
-                    {DepositChips}
-                </div>
+                {props.active
+                    ?
+                    <div className={depositStyles.chipsSelectorContentCtn}>
+                        {DepositChips}
+                    </div>
+                    :
+                    <div className={depositStyles.chipsSelectorContentCtn + depositStyles.chipsSelectorContentInactive}></div>
+                }
             </div>
 
             <div className={depositStyles.inputCtn}>
-                <input value={props.depositAmount} onChange={(e) => {
-                        props.handleDepositInputChange(+e.target.value)
-                    }} type="number" className={depositStyles.input}>
-                </input>
+                {props.active
+                    ?
+                        <input value={props.depositAmount} onChange={(e) => {
+                                props.handleDepositInputChange(+e.target.value)
+                            }} type="number" className={depositStyles.input}>
+                        </input>
+                    :
+                        <div className={depositStyles.inactiveInput}></div>
+                }
             </div>
 
             <div className={depositStyles.depositBtnCtn}>
-                <button onClick={() => props.handleDepositTx()} className={depositStyles.depositBtn}>
-                    DEPOSIT
-                </button>
+                {props.active
+                    ?
+                        <button onClick={() => props.handleDepositTx()} className={depositStyles.depositBtn}>
+                            DEPOSIT
+                        </button>
+                    :
+                        <div className={depositStyles.depositBtnInactive}></div>
+                }
             </div>
 
         </div>

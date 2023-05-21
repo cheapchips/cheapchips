@@ -27,7 +27,15 @@ function App() {
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
-  const [depositAmount,defaultDepositAmount,minDepositAmount,maxDepositAmount,handleDepositPercentage,handleDepositInput,handleDepositTx] = useDeposit()
+  const [
+    depositAmount,
+    defaultDepositAmount,
+    minDepositAmount,
+    maxDepositAmount,
+    handleDepositPercentage,
+    handleDepositInput,
+    handleDepositTx
+  ] = useDeposit()
   const [active, setActive] = useState(true)
 
   if(loading){
@@ -82,7 +90,7 @@ function App() {
           <RaffleBottomCtn>
           
             <Deposit
-              active={true}
+              active={active}
               depositAmount={depositAmount}
               defaultDepositAmount={defaultDepositAmount}
               minDepositAmount={minDepositAmount}
