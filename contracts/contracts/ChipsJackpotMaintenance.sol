@@ -1,83 +1,97 @@
 // SPDX-License-Identifier: MIT
-import "./VRFCoordinatorV2ExtendedInterface.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AutomationRegistryInterface2_0.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 
 import "hardhat/console.sol";
-
-using SafeCast for int256;
-
 
 pragma solidity 0.8.18;
 
 contract ChipsJackpotMaintenance {
 
-    /**
-     * @dev Calulated gas cost for Chainlink VRF request:
-     * @dev 500 gwei - max gas price (selected gas lane) 
-     * @dev 100 000 gas units - max callback gas
-     * @dev 200 000 gas units - max verification gas
-     * @dev vrf_gas_cost = 500 gwei * (100 000  + 200 000) = 150 000 000 gwei
 
-     * @dev Calculated gas cost for Chainlink Automation:
-     * @dev 300 gwei - average gas price (on the Polygon)
-     * @dev 150000 gas units - closeRound() gas usage
-     * @dev 80000 gas units - gas overhead
-     * @dev 0.7 - payment premium
-     * @dev automation_gas_cost = (300 gwei * 150 000) * (1 + 0.7) + (300 gwei * 80 000) = 76 636 000 gwei 
-     * 
-     * @dev Total gas cost per round:
-     * @dev total_gas_cost_per_round = vrf_gas_cost + automation_gas_cost = 226 636 000 gwei -> 240 000 000 gwei
-     */
-    uint256 private totalGasCostPerRound = 240000000 gwei;
-
-
-
-
-    VRFCoordinatorV2ExtendedInterface private Coordinator;
-
-    AggregatorV3Interface internal priceFeed;
+    VRFCoordinatorV2Interface private VRFCoordinator;
 
     LinkTokenInterface internal LinkToken;
 
-    uint64 private subscriptionId;
+    AutomationRegistryBaseInterface internal AutomationRegistry;
+
+    uint256 private UPKEEP_ID;
+
+    uint64 private SUBSCRIPTION_ID; // VRF subscription method
+
+    uint96 private previousUpkeepBalance = 0;
+    uint256 private previousVRFBalance = 0;
+
+    mapping(address => uint256) playerFees; // name to think about
 
 
-    constructor(address _coordinatorAddress, address _aggregatorAddress, address _linkTokenAddress, uint64 _subscriptionId)
+    constructor(address _coordinatorAddress, address _keeperAddress, address _linkTokenAddress, uint64 _subscriptionId)
     {
-        Coordinator = VRFCoordinatorV2ExtendedInterface(_coordinatorAddress);
-        subscriptionId = _subscriptionId;
+        VRFCoordinator = VRFCoordinatorV2Interface(_coordinatorAddress);
+        SUBSCRIPTION_ID = _subscriptionId;
+        
+        AutomationRegistry = AutomationRegistryBaseInterface(_keeperAddress); // temp address; address should be added to constructor
+        UPKEEP_ID = 0; // temp also this should be provided via constructor
+
         LinkToken = LinkTokenInterface(_linkTokenAddress);
-        /**
-        * Network: Mumbai Testnet
-        * Aggregator: LINK/MATIC
-        * Address: 0x12162c3E810393dEC01362aBf156D7ecf6159528
-        */
-        priceFeed = AggregatorV3Interface(
-            _aggregatorAddress
-        );
+
+        LinkToken.approve(_keeperAddress, type(uint256).max);
+
     }
 
-    function calculateLinkCostInNative(uint256 _amount) internal view returns(uint256) {
-        (,int price,,,) = priceFeed.latestRoundData();
-        return price.toUint256() * _amount;
+    function getUpkeepBalance() private view returns(uint96) {
+        return AutomationRegistry.getUpkeep(UPKEEP_ID).balance;
     }
 
-    function calculateTotalRoundCost() public view returns(uint256) {
-        (uint256 premiumInLINKMillionths,,,,,,,,) = Coordinator.getFeeConfig();
-        uint256 premiumCostInNative = calculateLinkCostInNative(premiumInLINKMillionths) / 10**6;
-        return totalGasCostPerRound + premiumCostInNative; 
+    function getVRFBalance() private view returns(uint256) {
+        (uint256 balance,,,) = VRFCoordinator.getSubscription(SUBSCRIPTION_ID);
+        return balance;
     }
 
-    function deliverLINK(uint256 _amount) external {
+    function getFeeSpentOnVRF() internal view returns (uint256) {
+        uint256 currentVRFBalance = getVRFBalance();
+        uint256 spentOnVRF;
+        if(previousVRFBalance < currentVRFBalance) spentOnVRF = 0;
+        else spentOnVRF = previousVRFBalance - currentVRFBalance ;
+        return spentOnVRF;
+    }
+
+    function getFeeSpentOnUpkeep() internal view returns (uint256) {
+        uint256 currentUpkeepBalance = getUpkeepBalance();
+        uint256 spentOnUpkeep;
+        if(previousUpkeepBalance < currentUpkeepBalance) spentOnUpkeep = 0;
+        else spentOnUpkeep = previousUpkeepBalance - currentUpkeepBalance ;
+        return spentOnUpkeep;
+    }
+
+    function getTotalFeeForLastRound() internal view returns (uint256) {
+        return getFeeSpentOnVRF() + getFeeSpentOnUpkeep();
+    }
+
+    function updateUpkeepBalance() internal {
+        previousUpkeepBalance = getUpkeepBalance();
+    }
+
+    function updateVRFBalance() internal {
+        previousVRFBalance = getVRFBalance();
+    }
+
+    function depositFees(uint256 _amount) external { // name to think about
         LinkToken.transferFrom(msg.sender, address(this), _amount);
-        LinkToken.transferAndCall(address(Coordinator), _amount, abi.encode(subscriptionId));
-
-        uint256 refund = calculateLinkCostInNative(_amount) / 1 ether;
-        payable(msg.sender).transfer(refund);
+        playerFees[msg.sender] = playerFees[msg.sender] + _amount;
     }
 
-    receive() external payable {}
+    function spendFees(uint256 _amount) internal {
+        require(playerFees[msg.sender] >= _amount, "Insufficient fees balance!");
+        playerFees[msg.sender] = playerFees[msg.sender] - _amount;
+    }
+
+    function transferToChainlinkServices() internal{
+        if(previousVRFBalance != 0) LinkToken.transferAndCall(address(VRFCoordinator), previousVRFBalance, abi.encode(SUBSCRIPTION_ID));
+        if(previousUpkeepBalance != 0) AutomationRegistry.addFunds(UPKEEP_ID, previousUpkeepBalance);
+    }
+
+
 }
 

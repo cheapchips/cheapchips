@@ -8,8 +8,8 @@ describe("Swap test", () => {
 
     describe("Init", () => {
         it("Swap contract deployment", async() => {
-            const ChipsSupplier = await ethers.getContractFactory("ChipsSupplier")
-            contract = await ChipsSupplier.deploy()
+            const LinkStation = await ethers.getContractFactory("LinkStation")
+            contract = await LinkStation.deploy()
         })
     })
 

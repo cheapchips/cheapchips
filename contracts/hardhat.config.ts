@@ -14,8 +14,8 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      gas: 2100000,
-      gasPrice: 8000000000000000,
+      // gas: 2100000,
+      gasPrice: 300000000000,
       forking: {
         enabled: process.env.FORK === "true" ? true : false,
         blockNumber: 42981138,

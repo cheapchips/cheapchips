@@ -5,6 +5,8 @@ import "./ChipsJackpotConsumer.sol";
 import "./ChipsJackpotMaintenance.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
+import "hardhat/console.sol";
+
 
 contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMaintenance, AutomationCompatibleInterface {
 
@@ -12,12 +14,12 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
         address _tokenAddress,
         address _coordinatorAddress,
         uint64 _subscriptionId,
-        address _aggregatorAddress,
+        address _keeperAddress,
         address _linkTokenAddress
     )
         ChipsJackpotCore(_tokenAddress)
         ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId)
-        ChipsJackpotMaintenance(_coordinatorAddress, _aggregatorAddress, _linkTokenAddress, _subscriptionId)
+        ChipsJackpotMaintenance(_coordinatorAddress, _keeperAddress, _linkTokenAddress, _subscriptionId)
     {}
 
     function addRandomNumberToRound(
@@ -33,7 +35,8 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
     }
 
     function deposit(uint256 _amount) external payable {
-        require(msg.value >= calculateTotalRoundCost() / 5, "Insufficient service fee!");
+        uint256 serviceFee = getTotalFeeForLastRound() / 3;
+        spendFees(serviceFee);
         _deposit(_amount);
     }
 
@@ -43,6 +46,9 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
     }
 
     function performUpkeep(bytes calldata) external override {
+        transferToChainlinkServices();
+        updateUpkeepBalance();
+        updateVRFBalance();
         closeRound();
     }
 

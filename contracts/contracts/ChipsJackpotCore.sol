@@ -62,7 +62,7 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
     function _deposit(uint256 _amount) internal {
 
         // protects contract from calling VRF while gas is above 500 gwei
-        require(tx.gasprice < 500, "Too high gas price!");
+        require(tx.gasprice < 500 gwei, "Too high gas price!");
 
         Round storage round = rounds[currentRoundId];
 
