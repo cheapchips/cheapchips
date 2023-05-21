@@ -9,13 +9,14 @@ export default function useDeposit(): [number, number, number, number,(value:num
     const [depositAmount, setDepositAmount] = useState<number>(DEFAULT_DEPOSIT)
 
     const handleDepositTx = (): void => {
+        // console.log(depositAmount)
         if(depositAmount > MINIMUM_DEPOSIT || depositAmount < MAX_DEPOSIT || depositAmount === 0) return
         // display modal with deposit tx
         console.log("Deposit tx", depositAmount)
     }
 
     const handleDepositInput = (value: number): void => {
-        // html input is buggy, work on this later (dot, 'e', arrows ,etc)
+        // console.log(value)
         if(value > MAX_DEPOSIT || value < MINIMUM_DEPOSIT) return
         if(Number.isNaN(value)) return
         setDepositAmount(value)

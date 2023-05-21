@@ -191,8 +191,9 @@ const Deposit = (props:DepositProps) => {
             <div className={depositStyles.inputCtn}>
                 {props.active
                     ?
-                        <input value={depositAmount} onChange={(e) => {
-                                handleDepositInput(+e.target.value)
+                        <input value={depositAmount} onKeyDown={(e) => {
+                                if(+e.key === 190 || +e.key === 48) return
+                                handleDepositInput(+e.key)
                             }} type="number" className={depositStyles.input}>
                         </input>
                     :
