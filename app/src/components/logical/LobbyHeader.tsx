@@ -33,7 +33,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         `,
         playerInfoBar:`
             h-2.5 rounded-md
-            bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
+            ${props.active ? "bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300" : ""}
             shadow-sm
         `,
         lineCtn: `

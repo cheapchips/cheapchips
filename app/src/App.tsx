@@ -62,7 +62,7 @@ function App() {
 
         <LobbyHeader
           title='Lobby'
-          playerCount={50}
+          playerCount={42}
           maxPlayerCount={100}
           timeTillRaffleStartPercentage={44}
           lobbyId='0'
@@ -97,8 +97,13 @@ function App() {
           <JackpotBottomCtn>
             <JackpotInfo
               active={active}
-              prizePool={40}  
+              prizePool={215}
               jackpotRoundId={2}
+              playerCount={42}
+              maxPlayerCount={100}
+              maxDepositAmount={5}
+              timeLeftTillJackpot={92}
+              maxTimeLeftTillJackpot={120}
             />
           </JackpotBottomCtn>
          
@@ -109,6 +114,7 @@ function App() {
       <Panel panelType='side'>
 
           <ProfileHeader
+            active={active}
             title="Profile"
             address='0x748912caD3137E208483281929779A45f3C9Eb55'
             chipsBalance={105}

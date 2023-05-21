@@ -23,11 +23,13 @@ export default {
         'lightMainWrapperTo': '#bcd6f5',
         'lightText': '#000826',
         'lightBg': '#eff6ff',
-        'lightBgActive': '#deecfc',
+        'lightBgActive': '#e0efff',
         'lightBorder': '#b4cef0',
-        'accentColor': '#fbbf24'
+        'accentColor': '#fbbf24',
+        'accentColor2': '#2bb1ff'
       },
       fontSize: {
+        'xxxxxs': '0.2rem',
         'xxxxs': '0.4rem',
         'xxxs': '0.55rem',
         'xxs': '0.7rem',
