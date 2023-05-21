@@ -4,6 +4,7 @@ export default interface DepositProps {
     defaultDepositAmount: number
     minDepositAmount: number
     maxDepositAmount: number
-    handleImageDepositChange: any
-    handleInputDepositValueChange: React.Dispatch<React.SetStateAction<number>>
+    handleDepositPercentageChange: (percValue:number) => void
+    handleDepositInputChange: (value:number) => void
+    handleDepositTx: () => void
 }

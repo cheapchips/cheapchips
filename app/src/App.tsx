@@ -18,6 +18,7 @@ import Deposit from './components/logical/Deposit'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
+import useDeposit from './hooks/useDeposit'
 import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
 
@@ -26,8 +27,8 @@ function App() {
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
+  const [depositAmount,defaultDepositAmount,minDepositAmount,maxDepositAmount,handleDepositPercentage,handleDepositInput,handleDepositTx] = useDeposit()
   const [active, setActive] = useState(true)
-  const [deposit, setDeposit] = useState<number>(0)
 
   if(loading){
     return <LoadingScreen />
@@ -74,7 +75,7 @@ function App() {
             <button onClick={() => setActive(!active)}>
               <span className="text-xxs">Toggle active</span>
               <br />
-              <span>{deposit}</span>
+              <span>{depositAmount}</span>
             </button>
           </RaffleMainCtn>
 
@@ -82,13 +83,14 @@ function App() {
           
             <Deposit
               active={true}
-              depositAmount={deposit}
-              defaultDepositAmount={1}
-              minDepositAmount={0}
-              maxDepositAmount={5}
-              handleImageDepositChange={""}
-              handleInputDepositValueChange={setDeposit}
-            />        
+              depositAmount={depositAmount}
+              defaultDepositAmount={defaultDepositAmount}
+              minDepositAmount={minDepositAmount}
+              maxDepositAmount={maxDepositAmount}
+              handleDepositPercentageChange={handleDepositPercentage}
+              handleDepositInputChange={handleDepositInput}
+              handleDepositTx={handleDepositTx}
+            />
           
           </RaffleBottomCtn>
 

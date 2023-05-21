@@ -1,13 +1,8 @@
 import logo from "../../assets/logo.png"
-import { useState, useEffect, } from "react"
 import DepositProps from "../../proptypes/DepositProps"
 
 const Deposit = (props:DepositProps) => {
     
-    // const [insideDepositAmount, setInsideDepositAmount] = useState<string>(props.depositAmount.toString())
-    const PERCENTAGE_TICK = 20
-    const [depositPercentage, setDepositPercentage] = useState(props.defaultDepositAmount * PERCENTAGE_TICK)
-
     const depositStyles = {
         ctn: `
             grid grid-flow-row
@@ -107,24 +102,11 @@ const Deposit = (props:DepositProps) => {
         `,
     }
 
-    function handleDepositInputChange(value:number):void {
-        console.log('deposit: ', value)
-        if(value > props.maxDepositAmount || value < props.minDepositAmount) return
-        if(Number.isNaN(value)) return
-        props.handleInputDepositValueChange(value)
-    }
-
-    function handleDepositImageChange(percentage:number):void {
-        setDepositPercentage(percentage)
-    }
-
     const chipsPercentages = [20, 40, 60, 80, 100]
     const DepositChips = chipsPercentages.map((percentage, index) => 
-        <div key={index} onClick={() => {
-                handleDepositImageChange(percentage)
-            }} className={depositStyles.chipsImgAndIndicatorCtn}>
-                <img draggable={false} src={logo} alt="ChipsToken" className={depositStyles.chipsImg} />
-                <span className={depositStyles.chipsImgBottomIndicator}></span>
+        <div key={index} onClick={() => props.handleDepositPercentageChange(percentage)} className={depositStyles.chipsImgAndIndicatorCtn}>
+            <img draggable={false} src={logo} alt="ChipsToken" className={depositStyles.chipsImg} />
+            <span className={depositStyles.chipsImgBottomIndicator}></span>
         </div>
     )
 
@@ -142,16 +124,16 @@ const Deposit = (props:DepositProps) => {
             </div>
 
             <div className={depositStyles.inputCtn}>
-                <input defaultValue={props.defaultDepositAmount} value={props.depositAmount} onChange={(e) => {
-                    handleDepositInputChange(+e.target.value)
-                }} type="number" className={depositStyles.input}></input>
+                <input value={props.depositAmount} onChange={(e) => {
+                        props.handleDepositInputChange(+e.target.value)
+                    }} type="number" className={depositStyles.input}>
+                </input>
             </div>
 
             <div className={depositStyles.depositBtnCtn}>
-                <button className={depositStyles.depositBtn}>
+                <button onClick={() => props.handleDepositTx()} className={depositStyles.depositBtn}>
                     DEPOSIT
                 </button>
-                <span>{depositPercentage}</span>
             </div>
 
         </div>

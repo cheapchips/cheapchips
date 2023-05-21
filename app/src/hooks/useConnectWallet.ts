@@ -42,7 +42,7 @@ export default function useConnectWallet(network?: string): [boolean, BrowserPro
     const connect = async() => {
         if(connected) return
     
-        restartProvider()
+        await restartProvider()
         setConnected(true)
 
         window.ethereum.removeAllListeners("accountsChanged")
