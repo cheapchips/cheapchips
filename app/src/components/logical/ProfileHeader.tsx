@@ -27,6 +27,11 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         profileTitleContent: `
             p-1
         `,
+        profileTitleContentInactive: `
+            w-1/4
+            h-7
+            rounded-md
+        `,
         profileMainContentCtn: `
             grid grid-flow-col grid-cols-[1fr,1fr,1fr]
             w-full h-fit
@@ -47,6 +52,12 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         profileIcon: `
             rounded-full
             p-2
+        `,
+        profileIconInactive: `
+            w-12 h-12
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            rounded-full
         `,
         profileBalancesCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
@@ -76,6 +87,9 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         profileSecondaryContent: `
             px-1 break-normal truncate
         `,
+        profileSecondaryContentInactive: `
+            w-full h-4 rounded-md
+        `,
         profileSecondaryContentTitle: `
         `,
         profileSecondaryContentValue: `
@@ -84,6 +98,9 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         `,
         profileSecondaryContentDetailsBtnCtn: `
             flex justify-center content-center items-center gap-2
+        `,
+        profileSecondaryContentDetailsBtnCtnInactive: `
+            w-3/4 h-7 rounded-md
         `,
         profileSecondaryContentDetailsBtn: `
             px-6 py-1
@@ -96,6 +113,10 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             hover:text-black
             dark:hover:text-accentColor
         `,
+        inactiveBg: `
+            bg-lightBgActive
+            dark:bg-darkBgActive
+        `,
     }
 
     return (
@@ -103,27 +124,43 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
 
             {/* Title */}
             <div className={profileStyles.profileTitleCtn}>
-                <span className={profileStyles.profileTitleContent}>{props.title}</span>
+                {props.active ? <span className={profileStyles.profileTitleContent}>{props.title}</span> : <span className={profileStyles.profileTitleContentInactive + profileStyles.inactiveBg}></span>}
             </div>
             
             <div className={profileStyles.profileMainContentCtn}>
                 
                 {/* Profile icon */}
                 <div className={profileStyles.profileIconCtn}>
-                    <Blockies seed={props.address} className={profileStyles.profileIcon} size={24}/>
+                    {props.active ? <Blockies seed={props.address} className={profileStyles.profileIcon} size={24}/> : <div className="w-12 h-12 dark:bg-darkBgActive rounded-full"></div>}
                 </div>
                 
                 {/* Balance list */}
                 <div className={profileStyles.profileBalancesCtn}>
                     
-                    <div className={profileStyles.profileBalancesContent}>
-                        Token balance:
-                        <span className={profileStyles.profileBalancesValue}>{props.chipsBalance}</span>
-                    </div>
-                    <div className={profileStyles.profileBalancesContent}>
-                        Link balance:
-                        <span className={profileStyles.profileBalancesValue}>{props.linkBalance}</span>
-                    </div>
+                    {props.active
+                        ?
+                            <>
+                                <div className={profileStyles.profileBalancesContent}>
+                                    <span>Token balance:</span>
+                                    <span className={profileStyles.profileBalancesValue}>{props.chipsBalance}</span>
+                                </div>
+                                <div className={profileStyles.profileBalancesContent}>
+                                    <span>Link balance:</span>
+                                    <span className={profileStyles.profileBalancesValue}>{props.linkBalance}</span>
+                                </div>
+                            </>
+                        :
+                            <>
+                                <div className={profileStyles.profileBalancesContent}>
+                                    <span className="w-1/3 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive"></span>
+                                    <span className="w-1/4 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive"></span>
+                                </div>
+                                <div className={profileStyles.profileBalancesContent}>
+                                    <span className="w-1/3 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive"></span>
+                                    <span className="w-1/4 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive"></span>
+                                </div>
+                            </>
+                    }
                 </div>
             
             </div>
@@ -131,15 +168,25 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             {/* Address, details button */}
             <div className={profileStyles.profileSecondaryContentCtn}>
                 
-                <div className={profileStyles.profileSecondaryContent}>
-                    <span className={profileStyles.profileSecondaryContentTitle}>Address: </span>
-                    <span className={profileStyles.profileSecondaryContentValue}>{props.address}</span>
-                </div>
+                {props.active
+                    ?
+                    <>
+                        <div className={profileStyles.profileSecondaryContent}>
+                            <span className={profileStyles.profileSecondaryContentTitle}>Address: </span>
+                            <span className={profileStyles.profileSecondaryContentValue}>{props.address}</span>
+                        </div>
+                        <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
+                            <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
+                            <button className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Tokens</button>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className={profileStyles.profileSecondaryContentInactive + profileStyles.inactiveBg}></div>
+                        <div className={profileStyles.profileSecondaryContentDetailsBtnCtnInactive + profileStyles.inactiveBg}></div>
+                    </>
+                }
 
-                <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
-                    <button className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Tokens</button>
-                </div>
 
             </div>
 
