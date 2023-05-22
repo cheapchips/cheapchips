@@ -35,7 +35,7 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
     }
 
     function deposit(uint256 _amount) external payable {
-        uint256 serviceFee = getTotalFeeForLastRound() / 3;
+        uint256 serviceFee = getTotalFeeForLastRound() / 3 + 10;
         spendFees(serviceFee);
         _deposit(_amount);
     }

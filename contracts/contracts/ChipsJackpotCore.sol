@@ -83,8 +83,8 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
             round.tickets.push(id);
         }
 
-        // 2 will be changed to 10 and 10 seconds to 5 minutes
-        if(round.numberOfPlayers == 2){
+        // 3 will be changed to 5 and 10 seconds to 5 minutes
+        if(round.numberOfPlayers == 3){
             round.endTime = block.timestamp + 10 seconds;
         }
 

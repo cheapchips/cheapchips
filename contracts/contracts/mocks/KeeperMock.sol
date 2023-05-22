@@ -11,8 +11,8 @@ contract KeeperMock {
 
     uint256 private lastUpkeepId;
 
-    mapping(uint256 => address) upkeeps;
-    mapping(uint256 => uint96) upkeepBalances;
+    mapping(uint256 => address) private upkeeps;
+    mapping(uint256 => UpkeepInfo) private upkeepInfos;
 
     struct UpkeepInfo {
         address target;
@@ -40,31 +40,44 @@ contract KeeperMock {
 
     function register(address _contractAddress) external{
         upkeeps[lastUpkeepId] = _contractAddress;
+        UpkeepInfo storage info;
+        info = upkeepInfos[lastUpkeepId];
+        
         lastUpkeepId++; 
     }
 
     function addFunds(uint256 _upkeepId, uint96 _amount) external {
         LinkToken.transferFrom(msg.sender, address(this), _amount);
-        upkeepBalances[_upkeepId] = upkeepBalances[_upkeepId] + _amount;
+        UpkeepInfo storage info = upkeepInfos[_upkeepId];
+        info.balance = info.balance + _amount;
     }
 
     function getUpkeep(uint256 id) external view returns(UpkeepInfo memory upkeepInfo){
-        UpkeepInfo memory info;
-        info.balance = upkeepBalances[id];
+        UpkeepInfo storage info = upkeepInfos[id];
         return info;
     }
 
-    function upkeep(uint256 _upkeepId) external returns(bool, bytes memory){
-        // console.log(upkeeps[_upkeepId]);
-        address caller = upkeeps[_upkeepId];
-        AutomationCompatibleInterface a;
+    function upkeep(uint256 _upkeepId) external {
+        AutomationCompatibleInterface Contract = AutomationCompatibleInterface(upkeeps[_upkeepId]);
+        Contract.performUpkeep("");
 
-        bytes memory resp = abi.encodeWithSelector(a.performUpkeep.selector, "");
-        (bool success, bytes memory data) = caller.call(resp);
+        UpkeepInfo storage info = upkeepInfos[_upkeepId];
 
-        upkeepBalances[_upkeepId] = upkeepBalances[_upkeepId] - FEE;
+        info.balance = info.balance - FEE;
 
-        return (success, data);
     }
+
+    // function upkeep(uint256 _upkeepId) external returns(bool, bytes memory){
+    //     // console.log(upkeeps[_upkeepId]);
+    //     address caller = upkeeps[_upkeepId];
+    //     AutomationCompatibleInterface a;
+
+    //     bytes memory resp = abi.encodeWithSelector(a.performUpkeep.selector, "");
+    //     (bool success, bytes memory data) = caller.call(resp);
+
+    //     upkeepBalances[_upkeepId] = upkeepBalances[_upkeepId] - FEE;
+
+    //     return (success, data);
+    // }
 
 }

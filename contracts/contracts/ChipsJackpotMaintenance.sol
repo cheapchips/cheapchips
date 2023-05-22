@@ -2,6 +2,7 @@
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationRegistryInterface2_0.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "./VRFCoordinatorV2ExtendedInterface.sol";
 
 import "hardhat/console.sol";
 
@@ -57,15 +58,15 @@ contract ChipsJackpotMaintenance {
         return spentOnVRF;
     }
 
-    function getFeeSpentOnUpkeep() internal view returns (uint256) {
-        uint256 currentUpkeepBalance = getUpkeepBalance();
-        uint256 spentOnUpkeep;
+    function getFeeSpentOnUpkeep() internal view returns (uint96) {
+        uint96 currentUpkeepBalance = getUpkeepBalance();
+        uint96 spentOnUpkeep;
         if(previousUpkeepBalance < currentUpkeepBalance) spentOnUpkeep = 0;
         else spentOnUpkeep = previousUpkeepBalance - currentUpkeepBalance ;
         return spentOnUpkeep;
     }
 
-    function getTotalFeeForLastRound() internal view returns (uint256) {
+    function getTotalFeeForLastRound() public view returns (uint256) {
         return getFeeSpentOnVRF() + getFeeSpentOnUpkeep();
     }
 
@@ -82,14 +83,24 @@ contract ChipsJackpotMaintenance {
         playerFees[msg.sender] = playerFees[msg.sender] + _amount;
     }
 
+    function balanceFees() external view returns(uint256) {
+        return playerFees[msg.sender];
+    }
+
     function spendFees(uint256 _amount) internal {
         require(playerFees[msg.sender] >= _amount, "Insufficient fees balance!");
         playerFees[msg.sender] = playerFees[msg.sender] - _amount;
     }
 
     function transferToChainlinkServices() internal{
-        if(previousVRFBalance != 0) LinkToken.transferAndCall(address(VRFCoordinator), previousVRFBalance, abi.encode(SUBSCRIPTION_ID));
-        if(previousUpkeepBalance != 0) AutomationRegistry.addFunds(UPKEEP_ID, previousUpkeepBalance);
+        uint96 upkeepFee = getFeeSpentOnUpkeep();
+        uint256 vrfFee = getFeeSpentOnVRF();
+
+        if(vrfFee != 0){
+            LinkToken.transferAndCall(address(VRFCoordinator), vrfFee, abi.encode(SUBSCRIPTION_ID));
+            VRFCoordinatorV2ExtendedInterface(address(VRFCoordinator)).fundSubscription(SUBSCRIPTION_ID, uint96(vrfFee)); // only for local env
+        } 
+        if(upkeepFee != 0) AutomationRegistry.addFunds(UPKEEP_ID, upkeepFee);
     }
 
 
