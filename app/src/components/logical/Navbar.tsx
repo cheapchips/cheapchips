@@ -170,7 +170,7 @@ const Navbar = (props:NavbarProps) => {
                         clickable={props.connectWalletProps.clickable}
                         active={props.connectWalletProps.active}
                         text={props.connectWalletProps.text}
-                        onClickFunction={() => props.connectWalletProps.onClickFunction}
+                        onClickFunction={() => props.connectWalletProps.onClickFunction() }
                     />
                 </div>
 

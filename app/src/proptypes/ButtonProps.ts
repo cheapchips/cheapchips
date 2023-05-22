@@ -1,5 +1,5 @@
 export default interface ButtonProps {
-    onClickFunction: (React.MouseEventHandler<HTMLButtonElement> | undefined)
+    onClickFunction: () => Promise<void>
     text: string
     clickable: boolean
     active: boolean

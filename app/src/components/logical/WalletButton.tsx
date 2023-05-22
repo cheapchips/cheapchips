@@ -17,7 +17,7 @@ const WalletButton = (props:ButtonProps) => {
     }
     
     return (
-        <button className={walletButtonStyles.button} onClick={() => walletButtonFunction}>
+        <button className={walletButtonStyles.button} onClick={() => walletButtonFunction!()}>
             <span className={walletButtonStyles.text}>{props.text}</span>
         </button>    
     )

@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
@@ -26,6 +26,9 @@ import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
 import useModal from './hooks/useModal'
 
+// contracts
+import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory} from "../../contracts/typechain-types"
+
 function App() {
 
   const [connected, provider, signer, connect] = useConnectWallet()
@@ -42,18 +45,39 @@ function App() {
     handleDepositTx
   ] = depositData
   const [modalVisible, toggleModalVisible] = useModal()
+  const [modalSize, setModalSize] = useState<"Big" | "Medium" | "Small">("Small")
+  
+  // local states
   const [active, setActive] = useState(true)
+  const [address, setAddress] = useState<string>()
 
+  const [chipsBalance, setChipsBalance] = useState<number>()
+  const [jackpot, setJackpot] = useState<ChipsJackpot>()
+
+  useEffect(() => {
+    if(connected && provider && signer){
+      (async() => {
+        const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", provider)
+        const address = await signer.getAddress()
+        console.log(address)
+        setAddress(address)
+        setChipsBalance((await chip.balanceOf(address)).toNumber())
+        const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", provider)
+        setJackpot(jackpot)
+
+        console.log(await jackpot.getRoundData(0))
+      })()
+    }
+  }, [connected])
+
+  
   if(loading){
     return <LoadingScreen />
   }
-  // else if(modalVisible){
-  //   return <Modal  size="Big" onClickClose={toggleModalVisible}>Test</Modal> 
-  // }
   return (
     <>
 
-    {modalVisible ?  <Modal size="Big" onClickClose={toggleModalVisible}>Test</Modal> : <></>}
+    {modalVisible ?  <Modal title="Test modal" size={modalSize} onClickClose={toggleModalVisible}>Test</Modal> : <></>}
     
     <MainWrapper>
 
@@ -96,9 +120,19 @@ function App() {
               <span>{depositAmount}</span>
             </button>
             <br />
-            <button onClick={() => toggleModalVisible()}>
-              <span className='text-xxs'>Modal</span>
+
+            <button onClick={() => {setModalSize("Small"); toggleModalVisible()}}>
+              <span className='text-xxs'>Modal small</span>
             </button>
+            
+            <button onClick={() => {setModalSize("Medium"); toggleModalVisible()}}>
+              <span className='text-xxs'>Modal medium</span>
+            </button>
+            
+            <button onClick={() => {setModalSize("Big"); toggleModalVisible()}}>
+              <span className='text-xxs'>Modal big</span>
+            </button>
+            
           </JackpotMainCtn>
 
           <JackpotBottomCtn>
@@ -127,12 +161,22 @@ function App() {
 
       <Panel panelType='side'>
 
-          <ProfileHeader
-            active={active}
-            address='0x748912caD3137E208483281929779A45f3C9Eb55'
-            chipsBalance={105}
-            linkBalance={12}
-          />
+          {(!address || !chipsBalance)
+          ? 
+            <ProfileHeader 
+              active={false}
+              address=''
+              chipsBalance={0}
+              linkBalance={0}
+            />
+          :
+            <ProfileHeader
+              active={active}
+              address={address!}
+              chipsBalance={chipsBalance!}
+              linkBalance={12}
+            />
+          }
 
           <JackpotArchives
             active={active}

@@ -21,6 +21,15 @@ contract VRFSubscriptionCreator{
         subId = Coordinator.createSubscription();
     }
 
+    function addConsumer(address _consumerAddress) external {
+        Coordinator.addConsumer(subId, _consumerAddress);
+    }
+
+    function getSubId() external view returns(uint64) {
+        return subId;
+    }
+
+
     function topUpSubscription(uint256 _amount) external {
         LinkToken.transferAndCall(address(Coordinator), _amount, abi.encode(subId));
     }
