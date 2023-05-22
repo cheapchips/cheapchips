@@ -17,12 +17,14 @@ import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
+import Modal from './components/logical/Modal'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
 import useDeposit from './hooks/useDeposit'
 import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
+import useModal from './hooks/useModal'
 
 function App() {
 
@@ -39,6 +41,7 @@ function App() {
     handleDepositInput,
     handleDepositTx
   ] = depositData
+  const [modalVisible, toggleModalVisible] = useModal()
   const [active, setActive] = useState(true)
 
   if(loading){
@@ -46,6 +49,8 @@ function App() {
   }
   else return (
     <MainWrapper>
+
+      {modalVisible ? <Modal size='Big' onClickClose={toggleModalVisible}>Test</Modal> : <></>}
 
       <Navbar
         theme={theme}
@@ -85,6 +90,10 @@ function App() {
               <br />
               <span>{depositAmount}</span>
             </button>
+            <br />
+            <button onClick={() => toggleModalVisible()}>
+              <span className='text-xxs'>Modal</span>
+            </button>
           </JackpotMainCtn>
 
           <JackpotBottomCtn>
@@ -121,7 +130,7 @@ function App() {
           />
 
           <JackpotArchives
-            active={active}  
+            active={active}
           />
           
       </Panel>
