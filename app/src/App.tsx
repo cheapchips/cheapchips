@@ -16,7 +16,7 @@ import LobbyHeader from './components/logical/LobbyHeader'
 import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
-import JackpotHistory from './components/logical/JackpotHistory'
+import JackpotArchives from './components/logical/JackpotArchives'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -120,7 +120,7 @@ function App() {
             linkBalance={12}
           />
 
-          <JackpotHistory
+          <JackpotArchives
             active={active}  
           />
           
