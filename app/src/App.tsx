@@ -16,6 +16,7 @@ import LobbyHeader from './components/logical/LobbyHeader'
 import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
+import JackpotHistory from './components/logical/JackpotHistory'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -119,6 +120,10 @@ function App() {
             address='0x748912caD3137E208483281929779A45f3C9Eb55'
             chipsBalance={105}
             linkBalance={12}
+          />
+
+          <JackpotHistory
+            active={active}  
           />
           
       </Panel>

@@ -19,6 +19,9 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         playerInfoCtn: `
             grid grid-rows-2 grid-rows-[1fr,0.5fr]
             px-2
+            border-b
+            border-lightBorder
+            dark:border-darkBorder
         `,
         playerInfoBarCtn: `
             w-full h-fit py-2

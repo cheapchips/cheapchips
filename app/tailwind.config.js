@@ -15,7 +15,7 @@ export default {
         'darkMainWrapperVia': '#050f26',
         'darkMainWrapperTo': '#0d2157',
         'darkText': '#e8e8e8',
-        'darkBg': '#0f172a',
+        'darkBg': '#101a30',
         'darkBgActive': '#15213d',
         'darkBorder': '#334155',
         'lightMainWrapperFrom': '#c4daf5',
@@ -26,11 +26,12 @@ export default {
         'lightBgActive': '#e0efff',
         'lightBorder': '#b4cef0',
         'accentColor': '#fbbf24',
-        'accentColor2': '#2bb1ff'
+        'accentColor2': '#2bb1ff',
+        'darkScrollBar': 'color-scheme: dark'
       },
       fontSize: {
-        'xxxxxs': '0.2rem',
-        'xxxxs': '0.4rem',
+        'xxxxxs': '0.35rem',
+        'xxxxs': '0.45rem',
         'xxxs': '0.55rem',
         'xxs': '0.7rem',
       }

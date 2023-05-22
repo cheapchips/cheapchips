@@ -15,9 +15,7 @@ const Panel = (props:PanelProps) => {
             ` : ""}
             ${props.panelType === "side" ? `
                 grid grid-flow-row grid-rows-[auto,1fr]
-                divide-y
-                divide-lightBorder
-                dark:divide-darkBorder
+                overflow-x-hidden
             ` : ""}
             ${props.additionalClasses ? props.additionalClasses : ""}
         `

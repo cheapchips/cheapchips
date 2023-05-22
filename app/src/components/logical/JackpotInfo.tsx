@@ -72,11 +72,13 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             md:p-1
             gap-2
         `,
-        poolBarBorder: `
+            poolBarBorder: `
             rounded-md
             border
             border-lightBorder
             dark:border-darkBorder
+            bg-lightBgActive
+            dark:bg-darkBgActive
         `,
         poolBar: `
             rounded-md

@@ -1,5 +1,8 @@
 import ProfileHeaderProps from "../../proptypes/ProfileHeaderProps"
 import Blockies from "react-blockies"
+import SvgIcon from "../layout/SvgIcon"
+import chipsLogo from "../../assets/logo.png"
+import chainlinkLogo from "../../assets/chainlink_logo.png"
 
 const ProfileHeader = (props:ProfileHeaderProps) => {
 
@@ -29,7 +32,8 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         `,
         profileTitleContentInactive: `
             w-1/4
-            h-7
+            lg:h-7
+            md:h-5
             rounded-md
         `,
         profileMainContentCtn: `
@@ -37,6 +41,9 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             w-full h-fit
             px-2
             gap-1
+            xl:text-sm
+            lg:text-xxs
+            md:text-xxxs
         `,
         profileIconCtn: `
             flex justify-center items-center content-center
@@ -71,10 +78,19 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             border-b
             border-lightBorder
             dark:border-darkBorder
+            2xl:text-sm
+            xl:text-xs
+            lg:text-xxs
+            md:text-xxxxs
         `,
         profileBalancesValue: `
             font-extrabold
+        `,
+        chipsBalanceValue: `
             text-accentColor
+        `,
+        linkBalanceValue: `
+            text-accentColor2
         `,
         profileSecondaryContentCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr]
@@ -82,7 +98,8 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             border-t
             border-lightBorder
             dark:border-darkBorder
-            p-2
+            lg:p-2
+            md:p-1
         `,
         profileSecondaryContent: `
             px-1 break-normal truncate
@@ -94,24 +111,32 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         `,
         profileSecondaryContentValue: `
             font-thin
-            text-xxs
+            lg:text-xxs
+            md:text-xxxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
             flex justify-center content-center items-center gap-2
         `,
         profileSecondaryContentDetailsBtnCtnInactive: `
-            w-3/4 h-7 rounded-md
+            w-3/4 
+            rounded-md
+            lg:h-7
+            md:h-2
         `,
         profileSecondaryContentDetailsBtn: `
-            px-6 py-1
+            lg:px-6 py-1
+            md:px-2
             border
             border-lightBorder
             dark:border-darkBorder
             rounded-md
-            hover:bg-lightBgActive
-            dark:hover:bg-darkBgActive
+            bg-lightBgActive
+            dark:bg-darkBgActive
             hover:text-black
             dark:hover:text-accentColor
+            xl:text-sm
+            lg:text-xxxs
+            md:text-xxxxs
         `,
         inactiveBg: `
             bg-lightBgActive
@@ -142,11 +167,13 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
                             <>
                                 <div className={profileStyles.profileBalancesContent}>
                                     <span>Token balance:</span>
-                                    <span className={profileStyles.profileBalancesValue}>{props.chipsBalance}</span>
+                                    <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{props.chipsBalance}</span>
+                                    <img className="xl:w-4 xl:h-4 md:w-2 md:h-2 -rotate-6" src={chipsLogo} alt="CheapChips mini logo" ></img>
                                 </div>
                                 <div className={profileStyles.profileBalancesContent}>
                                     <span>Link balance:</span>
-                                    <span className={profileStyles.profileBalancesValue}>{props.linkBalance}</span>
+                                    <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{props.linkBalance}</span>
+                                    <img className="xl:w-4 xl:h-4 md:w-2 md:h-2" src={chainlinkLogo} alt="Chainlink mini logo" />
                                 </div>
                             </>
                         :
@@ -177,7 +204,7 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
                             <button className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
-                            <button className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Tokens</button>
+                            <button className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
                         </div>
                     </>
                     :
