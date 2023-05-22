@@ -2,7 +2,7 @@ import Panel from "../layout/Panel"
 import WalletButton from "./WalletButton"
 import NavbarProps from "../../proptypes/NavbarProps"
 import NavbarLogo from "../layout/NavbarLogo"
-import NavbarDropdownMenu from "./NavbarDropdownMenu"
+import DropdownMenu from "./DropdownMenu"
 import SvgIcon from "../layout/SvgIcon"
 
 const Navbar = (props:NavbarProps) => {
@@ -158,10 +158,10 @@ const Navbar = (props:NavbarProps) => {
                     </div>
 
                     <div className={navbarStyles.contentText}>
-                        <NavbarDropdownMenu buttonText="SUPPORT" dropdownOpts={navDropdownData.support}/>
+                        <DropdownMenu buttonText="SUPPORT" dropdownOpts={navDropdownData.support}/>
                     </div>
                     <div className={navbarStyles.contentText}>
-                        <NavbarDropdownMenu buttonText="COMMUNITY" dropdownOpts={navDropdownData.community}/>
+                        <DropdownMenu buttonText="COMMUNITY" dropdownOpts={navDropdownData.community}/>
                     </div>
                 </div>
 

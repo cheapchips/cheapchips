@@ -97,6 +97,7 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
         `,
         profileSecondaryContentCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr]
+            gap-1
             items-center
             border-t
             border-lightBorder
@@ -108,7 +109,7 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             px-1 break-normal truncate
         `,
         profileSecondaryContentInactive: `
-            w-full h-4 rounded-md
+            w-full h-5 rounded-md
         `,
         profileSecondaryContentTitle: `
         `,
@@ -121,13 +122,14 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             flex justify-center content-center items-center gap-2
         `,
         profileSecondaryContentDetailsBtnCtnInactive: `
-            w-3/4 
+            w-4/5
             rounded-md
-            lg:h-7
+            lg:h-6
             md:h-2
+            place-self-center
         `,
         profileSecondaryContentDetailsBtn: `
-            lg:px-6 py-1
+            lg:px-6 py-px
             md:px-2
             border
             border-lightBorder

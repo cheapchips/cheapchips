@@ -1,6 +1,6 @@
-import DropdownLink from "./DropdownLink"
+import DropdownOption from "./DropdownOption"
 
 export default interface NavbarDropdownProps {
     buttonText: string
-    dropdownOpts: DropdownLink[]
+    dropdownOpts: DropdownOption[]
 }

@@ -2,7 +2,7 @@ import { useState } from "react"
 import NavbarDropdownProps from "../../proptypes/NavbarDropdownProps"
 import SvgIcon from "../layout/SvgIcon"
 
-const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
+const DropdownMenu = (props:NavbarDropdownProps) => {
 
     const [visible, setVisible] = useState(false)
 
@@ -74,4 +74,4 @@ const NavbarDropdownMenu = (props:NavbarDropdownProps) => {
 
 }
 
-export default NavbarDropdownMenu
+export default DropdownMenu

@@ -64,6 +64,7 @@ const Deposit = (props:DepositProps) => {
             border
             border-lightBorder
             dark:border-darkBorder
+            select-none
         `,
         chipsSelectorContentInactive: `
             w-full

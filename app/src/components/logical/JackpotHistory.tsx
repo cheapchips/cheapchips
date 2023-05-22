@@ -1,6 +1,5 @@
 
 
-
 const JackpotHistory = (props:{active: boolean}) => {
 
     const jackpotHistoryStyles = {
@@ -100,8 +99,6 @@ const JackpotHistory = (props:{active: boolean}) => {
         jackpotDetailsBtnInactive: `
 
         `,
-
-
         participateLose: `
             border-red-600
             dark:border-red-600
@@ -144,70 +141,11 @@ const JackpotHistory = (props:{active: boolean}) => {
                     <span className={jackpotHistoryStyles.jackpotGameMiddleRow}>
                         <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Ended at: <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentBlue}>22.05.2023 5:24</span></span>
                         <div className={jackpotHistoryStyles.jackpotDetailsBtn}>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
+                            <span>. . .</span>
                         </div>
                     </span>
                     <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Id:
                         <span className={jackpotHistoryStyles.jackpotGameTextValue}>3</span>
-                    </span>
-                </div>
-               
-
-                {/* Game */}
-                <div className={jackpotHistoryStyles.jackpotGameCtn + jackpotHistoryStyles.participateLose}>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Pool:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentOrange}>40</span>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameMiddleRow}>
-                        <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Ended at: <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentBlue}>22.05.2023 5:10</span></span>
-                        <div className={jackpotHistoryStyles.jackpotDetailsBtn}>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                        </div>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Id:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue}>2</span>
-                    </span>
-                </div>
-               
-
-                {/* Game */}
-                <div className={jackpotHistoryStyles.jackpotGameCtn + jackpotHistoryStyles.participateWin}>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Pool:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentOrange}>310</span>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameMiddleRow}>
-                        <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Ended at: <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentBlue}>22.05.2023 4:55</span></span>
-                        <div className={jackpotHistoryStyles.jackpotDetailsBtn}>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                        </div>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Id:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue}>1</span>
-                    </span>
-                </div>
-               
-
-                {/* Game */}
-                <div className={jackpotHistoryStyles.jackpotGameCtn + jackpotHistoryStyles.participateLose}>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Pool:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentOrange}>140</span>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameMiddleRow}>
-                        <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Ended at: <span className={jackpotHistoryStyles.jackpotGameTextValue + jackpotHistoryStyles.textAccentBlue}>22.05.2023 4:42</span></span>
-                        <div className={jackpotHistoryStyles.jackpotDetailsBtn}>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                            <span className={jackpotHistoryStyles.jackpotDetailsBtnDot}></span>
-                        </div>
-                    </span>
-                    <span className={jackpotHistoryStyles.jackpotGameTextTitle}>Id:
-                        <span className={jackpotHistoryStyles.jackpotGameTextValue}>0</span>
                     </span>
                 </div>
                
