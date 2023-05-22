@@ -12,8 +12,9 @@ const JackpotArchives = (props:{active: boolean}) => {
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
-            overflow-y-clip
-        `,
+            overflow-y-hidden
+            content-start
+            `,
         titleCtn: `
             flex h-fit
             xl:p-2
@@ -36,7 +37,7 @@ const JackpotArchives = (props:{active: boolean}) => {
         jackpotCtn: `
             overflow-y-auto
             flex flex-col
-            h-screen
+            h-auto
             p-2
             gap-2
         `,
@@ -68,21 +69,15 @@ const JackpotArchives = (props:{active: boolean}) => {
                     {...props}
                 />
                
-                {/* <ArchivedJackpot
+                
+                <ArchivedJackpot
                     userAddress="winner"
                     winnerAddress="winner"
-                    prizePool={420}
+                    prizePool={325}
                     endTime={testDate}
                     roundId={1}
+                    {...props}
                 />
-               
-                <ArchivedJackpot
-                    userAddress="test_addr"
-                    winnerAddress="winner"
-                    prizePool={115}
-                    endTime={testDate}
-                    roundId={0}
-                /> */}
                
             </div>  
 
