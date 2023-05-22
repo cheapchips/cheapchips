@@ -47,10 +47,15 @@ function App() {
   if(loading){
     return <LoadingScreen />
   }
-  else return (
-    <MainWrapper>
+  // else if(modalVisible){
+  //   return <Modal  size="Big" onClickClose={toggleModalVisible}>Test</Modal> 
+  // }
+  return (
+    <>
 
-      {modalVisible ? <Modal size='Big' onClickClose={toggleModalVisible}>Test</Modal> : <></>}
+    {modalVisible ?  <Modal size="Big" onClickClose={toggleModalVisible}>Test</Modal> : <></>}
+    
+    <MainWrapper>
 
       <Navbar
         theme={theme}
@@ -136,6 +141,7 @@ function App() {
       </Panel>
 
     </MainWrapper>
+    </>
   )
 }
 

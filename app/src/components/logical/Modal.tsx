@@ -4,6 +4,14 @@ import ModalProps from "../../proptypes/ModalProps"
 const Modal = (props:ModalProps) => {
  
     const modalStyles = {
+        fullscreenBg: `
+            flex justify-center items-center
+            w-screen h-screen
+            bg-transparent
+            absolute
+            backdrop-blur-xl
+            z-10
+        `,
         ctn: `
             absolute
             flex justify-center items-center
@@ -13,6 +21,7 @@ const Modal = (props:ModalProps) => {
             border
             border-lightBorder
             dark:border-darkBorder
+            z-50
             ${props.size === "Big" ? `
                 w-2/3 h-2/3
             `
@@ -38,9 +47,11 @@ const Modal = (props:ModalProps) => {
 
 
     return (
-        <div id="modal" className={modalStyles.ctn}>
-            <div onClick={() => props.onClickClose()} className={modalStyles.closeBtn}></div>
-            {props.children}
+        <div className={modalStyles.fullscreenBg}>
+            <div id="modal" className={modalStyles.ctn}>
+                <div onClick={() => props.onClickClose()} className={modalStyles.closeBtn}></div>
+                {props.children}
+            </div>
         </div>
     )
 
