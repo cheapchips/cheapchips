@@ -60,10 +60,11 @@ export default async function localDeploy():Promise<[VRFCoordinatorV2Mock, Chips
     await mockLinkToken.transfer(addr2, ethers.utils.parseEther("10.0"))
 
 
+    const testKeyhash = "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc"
     /**
      * Deploying ChipsJackpot contract (consumer)
      */
-    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, keeper.address, mockLinkToken.address)
+    const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, 1, keeper.address, mockLinkToken.address, testKeyhash)
     // test keyhash - 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc
 
 

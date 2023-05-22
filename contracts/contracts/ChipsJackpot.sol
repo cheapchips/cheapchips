@@ -15,10 +15,11 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
         address _coordinatorAddress,
         uint64 _subscriptionId,
         address _keeperAddress,
-        address _linkTokenAddress
+        address _linkTokenAddress,
+        bytes32 _keyHash
     )
         ChipsJackpotCore(_tokenAddress)
-        ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId)
+        ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId, _keyHash)
         ChipsJackpotMaintenance(_coordinatorAddress, _keeperAddress, _linkTokenAddress, _subscriptionId)
     {}
 

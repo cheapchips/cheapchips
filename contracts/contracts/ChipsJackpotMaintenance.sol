@@ -26,20 +26,28 @@ contract ChipsJackpotMaintenance {
 
     mapping(address => uint256) playerFees; // name to think about
 
+    address private owner;
 
     constructor(address _coordinatorAddress, address _keeperAddress, address _linkTokenAddress, uint64 _subscriptionId)
     {
         VRFCoordinator = VRFCoordinatorV2Interface(_coordinatorAddress);
         SUBSCRIPTION_ID = _subscriptionId;
         
-        AutomationRegistry = AutomationRegistryBaseInterface(_keeperAddress); // temp address; address should be added to constructor
-        UPKEEP_ID = 0; // temp also this should be provided via constructor
+        AutomationRegistry = AutomationRegistryBaseInterface(_keeperAddress); 
 
         LinkToken = LinkTokenInterface(_linkTokenAddress);
 
         LinkToken.approve(_keeperAddress, type(uint256).max);
 
+        owner = msg.sender;
+
     }
+
+    modifier onlyOwner{
+        require(msg.sender==owner,"Not the owner");
+        _;
+    }
+
 
     function getUpkeepBalance() private view returns(uint96) {
         return AutomationRegistry.getUpkeep(UPKEEP_ID).balance;
@@ -101,6 +109,10 @@ contract ChipsJackpotMaintenance {
             VRFCoordinatorV2ExtendedInterface(address(VRFCoordinator)).fundSubscription(SUBSCRIPTION_ID, uint96(vrfFee)); // only for local env
         } 
         if(upkeepFee != 0) AutomationRegistry.addFunds(UPKEEP_ID, upkeepFee);
+    }
+
+    function setUpkeepId(uint256 _id) external onlyOwner {
+        UPKEEP_ID = _id;
     }
 
 

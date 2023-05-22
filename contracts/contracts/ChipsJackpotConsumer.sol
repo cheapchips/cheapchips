@@ -18,17 +18,18 @@ abstract contract ChipsJackpotConsumer is VRFConsumerBaseV2{
 
     VRFCoordinatorV2Interface Coordinator;
 
-    bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;
+    bytes32 keyHash;
 
     uint32 callbackGasLimit = 100000;
 
     uint16 requestConfirmations = 3;
 
 
-    constructor(address _coordinatorAddress, uint64 _subscriptionId)
+    constructor(address _coordinatorAddress, uint64 _subscriptionId, bytes32 _keyHash)
     VRFConsumerBaseV2(_coordinatorAddress)
     {
         Coordinator = VRFCoordinatorV2Interface(_coordinatorAddress);
+        keyHash = _keyHash;
         subscriptionId = _subscriptionId;
     }
 
