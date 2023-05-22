@@ -28,7 +28,10 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             p-2
         `,
         profileTitleContent: `
+            flex flex-row gap-1 justify-center items-center
             p-1
+            fill-lightText
+            dark:fill-darkText
         `,
         profileTitleContentInactive: `
             w-1/4
@@ -149,7 +152,15 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
 
             {/* Title */}
             <div className={profileStyles.profileTitleCtn}>
-                {props.active ? <span className={profileStyles.profileTitleContent}>{props.title}</span> : <span className={profileStyles.profileTitleContentInactive + profileStyles.inactiveBg}></span>}
+                {props.active
+                ?
+                <span className={profileStyles.profileTitleContent}>
+                    <SvgIcon style="w-4 h-4" viewBox="0 0 122.88 121.42" pathD="M0,121.42l0-19.63c10.5-4.67,42.65-13.56,44.16-26.41c0.34-2.9-6.5-13.96-8.07-19.26 c-3.36-5.35-4.56-13.85-0.89-19.5c1.46-2.25,0.84-10.44,0.84-13.53c0-30.77,53.92-30.78,53.92,0c0,3.89-0.9,11.04,1.22,14.1 c3.54,5.12,1.71,14.19-1.27,18.93c-1.91,5.57-9.18,16.11-8.56,19.26c2.31,11.74,32.13,19.63,41.52,23.8l0,22.23L0,121.42L0,121.42z" />
+                    <span>Profile</span>
+                </span>
+                :
+                <span className={profileStyles.profileTitleContentInactive + profileStyles.inactiveBg}></span>
+                }
             </div>
             
             <div className={profileStyles.profileMainContentCtn}>

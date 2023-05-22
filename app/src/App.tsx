@@ -62,7 +62,6 @@ function App() {
       <Panel panelType='side'>
 
         <LobbyHeader
-          title='Lobby'
           playerCount={42}
           maxPlayerCount={100}
           timeTillRaffleStartPercentage={44}
@@ -116,7 +115,6 @@ function App() {
 
           <ProfileHeader
             active={active}
-            title="Profile"
             address='0x748912caD3137E208483281929779A45f3C9Eb55'
             chipsBalance={105}
             linkBalance={12}
