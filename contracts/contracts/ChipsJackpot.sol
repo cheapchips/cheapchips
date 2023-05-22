@@ -2,16 +2,25 @@
 pragma solidity 0.8.18;
 import "./ChipsJackpotCore.sol";
 import "./ChipsJackpotConsumer.sol";
+import "./ChipsJackpotMaintenance.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
+
+import "hardhat/console.sol";
 
 
-contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
+contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMaintenance, AutomationCompatibleInterface {
+
     constructor(
         address _tokenAddress,
         address _coordinatorAddress,
-        uint64 _subscriptionId
+        uint64 _subscriptionId,
+        address _keeperAddress,
+        address _linkTokenAddress,
+        bytes32 _keyHash
     )
         ChipsJackpotCore(_tokenAddress)
-        ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId)
+        ChipsJackpotConsumer(_coordinatorAddress, _subscriptionId, _keyHash)
+        ChipsJackpotMaintenance(_coordinatorAddress, _keeperAddress, _linkTokenAddress, _subscriptionId)
     {}
 
     function addRandomNumberToRound(
@@ -23,10 +32,29 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer {
 
         emit RoundEnded(currentRoundId, _randomNumber); // modulo op is performed offchain to resolve who is the winner
         
-        currentRoundId++; // next round
+        ++currentRoundId; // next round
     }
 
-    function closeRound() external {
+    function deposit(uint256 _amount) external payable {
+        uint256 serviceFee = getTotalFeeForLastRound() / 3 + 10;
+        spendFees(serviceFee);
+        _deposit(_amount);
+    }
+
+    function checkUpkeep(bytes calldata /* checkData */) external view override returns(bool upkeepNeeded, bytes memory perfomData){
+        upkeepNeeded = rounds[currentRoundId].endTime > block.timestamp && rounds[currentRoundId].state == RoundState.DEFAULT;
+        perfomData = "";
+    }
+
+    function performUpkeep(bytes calldata) external override {
+        transferToChainlinkServices();
+        updateUpkeepBalance();
+        updateVRFBalance();
+        closeRound();
+    }
+
+    // manual - safety valve
+    function closeRound() public {
         _closeRound();
         requestRandomWords();
     }
