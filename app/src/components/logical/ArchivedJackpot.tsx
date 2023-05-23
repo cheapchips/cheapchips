@@ -1,6 +1,3 @@
-
-
-
 const ArchivedJackpot = (props: {
     userAddress: string,
     winnerAddress: string,
