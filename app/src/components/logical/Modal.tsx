@@ -16,7 +16,7 @@ const Modal = (props:ModalProps) => {
         `,
         ctn: `
             absolute
-            flex flex-col flex-cols-[min,max]
+            flex flex-col
             justify-start
             self-center place-self-center z-50
             bg-lightBg
