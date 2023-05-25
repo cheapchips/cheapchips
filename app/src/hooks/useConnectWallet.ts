@@ -52,7 +52,6 @@ export default function useConnectWallet(network?: string): [boolean, Web3Provid
         setSigner(signer)
         const { chainId } = await provider.getNetwork()
         setNetworkId(chainId)
-        console.log(chainId)
     }
 
     const connect = async() => {

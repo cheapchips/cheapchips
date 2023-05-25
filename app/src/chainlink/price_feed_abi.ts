@@ -1,4 +1,4 @@
-[
+export const price_feed_abi = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
