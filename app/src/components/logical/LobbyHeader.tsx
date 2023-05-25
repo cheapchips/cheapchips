@@ -9,6 +9,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
+            font-content
         `,
         titleCtn: `
             w-full grid grid-cols-2

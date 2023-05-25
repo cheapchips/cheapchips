@@ -15,6 +15,7 @@ const Navbar = (props:NavbarProps) => {
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
+            font-content
         `,
         leftContentCtn: `
             grid grid-flow-col
@@ -169,7 +170,6 @@ const Navbar = (props:NavbarProps) => {
                     <WalletButton
                         clickable={props.connectWalletProps.clickable}
                         active={props.connectWalletProps.active}
-                        text={props.connectWalletProps.text}
                         onClickFunction={() => props.connectWalletProps.onClickFunction() }
                     />
                 </div>

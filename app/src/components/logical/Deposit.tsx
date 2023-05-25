@@ -23,6 +23,7 @@ const Deposit = (props:DepositProps) => {
             divide-y
             divide-lightBorder
             dark:divide-darkBorder
+            font-content
         `,
         depositTitleCtn: `
             flex justify-start items-center
@@ -204,11 +205,12 @@ const Deposit = (props:DepositProps) => {
             <div className={depositStyles.inputCtn}>
                 {props.active
                     ?
-                        <input value={depositAmount} onKeyDown={(e) => {
-                                if(+e.key === 190 || +e.key === 48) return
-                                handleDepositInput(+e.key)
-                            }} type="number" className={depositStyles.input}>
-                        </input>
+                        // <input value={depositAmount} onKeyDown={(e) => {
+                        //         if(+e.key === 190 || +e.key === 48) return
+                        //         handleDepositInput(+e.key)
+                        //     }} type="number" className={depositStyles.input}>
+                        // </input>
+                        <span>Fix inputttt</span>
                     :
                         <div className={depositStyles.inactiveInput}></div>
                 }

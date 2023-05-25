@@ -18,6 +18,7 @@ const ProfileHeader = (props:ProfileHeaderProps) => {
             border-b
             border-lightBorder
             dark:border-darkBorder
+            font-content
         `,
             profileTitleCtn: `
             flex justify-start content-center w-full h-fit

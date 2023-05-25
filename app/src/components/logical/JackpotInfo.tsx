@@ -11,6 +11,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
+            font-content
         `,
         titleCtn: `
             flex w-full h-fit

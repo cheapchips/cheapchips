@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react"
-import Modal from "./Modal"
-import SvgIcon from "../layout/SvgIcon"
+import { useState } from "react"
+import SvgIcon from "../../../layout/SvgIcon"
+import ModalSkeleton from "../../Modal"
 
 const TutorialModal = (
     props: {
         pages: number
         title: string,
-        size: "Big" | "Medium" | "Small",
         onClickClose: () => void,
     }
 ) => {
@@ -19,6 +18,7 @@ const TutorialModal = (
             xl:p-2
             md:p-1
             grow
+            select-none
         `,
         navCtn: `
             flex justify-center items-center
@@ -109,16 +109,29 @@ const TutorialModal = (
     }
 
     return (
-        <Modal title={props.title} size={props.size} onClickClose={props.onClickClose} >
+        <ModalSkeleton title={props.title} size={'Big'} onClickClose={props.onClickClose} >
             
             <div className={tutorialStyles.ctn}>
-                Current page: {currentPage}
+                {currentPage === 0
+                ?
+                    <div className="">WELCOME</div>
+                :
+                currentPage === 1
+                ?
+                    <div className="">HELLO</div>
+                :
+                currentPage === 2
+                ?
+                    <div className="">YO</div>
+                : ""
+                }
             </div>
+            
             <div className={tutorialStyles.navCtn}>
                 <TutorialNavigationPanel />           
             </div>
 
-        </Modal>            
+        </ModalSkeleton>
 
     )
 

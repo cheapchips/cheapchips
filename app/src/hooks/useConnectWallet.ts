@@ -18,39 +18,45 @@ declare global {
  */
 
 export default function useConnectWallet(network?: string): [boolean, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
+    
     const [connected, setConnected] = useState<boolean>(false)
     const [provider, setProvider] = useState<Web3Provider>()
     const [signer, setSigner] = useState<JsonRpcSigner>()
-
+    const [networkId, setNetworkId] = useState<number>()
 
     useEffect(() => {
         main()
     }, [])
 
+    useEffect(() => {
+        if(!networkId || networkId === 80001) return
+        console.log('would you like to change your metamask network?')
+    }, [networkId])
+
     const main = async () => {
-        // if(await isWalletConnected()){
-        //     connect()
-        // }
+        if(await isWalletConnected()){
+            connect()
+        }
     }
 
-    // const isWalletConnected = async () => {
-    //     if(!provider) return
-        
-    //     return accounts.length > 0
-    // }
+    const isWalletConnected = async () => {
+        if(!provider) return
+        const accounts:string[] = await provider.send("eth_requestAccounts", []);
+        return accounts.length > 0
+    }
 
     const restartProvider = async() => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         setProvider(provider)
-        const accounts:string[] = await provider.send("eth_requestAccounts", []);
-
         const signer = await provider.getSigner()
         setSigner(signer)
+        const { chainId } = await provider.getNetwork()
+        setNetworkId(chainId)
+        console.log(chainId)
     }
 
     const connect = async() => {
         if(connected) return
-        console.log('connecting')
         await restartProvider()
         setConnected(true)
 
