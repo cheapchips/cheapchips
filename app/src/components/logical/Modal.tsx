@@ -29,7 +29,7 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             rounded-md
             z-50
             ${props.size === "Big" ? `
-                w-2/3 h-5/6
+                w-3/5 h-[90%]
             `
             : props.size === "Medium" ? `
                 w-1/2 h-2/3
@@ -43,7 +43,7 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
         titleCtn: `
             flex justify-between items-center w-full
             ${props.size === "Big" ? "h-12" : props.size === "Medium" ? "h-9" : props.size === "Small" ? "h-8" : ""}
-            p-2
+            py-2 px-4
             rounded-t-md
             border-b
             border-lightBorder
