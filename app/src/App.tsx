@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
@@ -27,14 +27,19 @@ import useConnectWallet from './hooks/useConnectWallet'
 import useDeposit from './hooks/useDeposit'
 import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
-import useModal from './hooks/useModal'
+import useModal from './hooks/useModal' 
 
 // contracts
-import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory} from "../../contracts/typechain-types"
-import { ethers } from 'ethers'
+import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface} from "../../contracts/typechain-types"
+import { ethers, Signer } from 'ethers'
 import { price_feed_abi } from './chainlink/price_feed_abi'
+import { Web3Provider } from './types/ethersTypes'
+import Web3Context from './contexts/Web3Context'
+
 
 function App() {
+
+  const web3 = useContext(Web3Context)
 
   const [connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()

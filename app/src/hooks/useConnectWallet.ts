@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react"
-
 import { ethers } from "ethers"
-
-type Web3Provider = ethers.providers.Web3Provider
-type JsonRpcSigner = ethers.providers.JsonRpcSigner
-type ExternalProvider = ethers.providers.ExternalProvider
+import { Web3Provider, JsonRpcSigner, ExternalProvider } from "../types/ethersTypes"
 
 declare global {
     interface Window {

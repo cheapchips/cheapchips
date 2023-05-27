@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import ModalSkeleton from "../Modal"
 import { ethers } from "ethers"
 import { LinkTokenInterface, LinkTokenInterface__factory, ChipsJackpot } from "../../../../../contracts/typechain-types"
+import useLinkToken from "../../../hooks/useLinkToken"
 
 const BuyTokensModalTESTNET = (
     props: {
@@ -16,9 +17,12 @@ const BuyTokensModalTESTNET = (
     const [link, setLink] = useState<LinkTokenInterface>()
     const [linkBalance, setLinkBalance] = useState<number>()
 
+    const [setupLinkToken, writeLinkToken, readLinkToken] = useLinkToken()
+
     useEffect(() => {
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", props.provider)
-        setLink(linkToken)
+        // 
+        // setupLinkToken(linkToken)
     }, [])
 
     useEffect(() => {
