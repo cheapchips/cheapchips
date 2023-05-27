@@ -35,7 +35,7 @@ import { ethers, Signer } from 'ethers'
 import { price_feed_abi } from './chainlink/price_feed_abi'
 import { Web3Provider } from './types/ethersTypes'
 import Web3Context from './contexts/Web3Context'
-import Web3ContextInterface from './types/web3ContextInterface'
+import Web3ContextInterface from './types/Web3ContextInterface'
 
 
 function App() {
@@ -74,9 +74,9 @@ function App() {
     if(connected && provider && signer){
       (async() => {
 
-        const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", provider)
-        const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", provider)
-        const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", provider)
+        const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
+        const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
+        const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
         const address = await signer.getAddress()
         
         setChipStableBalance((await chip.balanceOf(address)).toNumber().toString())
@@ -105,7 +105,7 @@ function App() {
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
       
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
-      {(buyTokensVisible && address && provider && jackpot) && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} provider={provider} address={address} jackpot={jackpot} />}
+      {(buyTokensVisible && address && provider && jackpot) && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
 
       <MainWrapper>
 

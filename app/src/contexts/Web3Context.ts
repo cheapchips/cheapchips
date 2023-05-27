@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import Web3ContextInterface from "../types/web3ContextInterface";
+import Web3ContextInterface from "../types/Web3ContextInterface";
 
 const Web3Context = createContext<Web3ContextInterface>({
     address: undefined,

@@ -31,6 +31,7 @@ export default function useTrasaction():[TxStatus, PerformType]{
             // console.log(tx)
             
         } catch (error: any) {
+            console.log(error)
             if(error.code === 4001) setStatus("denied")
             if(error.code === -32603) setStatus("failed")
             else setStatus("failed")

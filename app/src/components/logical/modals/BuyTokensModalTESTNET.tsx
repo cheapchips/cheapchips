@@ -1,44 +1,30 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import ModalSkeleton from "../Modal"
 import { ethers } from "ethers"
-import { LinkTokenInterface, LinkTokenInterface__factory, ChipsJackpot } from "../../../../../contracts/typechain-types"
+import Web3Context from "../../../contexts/Web3Context"
+import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"
 
 const BuyTokensModalTESTNET = (
     props: {
         title: string,
         onClickClose: () => void,
-        provider:ethers.providers.Web3Provider
-        address:string
-        jackpot:ChipsJackpot
-    }
-) => {
+    }) => {
 
-    const [link, setLink] = useState<LinkTokenInterface>()
+    const web3 = useContext(Web3Context)
+    const {} = useJackpot()
+    
     const [linkBalance, setLinkBalance] = useState<number>()
 
-    const [setupLinkToken, writeLinkToken, readLinkToken] = useLinkToken()
-
     useEffect(() => {
-        const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", props.provider)
-        // 
-        // setupLinkToken(linkToken)
+        updateLINKBalance()
     }, [])
 
-    useEffect(() => {
-        if(linkBalance) return
-        updateLINKBalance()
-    }, [link])
-
-    useEffect(() => {
-        updateLINKBalance()
-    }, [linkBalance])
-
     const updateLINKBalance = async () => {
-        const bal = await link?.balanceOf(props.address)
+        const bal = await web3.linkToken?.balanceOf(web3.address!)
         if(!bal) return
         const balance = ethers.utils.formatUnits(bal, "ether")
-        console.log('parsed ', balance)
+        console.log('link balance: ', balance)
         setLinkBalance(+balance)
     }
 
@@ -130,21 +116,32 @@ const BuyTokensModalTESTNET = (
 
     const LinkDepositPanel = (props:{
         balance:number | undefined,
-        link:LinkTokenInterface | undefined,
-        jackpot:ChipsJackpot,
-        address:string
     }) => {
 
         const [val, setVal] = useState<number>()
-        const [allowance, setAllowance] = useState<any>()
+        const [allowance, setAllowance] = useState<number>()
+        const [writeLinkToken, readLinkToken] = useLinkToken()
+        const [writeJackpot] = useJackpot()
+
+        // const checkForAllowance = async () => {
+        //     const allow = await web3.linkToken?.allowance(web3.address!, web3.jackpot!.address)
+        //     console.log('allowance: ', allow)
+        //     setAllowance(allow?.toNumber())
+        // }
 
         const submitDeposit = async (value:number | undefined) => {
             if(!value || !linkBalance) return
             if(value > linkBalance){
                 console.log('not enough balance!'); return
             }
-            console.log(value)
-            await props.jackpot.depositFees(ethers.utils.parseEther(value.toString()))
+            console.log('checking for existing allowance')
+            const allowanceRaw = await readLinkToken.checkAllowance()
+            const allowanceParsed = parseFloat(ethers.utils.formatUnits(allowanceRaw, "ether"))
+            console.log(allowanceParsed)
+            // if(allowanceParsed >= value){
+            //     writeJackpot.depositFees(value)
+            //     console.log('done')
+            // }
         }
 
         return (
@@ -154,11 +151,10 @@ const BuyTokensModalTESTNET = (
                     <input className={styles.depositInput} type="number" min="0" placeholder="0" onChange={(e) => setVal(+e.target.value)} />
                     {!props.balance
                     ?
-                    <span className={styles.depositBalanceInfo}>LINK balance: (...)</span>
+                        <span className={styles.depositBalanceInfo}>LINK balance: (...)</span>
                     :
-                    <span className={styles.depositBalanceInfo}>LINK balance: {props.balance}</span>
-                }
-
+                        <span className={styles.depositBalanceInfo}>LINK balance: {web3.linkTokenBalance}</span>
+                    }
                 </div>
                 <button onClick={() => submitDeposit(val)} className={styles.button}>Deposit</button>
             </>
@@ -182,7 +178,7 @@ const BuyTokensModalTESTNET = (
 
                 <VerticalContentPanel title="Deposit Link (service fee)">
 
-                    <LinkDepositPanel balance={linkBalance} jackpot={props.jackpot} link={link} address={props.address} />
+                    <LinkDepositPanel balance={linkBalance} />
 
                 </VerticalContentPanel>
 
