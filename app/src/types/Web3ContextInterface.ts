@@ -6,10 +6,12 @@ import { Signer } from "ethers"
 
 
 export default interface Web3ContextInterface {
-  address: string
-  provider: Web3Provider
-  signer: Signer
-  chipStable: ChipStable
-  linkToken: LinkTokenInterface
-  jackpot: ChipsJackpot
+  address: string | undefined
+  provider: Web3Provider | undefined
+  signer: Signer | undefined
+  chipStable: ChipStable | undefined
+  linkToken: LinkTokenInterface | undefined
+  linkTokenBalance: string | undefined
+  jackpot: ChipsJackpot | undefined
+  chipStableBalance: string | undefined
 }
