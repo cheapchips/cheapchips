@@ -16,7 +16,7 @@ export default function useTrasaction():[TxStatus, PerformType]{
 
     useEffect(() => {
         //debug
-        console.log(status)
+        // console.log(status)
     }, [status])
 
 

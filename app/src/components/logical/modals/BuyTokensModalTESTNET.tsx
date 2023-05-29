@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useTransition } from "react"
 import ModalSkeleton from "../Modal"
-import { ethers } from "ethers"
 import Web3Context from "../../../contexts/Web3Context"
 import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"
+import chainlink_logo from "../../../assets/chainlink_logo.png"
 
 const BuyTokensModalTESTNET = (
     props: {
@@ -12,22 +12,7 @@ const BuyTokensModalTESTNET = (
     }) => {
 
     const web3 = useContext(Web3Context)
-    const {} = useJackpot()
     
-    const [linkBalance, setLinkBalance] = useState<number>()
-
-    useEffect(() => {
-        updateLINKBalance()
-    }, [])
-
-    const updateLINKBalance = async () => {
-        const bal = await web3.linkToken?.balanceOf(web3.address!)
-        if(!bal) return
-        const balance = ethers.utils.formatUnits(bal, "ether")
-        console.log('link balance: ', balance)
-        setLinkBalance(+balance)
-    }
-
     const styles = {
         // wrappers, layout only
         wrapper: `
@@ -85,6 +70,9 @@ const BuyTokensModalTESTNET = (
             border-b border-lightBorder dark:border-darkBorder
             p-2
         `,
+        chainlinkLogo: `
+            w-12 h-12 aspect-square
+        `,
         depositInput: `
             text-xl
             flex w-full h-full
@@ -97,6 +85,12 @@ const BuyTokensModalTESTNET = (
             flex w-full h-full
             justify-start items-center content-center
             p-2
+        `,
+        sufficientAllowance: `
+            border border-green-500 dark:border-green-500
+        `,
+        insufficientAllowance: `
+            border border-orange-600 dark:border-orange-600
         `,
     }
 
@@ -114,49 +108,61 @@ const BuyTokensModalTESTNET = (
         )
     }
 
-    const LinkDepositPanel = (props:{
-        balance:number | undefined,
-    }) => {
+    const LinkDepositPanel = () => {
 
         const [val, setVal] = useState<number>()
+        const [deposit, setDeposit] = useState<number>()
         const [allowance, setAllowance] = useState<number>()
-        const [writeLinkToken, readLinkToken] = useLinkToken()
-        const [writeJackpot] = useJackpot()
+        const [linkTxStatus, writeLinkToken, readLinkToken] = useLinkToken()
+        const [jackpotTxStatus, writeJackpot, readJackpot] = useJackpot()
+        const [readyToDeposit, setReadyToDeposit] = useState<boolean>(false)
 
-        // const checkForAllowance = async () => {
-        //     const allow = await web3.linkToken?.allowance(web3.address!, web3.jackpot!.address)
-        //     console.log('allowance: ', allow)
-        //     setAllowance(allow?.toNumber())
-        // }
+        useEffect(() => {
+            update() // initial data fetch
+        }, [readJackpot])
+
+        useEffect(() => {
+            // console.log(linkTxStatus)
+            update()
+        }, [linkTxStatus])
+
+        const update = async () => {
+            await getCurrentAllowance()
+            await getCurrentDeposit()
+        }
+        
+        const getCurrentAllowance = async ():Promise<void> => {
+            const allow = await readLinkToken.checkAllowance()
+            !allow ? setAllowance(0) : setAllowance(allow)
+        }
+
+        const getCurrentDeposit = async ():Promise<void> => {
+            const deposit = await readJackpot.checkFeesBalance()
+            !deposit ? setDeposit(0) : setDeposit(deposit)
+        }
 
         const submitDeposit = async (value:number | undefined) => {
-            if(!value || !linkBalance) return
-            if(value > linkBalance){
-                console.log('not enough balance!'); return
+            if(!value || !web3.linkTokenBalance) return
+            if(value > +web3.linkTokenBalance) return 
+            if(allowance! < value){
+                writeLinkToken.approve(value)
+                return
             }
-            console.log('checking for existing allowance')
-            const allowanceRaw = await readLinkToken.checkAllowance()
-            const allowanceParsed = parseFloat(ethers.utils.formatUnits(allowanceRaw, "ether"))
-            console.log(allowanceParsed)
-            // if(allowanceParsed >= value){
-            //     writeJackpot.depositFees(value)
-            //     console.log('done')
-            // }
+            writeJackpot.depositFees(value)
         }
 
         return (
             <>
+                <img className={styles.chainlinkLogo} src={chainlink_logo} alt="ChainlinkLogo" />
                 <div className={styles.depositCtn}>
                     <span className={styles.depositTitle}>LINK amount to deposit: </span>
                     <input className={styles.depositInput} type="number" min="0" placeholder="0" onChange={(e) => setVal(+e.target.value)} />
-                    {!props.balance
-                    ?
-                        <span className={styles.depositBalanceInfo}>LINK balance: (...)</span>
-                    :
-                        <span className={styles.depositBalanceInfo}>LINK balance: {web3.linkTokenBalance}</span>
-                    }
+                    <span className={styles.depositBalanceInfo}>Balance: {!web3.linkTokenBalance ? "..." : web3.linkTokenBalance}</span>
                 </div>
-                <button onClick={() => submitDeposit(val)} className={styles.button}>Deposit</button>
+                <span>Current allowance: {!allowance ? "..." : allowance} </span>
+                <span>Current deposit: {!deposit ? "..." : deposit}</span>
+                <button onClick={() => submitDeposit(val)} className={styles.button + ((readyToDeposit || allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
+                <span className="w-1/2">{(!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
             </>
         )
     }
@@ -167,19 +173,14 @@ const BuyTokensModalTESTNET = (
             <div className={styles.wrapper}>
 
                 <VerticalContentPanel title="Get chips and LINK">
-
                     <span>Claim free chips here</span>
                     <button className={styles.button}>CHIPS minter</button>
-
                     <span>Claim free link here</span>
-                    <button className={styles.button}>LINK faucet</button>
-
+                    <button onClick={() => window.open("https://faucets.chain.link/mumbai")} className={styles.button}>LINK faucet</button>
                 </VerticalContentPanel>
 
                 <VerticalContentPanel title="Deposit Link (service fee)">
-
-                    <LinkDepositPanel balance={linkBalance} />
-
+                    <LinkDepositPanel/>
                 </VerticalContentPanel>
 
             </div>

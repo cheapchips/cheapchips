@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
@@ -19,8 +19,10 @@ import JackpotInfo from './components/logical/JackpotInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
 import TutorialModal from './components/logical/modals/tutorial/TutorialModal'
 
-// tokens modal (testnet)
+// modals
 import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
+import InstallMetamaskModal from './components/logical/modals/InstallMetamaskModal'
+import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
@@ -31,12 +33,8 @@ import useModal from './hooks/useModal'
 
 // contracts
 import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
-import { ethers, Signer } from 'ethers'
-import { price_feed_abi } from './chainlink/price_feed_abi'
-import { Web3Provider } from './types/ethersTypes'
+import { ethers } from 'ethers'
 import Web3Context from './contexts/Web3Context'
-import Web3ContextInterface from './types/Web3ContextInterface'
-
 
 function App() {
 
@@ -46,15 +44,7 @@ function App() {
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
   const depositData = useDeposit()
-  const [
-    depositAmount,
-    defaultDepositAmount,
-    minDepositAmount,
-    maxDepositAmount,
-    handleDepositPercentage,
-    handleDepositInput,
-    handleDepositTx
-  ] = depositData
+  const [depositAmount, defaultDepositAmount, minDepositAmount, maxDepositAmount, handleDepositPercentage, handleDepositInput, handleDepositTx] = depositData
   
   
   // local states
@@ -63,6 +53,8 @@ function App() {
   
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
+  const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
+  const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
 
   const [chipStable, setChipStable] = useState<ChipStable>()
   const [jackpot, setJackpot] = useState<ChipsJackpot>()
@@ -85,15 +77,6 @@ function App() {
         setJackpot(jackpot)
         setLinkToken(linkToken)
         
-        // console.log(await jackpot.getRoundData(0))
-        // const matic_to_link = new ethers.Contract("0x71A6b5AD2034344235ddd38916dF0bE6baEB8517", price_feed_abi, signer)
-        // const res = await matic_to_link.getLatestPrice()
-        
-        // const price_raw: number = parseInt(res._hex, 16);
-        // console.log('wei?: ', price_raw)
-        // ile jeden link kolsztuje w maticu
-        // console.log('parsed ', ethers.utils.formatUnits(res, "ether"))
-        
       })()
     }
   }, [connected])
@@ -101,11 +84,17 @@ function App() {
   if(loading){
     return <LoadingScreen />
   }
+  // if(networkId !== NETWORK_ID){
+  //   return <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />
+  // }
+  // if(!metamask){
+  //   return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
+  // }
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
       
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
-      {(buyTokensVisible && address && provider && jackpot) && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
+      {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
 
       <MainWrapper>
 
@@ -188,12 +177,10 @@ function App() {
 
         <Panel panelType='side'>
 
-            {(!address || chipStableBalance)
-            ? 
-              <ProfileHeader/>
-            :
-              <ProfileHeader/>
-            }
+            <ProfileHeader
+              onClickMyDetails={() => console.log(123)} // make a modal for this later
+              onClickBuyBalance={toggleBuyTokensVisible}
+            />
 
             <JackpotArchives
               active={active}

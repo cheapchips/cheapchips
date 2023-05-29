@@ -7,7 +7,6 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
         fullscreenBg: `
             flex justify-center items-center
             w-screen h-screen
-            bg-transparent
             absolute
             backdrop-blur-2xl
             drop-shadow-2xl
@@ -15,6 +14,7 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             text-xl
             font-content
             select-none
+            ${props.customBg ? props.customBg : ""}
         `,
         ctn: `
             absolute

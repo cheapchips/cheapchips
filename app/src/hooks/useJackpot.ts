@@ -14,7 +14,7 @@ interface RoundData {
 }
 
 
-export default function useJackpot():[any, any]{
+export default function useJackpot():[any, any, any]{
 
     const web3 = useContext(Web3Context)
 
@@ -81,6 +81,7 @@ export default function useJackpot():[any, any]{
 
 
     return [
+        txStatus,
         {depositFees, deposit, closeRound}, 
         {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound}
     ]
