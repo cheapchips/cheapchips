@@ -91,7 +91,6 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             rounded-md
             lg:h-4
             md:h-2
-            animate-pulse
         `,
         poolBarPrize: ` 
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300

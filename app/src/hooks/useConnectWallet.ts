@@ -13,8 +13,9 @@ declare global {
  * 2. Connect wallet to blockchain (every time, after connection button fades away [auto])
  */
 
-export default function useConnectWallet(network?: string): [boolean, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
+export default function useConnectWallet(network?: string): [boolean, boolean, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
     
+    const [metamask, setMetamask] = useState<boolean>(false)
     const [connected, setConnected] = useState<boolean>(false)
     const [provider, setProvider] = useState<Web3Provider>()
     const [signer, setSigner] = useState<JsonRpcSigner>()
@@ -25,9 +26,14 @@ export default function useConnectWallet(network?: string): [boolean, Web3Provid
     }, [])
 
     useEffect(() => {
+        if(!window.ethereum) setMetamask(false)
+        else setMetamask(true)
+    }, [window.ethereum])
+
+    useEffect(() => {
         if(!networkId || networkId === 80001) return
         console.log('would you like to change your metamask network?')
-    }, [networkId])
+    }, [networkId, connected])
 
     const main = async () => {
         if(await isWalletConnected()){
@@ -65,7 +71,7 @@ export default function useConnectWallet(network?: string): [boolean, Web3Provid
         // }
     }
 
-    return [connected, provider, signer, connect]
+    return [metamask, connected, provider, signer, connect]
 
     // connected = is wallet connected State
     // connect = function to connect the wallet through metamask

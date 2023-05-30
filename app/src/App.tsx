@@ -47,7 +47,7 @@ function App() {
 
   const web3 = useContext(Web3Context)
 
-  const [connected, provider, signer, connect] = useConnectWallet()
+  const [metamask, connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
   const depositData = useDeposit()
@@ -95,14 +95,17 @@ function App() {
   const testTxTransaction = () => {
     setTxStatus("created")
     setTimeout(() => {
-      setTxStatus("denied")
+      setTxStatus("submitted")
     }, 4000);
     setTimeout(() => {
+      setTxStatus("denied")
+    }, 8000);
+    setTimeout(() => {
       setTxStatus("failed")
-    }, 10000)
+    }, 12000)
     setTimeout(() => {
       setTxStatus("done")
-    }, 13000);
+    }, 16000);
   }
   
   if(loading){
@@ -111,9 +114,9 @@ function App() {
   // if(networkId !== NETWORK_ID){
   //   return <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />
   // }
-  // if(!metamask){
-  //   return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
-  // }
+  if(!metamask){
+    return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
+  }
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
       
@@ -157,6 +160,8 @@ function App() {
             <JackpotMainCtn>
 
               <div className='flex flex-col gap-4 underline text-sm'>
+
+                <span>{metamask.toString()}</span>
 
                 <button onClick={() => setActive(!active)}>
                   <span className="font-content">Toggle active</span>
