@@ -17,7 +17,7 @@ import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
-import TutorialModal from './components/logical/modals/tutorial/TutorialModal'
+import TutorialModal from './components/logical/modals/TutorialModal'
 
 // modals
 import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
@@ -35,19 +35,23 @@ import useModal from './hooks/useModal'
 import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
 import { ethers } from 'ethers'
 import Web3Context from './contexts/Web3Context'
-import ModalSkeleton from './components/logical/ModalSkeleton'
-
-
-
 
 import TransactionModal from './components/logical/modals/TransactionModal'
 import { TxStatus } from './types/useTransactionTypes'
+import Lobby from './components/logical/cc_testing/lobby/Lobby'
+import cheapchipsLogo from "./assets/logo.png"
+
+type Player = {
+  readonly address: string
+  readonly ticketAmount: number
+  readonly id: number
+}
 
 function App() {
 
   const web3 = useContext(Web3Context)
 
-  const [metamask, connected, provider, signer, connect] = useConnectWallet()
+  const [metamask, correctNetwork, connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
   const depositData = useDeposit()
@@ -74,7 +78,7 @@ function App() {
   const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
 
   useEffect(() => {
-    if(connected && provider && signer){
+    if(connected && provider && signer && correctNetwork){
       (async() => {
 
         const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
@@ -107,19 +111,34 @@ function App() {
       setTxStatus("done")
     }, 16000);
   }
+
+  const [players, setPlayers] = useState<Player[]>([
+        {
+            address: 'fgdsgdfgs',
+            ticketAmount: 2,
+            id: 0,
+        },
+        {
+            address: 'sdfdfdsf',
+            ticketAmount: 5,
+            id: 1,
+        },
+        {
+            address: 'fgdsgdffdssdfsdfgs',
+            ticketAmount: 1,
+            id: 2,
+        },
+    ])
   
   if(loading){
     return <LoadingScreen />
   }
-  // if(networkId !== NETWORK_ID){
-  //   return <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />
-  // }
-  if(!metamask){
-    return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
-  }
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
       
+      {!correctNetwork && <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />}
+      {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />}
+
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
       {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
       {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' txStatus={txStatus} onClickClose={toggleTransactionModalVisible} />}
@@ -147,9 +166,11 @@ function App() {
             active={active}
           />
 
-          <LobbyCtn>
-
-          </LobbyCtn>
+          {/* <LobbyCtn> */}
+          
+            <Lobby playerCount={players.length} players={players} ticketImgSrc={cheapchipsLogo} maxTicketsPerPlayer={5} />
+          
+          {/* </LobbyCtn> */}
 
         </Panel>
         
@@ -161,7 +182,16 @@ function App() {
 
               <div className='flex flex-col gap-4 underline text-sm'>
 
-                <span>{metamask.toString()}</span>
+                <button onClick={() => {
+                      const newPlayer = {
+                        address: 'fgdsgddffgs',
+                        ticketAmount: 2,
+                        id: 0,
+                      }
+                  setPlayers(players=>[...players, newPlayer])
+                }}>
+                  <span className="font-content">Add player</span>
+                </button>
 
                 <button onClick={() => setActive(!active)}>
                   <span className="font-content">Toggle active</span>

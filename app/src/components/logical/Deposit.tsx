@@ -98,7 +98,7 @@ const Deposit = (props:DepositProps) => {
         chipsImgGreyedOut: `
             opacity-[23%]
             contrast-20
-        `,
+            `,
         chipsImgBottomIndicator: `
             pt-1
             2xl:w-2 2xl:h-1
