@@ -1,4 +1,4 @@
-import ModalSkeleton from "../Modal"
+import ModalSkeleton from "../ModalSkeleton"
 import metamask_logo from "../../../assets/metamask_logo.png"
 
 const InstallMetamaskModal = (props:{onClickClose:() => void}) => {

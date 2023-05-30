@@ -1,13 +1,6 @@
 import { Contract, ContractFunction, ContractTransaction, Overrides, Signer, ethers } from "ethers"
-import { Logger } from "ethers/lib/utils"
 import { useEffect, useState } from "react"
-
-
-
-type TxStatus = "nonexist" | "created" | "denied" | "submitted" | "done" | "failed"
-
-type PerformType = <T extends ContractFunction>(transaction: T, ...args: Parameters<T>) => Promise<void>
-
+import { TxStatus, PerformType } from "../types/useTransactionTypes"
 
 export default function useTrasaction():[TxStatus, PerformType]{
     

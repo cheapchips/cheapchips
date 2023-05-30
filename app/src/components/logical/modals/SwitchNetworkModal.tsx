@@ -1,4 +1,4 @@
-import ModalSkeleton from "../Modal";
+import ModalSkeleton from "../ModalSkeleton";
 import { ethers } from "ethers";
 
 const SwitchNetworkModal = (props:{onClickClose:() => void}) => {

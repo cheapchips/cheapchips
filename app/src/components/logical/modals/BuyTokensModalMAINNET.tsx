@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import ModalSkeletonProps from "../../../proptypes/ModalSkeletonProps"
-import ModalSkeleton from "../Modal"
+import ModalSkeleton from "../ModalSkeleton"
 import BuyChipStable from "../BuyChipStable"
 
 const BuyTokensModal = (

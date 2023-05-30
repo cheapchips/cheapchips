@@ -50,6 +50,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             lg:h-7
             md:h-5
             rounded-md
+            animate-pulse
         `,
         profileMainContentCtn: `
             grid grid-flow-col grid-cols-[1fr,1fr,1fr]
@@ -71,15 +72,12 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             aspect-square
             overflow-hidden
         `,
+        profileIconCtnInactive: `
+            animate-pulse
+        `,
         profileIcon: `
             rounded-full
             p-2
-        `,
-        profileIconInactive: `
-            w-12 h-12
-            bg-lightBgActive
-            dark:bg-darkBgActive
-            rounded-full
         `,
         profileBalancesCtn: `
             grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
@@ -121,7 +119,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             px-1 break-normal truncate
         `,
         profileSecondaryContentInactive: `
-            w-full h-5 rounded-md
+            w-full h-5 rounded-md animate-pulse
         `,
         profileSecondaryContentTitle: `
         `,
@@ -139,6 +137,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             lg:h-6
             md:h-2
             place-self-center
+            animate-pulse
         `,
         profileSecondaryContentDetailsBtn: `
             lg:px-6 py-px
@@ -167,6 +166,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
         `,
         inactiveBalanceText: `
             w-1/4 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive
+            animate-pulse
         `,
     }
 
@@ -189,9 +189,14 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             <div className={profileStyles.profileMainContentCtn}>
                 
                 {/* Profile icon */}
+                {active
+                ?
                 <div className={profileStyles.profileIconCtn}>
-                    {active ? <Blockies seed={web3.address!} className={profileStyles.profileIcon} size={24}/> : <div className="w-12 h-12 dark:bg-darkBgActive rounded-full"></div>}
+                    {active ? <Blockies seed={web3.address!} className={profileStyles.profileIcon} size={24}/> : <></>}
                 </div>
+                :
+                <div className={profileStyles.profileIconCtn + profileStyles.profileIconCtnInactive}></div>
+                }
                 
                 {/* Balance list */}
                 <div className={profileStyles.profileBalancesCtn}>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useTransition } from "react"
-import ModalSkeleton from "../Modal"
+import ModalSkeleton from "../ModalSkeleton"
 import Web3Context from "../../../contexts/Web3Context"
 import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"

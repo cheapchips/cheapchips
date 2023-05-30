@@ -35,6 +35,13 @@ import useModal from './hooks/useModal'
 import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
 import { ethers } from 'ethers'
 import Web3Context from './contexts/Web3Context'
+import ModalSkeleton from './components/logical/ModalSkeleton'
+
+
+
+
+import TransactionModal from './components/logical/modals/TransactionModal'
+import { TxStatus } from './types/useTransactionTypes'
 
 function App() {
 
@@ -50,11 +57,15 @@ function App() {
   // local states
   const [active, setActive] = useState(true)
   const [address, setAddress] = useState<string>()
-  
+
+  // test modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
   const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
   const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
+  
+  const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
+  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
 
   const [chipStable, setChipStable] = useState<ChipStable>()
   const [jackpot, setJackpot] = useState<ChipsJackpot>()
@@ -80,6 +91,19 @@ function App() {
       })()
     }
   }, [connected])
+
+  const testTxTransaction = () => {
+    setTxStatus("created")
+    setTimeout(() => {
+      setTxStatus("denied")
+    }, 4000);
+    setTimeout(() => {
+      setTxStatus("failed")
+    }, 10000)
+    setTimeout(() => {
+      setTxStatus("done")
+    }, 13000);
+  }
   
   if(loading){
     return <LoadingScreen />
@@ -95,6 +119,7 @@ function App() {
       
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
       {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
+      {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' txStatus={txStatus} onClickClose={toggleTransactionModalVisible} />}
 
       <MainWrapper>
 
@@ -131,12 +156,16 @@ function App() {
 
             <JackpotMainCtn>
 
-              <div className='flex flex-col gap-4 underline'>
+              <div className='flex flex-col gap-4 underline text-sm'>
 
                 <button onClick={() => setActive(!active)}>
                   <span className="font-content">Toggle active</span>
                 </button>
                 
+                <button onClick={() => {testTxTransaction(); toggleTransactionModalVisible()}}>
+                  <span className='font-content'>Tx modal</span>
+                </button>
+
                 <button onClick={() => toggleTutorialVisible()}>
                   <span className='font-content'>Tutorial modal</span>
                 </button>

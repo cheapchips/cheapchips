@@ -1,5 +1,5 @@
 import JackpotArchiveInfoModalProps from "../../../proptypes/JackpotArchiveInfoModalProps"
-import ModalSkeleton from "../Modal"
+import ModalSkeleton from "../ModalSkeleton"
 
 
 

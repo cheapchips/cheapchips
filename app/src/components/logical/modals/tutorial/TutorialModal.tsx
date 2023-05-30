@@ -1,6 +1,6 @@
 import { useState } from "react"
 import SvgIcon from "../../../layout/SvgIcon"
-import ModalSkeleton from "../../Modal"
+import ModalSkeleton from "../../ModalSkeleton"
 
 const TutorialModal = (
     props: {
