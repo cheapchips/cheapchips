@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
@@ -17,181 +17,213 @@ import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
-import TutorialModal from './components/logical/TutorialModal'
+import TutorialModal from './components/logical/modals/tutorial/TutorialModal'
+
+// modals
+import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
+import InstallMetamaskModal from './components/logical/modals/InstallMetamaskModal'
+import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
 
 // hooks
 import useConnectWallet from './hooks/useConnectWallet'
 import useDeposit from './hooks/useDeposit'
 import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
-import useModal from './hooks/useModal'
+import useModal from './hooks/useModal' 
 
 // contracts
-// import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory} from "../../contracts/typechain-types"
+import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
+import { ethers } from 'ethers'
+import Web3Context from './contexts/Web3Context'
+import ModalSkeleton from './components/logical/ModalSkeleton'
+
+
+
+
+import TransactionModal from './components/logical/modals/TransactionModal'
+import { TxStatus } from './types/useTransactionTypes'
 
 function App() {
 
-  const [connected, provider, signer, connect] = useConnectWallet()
+  const web3 = useContext(Web3Context)
+
+  const [metamask, connected, provider, signer, connect] = useConnectWallet()
   const [theme, toggleTheme] = useTheme()
   const loading = useLoadingScreen()
   const depositData = useDeposit()
-  const [
-    depositAmount,
-    defaultDepositAmount,
-    minDepositAmount,
-    maxDepositAmount,
-    handleDepositPercentage,
-    handleDepositInput,
-    handleDepositTx
-  ] = depositData
-  const [modalVisible, toggleModalVisible] = useModal()
-  const [modalSize, setModalSize] = useState<"Big" | "Medium" | "Small">("Small")
+  const [depositAmount, defaultDepositAmount, minDepositAmount, maxDepositAmount, handleDepositPercentage, handleDepositInput, handleDepositTx] = depositData
+  
   
   // local states
   const [active, setActive] = useState(true)
   const [address, setAddress] = useState<string>()
 
-  const [chipsBalance, setChipsBalance] = useState<number>()
-  // const [jackpot, setJackpot] = useState<ChipsJackpot>()
+  // test modals
+  const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
+  const [tutorialVisible, toggleTutorialVisible] = useModal()
+  const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
+  const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
+  
+  const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
+  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
 
-  // useEffect(() => {
-  //   if(connected && provider && signer){
-  //     (async() => {
-  //       const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", provider)
-  //       const address = await signer.getAddress()
-  //       console.log(address)
-  //       setAddress(address)
-  //       setChipsBalance((await chip.balanceOf(address)).toNumber())
-  //       const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", provider)
-  //       setJackpot(jackpot)
+  const [chipStable, setChipStable] = useState<ChipStable>()
+  const [jackpot, setJackpot] = useState<ChipsJackpot>()
+  const [linkToken, setLinkToken] = useState<LinkTokenInterface>()
+  const [chipStableBalance, setChipStableBalance] = useState<string>()
+  const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
 
-  //       console.log(await jackpot.getRoundData(0))
-  //     })()
-  //   }
-  // }, [connected])
+  useEffect(() => {
+    if(connected && provider && signer){
+      (async() => {
 
+        const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
+        const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
+        const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
+        const address = await signer.getAddress()
+        
+        setChipStableBalance((await chip.balanceOf(address)).toNumber().toString())
+        setLinkTokenBalance(ethers.utils.formatUnits((await linkToken.balanceOf(address)),"ether"))
+        setAddress(address)
+        setJackpot(jackpot)
+        setLinkToken(linkToken)
+        
+      })()
+    }
+  }, [connected])
+
+  const testTxTransaction = () => {
+    setTxStatus("created")
+    setTimeout(() => {
+      setTxStatus("submitted")
+    }, 4000);
+    setTimeout(() => {
+      setTxStatus("denied")
+    }, 8000);
+    setTimeout(() => {
+      setTxStatus("failed")
+    }, 12000)
+    setTimeout(() => {
+      setTxStatus("done")
+    }, 16000);
+  }
   
   if(loading){
     return <LoadingScreen />
   }
+  // if(networkId !== NETWORK_ID){
+  //   return <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />
+  // }
+  if(!metamask){
+    return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
+  }
   return (
-    <>
-
-    {/* {modalVisible ?  <Modal title="Test modal" size={modalSize} onClickClose={toggleModalVisible}>Test</Modal> : <></>} */}
-    {modalVisible
-      ?
-        <TutorialModal pages={3} title='Tutorial' size="Medium" onClickClose={toggleModalVisible} />
-      :
-        ""
-    }
-
-    <MainWrapper>
-
-      <Navbar
-        theme={theme}
-        themeBtnOnClick={() => toggleTheme()}
-        walletConnected={connected}
-        connectWalletProps={{
-          onClickFunction: connect,
-          text: "CONNECT WALLET",
-          clickable: true,
-          active: true
-        }}
-      />
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
       
-      <Panel panelType='side'>
+      {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
+      {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
+      {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' txStatus={txStatus} onClickClose={toggleTransactionModalVisible} />}
 
-        <LobbyHeader
-          playerCount={42}
-          maxPlayerCount={100}
-          timeTillRaffleStartPercentage={44}
-          lobbyId='0'
-          active={active}
+      <MainWrapper>
+
+        <Navbar
+          theme={theme}
+          themeBtnOnClick={() => toggleTheme()}
+          walletConnected={connected}
+          connectWalletProps={{
+            onClickFunction: connect,
+            clickable: !connected,
+            active: !connected
+          }}
         />
+        
+        <Panel panelType='side'>
 
-        <LobbyCtn>
-
-        </LobbyCtn>
-
-      </Panel>
-      
-      <Panel panelType='main'>
-
-        <MainContentCtn>
-
-          <JackpotMainCtn>
-            <button onClick={() => setActive(!active)}>
-              <span className="text-xxs">Toggle active</span>
-              <br />
-              <span>{depositAmount}</span>
-            </button>
-            <br />
-
-            <button onClick={() => {setModalSize("Small"); toggleModalVisible()}}>
-              <span className='text-xxs'>Modal small</span>
-            </button>
-            
-            <button onClick={() => {setModalSize("Medium"); toggleModalVisible()}}>
-              <span className='text-xxs'>Modal medium</span>
-            </button>
-            
-            <button onClick={() => {setModalSize("Big"); toggleModalVisible()}}>
-              <span className='text-xxs'>Modal big</span>
-            </button>
-            
-          </JackpotMainCtn>
-
-          <JackpotBottomCtn>
-            <Deposit
-              active={active}
-              depositData={depositData}
-            />
-          </JackpotBottomCtn>
-
-          <JackpotBottomCtn>
-            <JackpotInfo
-              active={active}
-              prizePool={215}
-              jackpotRoundId={2}
-              playerCount={42}
-              maxPlayerCount={100}
-              maxDepositAmount={5}
-              timeLeftTillJackpot={92}
-              maxTimeLeftTillJackpot={120}
-            />
-          </JackpotBottomCtn>
-         
-        </MainContentCtn>
-
-      </Panel>
-
-      <Panel panelType='side'>
-
-          {(!address || !chipsBalance)
-          ? 
-            <ProfileHeader 
-              active={false}
-              address=''
-              chipsBalance={0}
-              linkBalance={0}
-            />
-          :
-            <ProfileHeader
-              active={active}
-              address={address!}
-              chipsBalance={chipsBalance!}
-              linkBalance={12}
-            />
-          }
-
-          <JackpotArchives
+          <LobbyHeader
+            playerCount={42}
+            maxPlayerCount={100}
+            timeTillRaffleStartPercentage={44}
+            lobbyId='0'
             active={active}
           />
-          
-      </Panel>
 
-    </MainWrapper>
-    </>
+          <LobbyCtn>
+
+          </LobbyCtn>
+
+        </Panel>
+        
+        <Panel panelType='main'>
+
+          <MainContentCtn>
+
+            <JackpotMainCtn>
+
+              <div className='flex flex-col gap-4 underline text-sm'>
+
+                <span>{metamask.toString()}</span>
+
+                <button onClick={() => setActive(!active)}>
+                  <span className="font-content">Toggle active</span>
+                </button>
+                
+                <button onClick={() => {testTxTransaction(); toggleTransactionModalVisible()}}>
+                  <span className='font-content'>Tx modal</span>
+                </button>
+
+                <button onClick={() => toggleTutorialVisible()}>
+                  <span className='font-content'>Tutorial modal</span>
+                </button>
+
+                <button onClick={() => toggleBuyTokensVisible()}>
+                  <span className='font-content'>Buy tokens modal</span>
+                </button>
+
+              </div>
+
+              
+
+            </JackpotMainCtn>
+
+            <JackpotBottomCtn>
+              <Deposit
+                active={active}
+                depositData={depositData}
+              />
+            </JackpotBottomCtn>
+
+            <JackpotBottomCtn>
+              <JackpotInfo
+                active={active}
+                prizePool={215}
+                jackpotRoundId={2}
+                playerCount={42}
+                maxPlayerCount={100}
+                maxDepositAmount={5}
+                timeLeftTillJackpot={92}
+                maxTimeLeftTillJackpot={120}
+              />
+            </JackpotBottomCtn>
+          
+          </MainContentCtn>
+
+        </Panel>
+
+        <Panel panelType='side'>
+
+            <ProfileHeader
+              onClickMyDetails={() => console.log(123)} // make a modal for this later
+              onClickBuyBalance={toggleBuyTokensVisible}
+            />
+
+            <JackpotArchives
+              active={active}
+            />
+            
+        </Panel>
+
+      </MainWrapper>
+    </Web3Context.Provider>
   )
 }
 

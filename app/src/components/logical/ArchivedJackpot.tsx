@@ -90,7 +90,7 @@ const ArchivedJackpot = (props: {
             <span className={archivedJackpotStyles.jackpotGameMiddleRow}>
                 <span className={archivedJackpotStyles.jackpotGameTextTitle}>Ended: <span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentBlue}>{props.endTime}</span></span>
                 <div className={archivedJackpotStyles.jackpotDetailsBtn}>
-                    <span>. . .</span>
+                    <span>...</span>
                 </div>
             </span>
             <span className={archivedJackpotStyles.jackpotGameTextTitle}>Id:

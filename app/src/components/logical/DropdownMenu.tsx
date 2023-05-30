@@ -15,7 +15,7 @@ const DropdownMenu = (props:NavbarDropdownProps) => {
         `,
         dropdownCtn: `
             absolute flex flex-col
-            w-24 h-fit
+            w-34 h-fit
             mt-8
             lg:mt-8
             md:mt-7
@@ -26,6 +26,8 @@ const DropdownMenu = (props:NavbarDropdownProps) => {
             dark:border-darkBorder
             shadow-md border
             overflow-hidden
+            z-50
+            drop-shadow-2xl
         `,
         dropdownBtn: `
             text-lightText
@@ -45,6 +47,8 @@ const DropdownMenu = (props:NavbarDropdownProps) => {
             hover:bg-lightBgActive
             dark:hover:bg-darkBgActive
             hover:text-accentColor
+            transition ease-in-out
+            hover:scale-105
         `,
     }
 

@@ -8,7 +8,14 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        content: ["Roboto mono"]
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
       screens: {
+        'sm': {'max': '767px'},
       },
       colors: {
         'darkMainWrapperFrom': '#0c2159',

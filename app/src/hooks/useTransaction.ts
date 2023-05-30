@@ -1,13 +1,6 @@
 import { Contract, ContractFunction, ContractTransaction, Overrides, Signer, ethers } from "ethers"
-import { Logger } from "ethers/lib/utils"
 import { useEffect, useState } from "react"
-
-
-
-type TxStatus = "nonexist" | "created" | "denied" | "submitted" | "done" | "failed"
-
-type PerformType = <T extends ContractFunction>(transaction: T, ...args: Parameters<T>) => Promise<void>
-
+import { TxStatus, PerformType } from "../types/useTransactionTypes"
 
 export default function useTrasaction():[TxStatus, PerformType]{
     
@@ -16,7 +9,7 @@ export default function useTrasaction():[TxStatus, PerformType]{
 
     useEffect(() => {
         //debug
-        console.log(status)
+        // console.log(status)
     }, [status])
 
 
@@ -31,6 +24,7 @@ export default function useTrasaction():[TxStatus, PerformType]{
             // console.log(tx)
             
         } catch (error: any) {
+            console.log(error)
             if(error.code === 4001) setStatus("denied")
             if(error.code === -32603) setStatus("failed")
             else setStatus("failed")

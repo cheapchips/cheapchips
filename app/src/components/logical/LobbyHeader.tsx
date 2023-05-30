@@ -9,6 +9,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
+            font-content
         `,
         titleCtn: `
             w-full grid grid-cols-2
@@ -33,7 +34,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             dark:bg-darkBgActive
             rounded-md
             border
-            ${props.active ? "border-lightBorder dark:border-darkBorder" : "border-lightBgActive dark:border-darkBgActive"}
+            ${props.active ? "border-lightBorder dark:border-darkBorder" : "border-lightBgActive dark:border-darkBgActive animate-pulse"}
         `,
         playerInfoBar:`
             h-2.5 rounded-md
@@ -57,6 +58,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
             rounded-md
             w-1/2 h-7
             p-1
+            animate-pulse
         `,
         textLobbyId:`
             font-normal
@@ -70,6 +72,7 @@ const LobbyHeader = (props:LobbyHeaderProps) => {
         textInactive: `
             rounded-md
             w-1/3 h-6
+            animate-pulse
         `,
         inactiveBg: `
             bg-lightBgActive

@@ -11,6 +11,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
+            font-content
         `,
         titleCtn: `
             flex w-full h-fit
@@ -33,6 +34,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-7
             md:h-3
             rounded-md
+            animate-pulse
         `,
         infoCtn: `
             w-full grid grid-cols-3 h-fit
@@ -68,6 +70,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-6
             md:h-4
             rounded-md
+            animate-pulse
         `,
         poolBarCtn: `
             flex flex-col
