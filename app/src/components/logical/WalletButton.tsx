@@ -8,8 +8,10 @@ const WalletButton = (props:ButtonProps) => {
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-600 to-yellow-300
             active:opacity-75
             py-2 px-4 mx-1
-            rounded-md shadow-inner drop-shadow-md
+            rounded-md
             flex content-center
+            transition ease-in-out
+            hover:scale-110
         `,
         buttonInactive: `
             flex justify-center items-center
@@ -20,19 +22,17 @@ const WalletButton = (props:ButtonProps) => {
             border
             border-lightBorder
             dark:border-darkBorder
-            rounded-md shadow-inner drop-shadow-md
+            rounded-md
         `,
-
         text: `
             text-xs font-bold
-            text-white
+            text-white select-none
         `,
         textInactive: `
             text-lightText
             dark:text-darkText
             opacity-40
         `,
-
     }
     
     return (

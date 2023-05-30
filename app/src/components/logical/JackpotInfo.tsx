@@ -34,6 +34,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-7
             md:h-3
             rounded-md
+            animate-pulse
         `,
         infoCtn: `
             w-full grid grid-cols-3 h-fit
@@ -69,6 +70,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-6
             md:h-4
             rounded-md
+            animate-pulse
         `,
         poolBarCtn: `
             flex flex-col
@@ -89,6 +91,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             rounded-md
             lg:h-4
             md:h-2
+            animate-pulse
         `,
         poolBarPrize: ` 
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300

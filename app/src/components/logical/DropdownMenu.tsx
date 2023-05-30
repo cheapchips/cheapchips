@@ -47,6 +47,8 @@ const DropdownMenu = (props:NavbarDropdownProps) => {
             hover:bg-lightBgActive
             dark:hover:bg-darkBgActive
             hover:text-accentColor
+            transition ease-in-out
+            hover:scale-105
         `,
     }
 

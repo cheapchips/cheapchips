@@ -19,8 +19,8 @@ const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose
         `,
         createdTx: {
             metamaskLogo: `
-                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                animate-pulse
+                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                    animate-pulse
                 `,
             },
             submittedTx: {
@@ -34,14 +34,14 @@ const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose
             deniedTx: {
                 icon: `
                     xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    dark:fill-red-500
+                    fill-red-500 dark:fill-red-500
                     animate-pulse
                 `,
             },
             failedTx: {
                 icon: `
                     xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    fill-red-500
+                    fill-red-500 dark:fill-red-500
                     animate-pulse
                 `,
             },

@@ -48,9 +48,10 @@ const Navbar = (props:NavbarProps) => {
         `,
         contentButton: `
             active:opacity-75
-        `,
-        contentBtnText: `
+            transition ease-in-out
+            hover:scale-110
             hover:text-accentColor
+            dark:hover:text-accentColor
         `,
         themeBtnCtn: `
             flex justify-center items-center
@@ -70,6 +71,8 @@ const Navbar = (props:NavbarProps) => {
             dark:hover:stroke-accentColor
             dark:hover:fill-accentColor
             stroke
+            transition ease-in-out
+            hover:scale-110
         `,
     }
 
@@ -132,7 +135,7 @@ const Navbar = (props:NavbarProps) => {
 
     const MainLinks = navMainLinksData.map((button, index) => 
         <button key={index} className={navbarStyles.contentText + navbarStyles.contentButton} onClick={() => window.open(button.url, "_self")}>
-            <span className={navbarStyles.contentBtnText}>{button.text}</span>
+            <span>{button.text}</span>
         </button>
     )
 

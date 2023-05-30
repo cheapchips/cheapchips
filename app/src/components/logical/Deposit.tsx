@@ -49,6 +49,7 @@ const Deposit = (props:DepositProps) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
+            animate-pulse
         `,
         chipsSelectorCtn: `
             xl:p-2
@@ -77,6 +78,7 @@ const Deposit = (props:DepositProps) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
+            animate-pulse
         `,
         chipsImgAndIndicatorCtn: `
             grid grid-flow-row
@@ -90,10 +92,12 @@ const Deposit = (props:DepositProps) => {
             md:w-4 md:h-3.5
             object-contain
             -rotate-6
+            transition ease-in-out
+            hover:scale-90
         `,
         chipsImgGreyedOut: `
-            opacity-[20%]
-            contrast-0
+            opacity-[23%]
+            contrast-20
         `,
         chipsImgBottomIndicator: `
             pt-1
@@ -130,6 +134,7 @@ const Deposit = (props:DepositProps) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
+            animate-pulse
         `,
         depositBtnCtn: `
             flex justify-center items-center h-full
@@ -149,6 +154,7 @@ const Deposit = (props:DepositProps) => {
             xl:h-8
             lg:h-6
             md:h-[120%]
+            active:opacity-80
         `,
         depositBtnInactive: `
             w-full
@@ -159,6 +165,7 @@ const Deposit = (props:DepositProps) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
+            animate-pulse
         `,
     }
 

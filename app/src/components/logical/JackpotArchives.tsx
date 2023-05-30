@@ -36,6 +36,7 @@ const JackpotArchives = (props:{active: boolean}) => {
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
+            animate-pulse
         `,
         jackpotCtn: `
             overflow-y-auto

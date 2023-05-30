@@ -64,16 +64,13 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
         profileIconCtn: `
             flex justify-center items-center content-center
             rounded-full
-            border
-            bg-lightBgActive
-            dark:bg-darkBgActive
-            border-lightBorder
-            dark:border-darkBorder
+            bg-lightBgActive dark:bg-darkBgActive
+            border border-lightBorder dark:border-darkBorder
             aspect-square
             overflow-hidden
         `,
         profileIconCtnInactive: `
-            animate-pulse
+            animate-pulse border-none
         `,
         profileIcon: `
             rounded-full
