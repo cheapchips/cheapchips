@@ -1,14 +1,13 @@
 import ModalSkeleton from "../ModalSkeleton";
-import { TxStatus } from "../../../types/useTransactionTypes";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useContext } from "react";
 import cheapChipsLogo from "../../../assets/logo.png";
 import metaMaskLogo from "../../../assets/metamask_logo.png";
 import SvgIcon from "../../layout/SvgIcon";
+import Web3Context from "../../../contexts/Web3Context";
 
-const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose:() => void}) => {
-
-    // TxStatus = "nonexist" | "created" | "denied" | "submitted" | "done" | "failed"
+const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
+    
+    const web3 = useContext(Web3Context)
 
     const styles = {
         ctn: `
@@ -54,25 +53,25 @@ const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose
     }
 
     useEffect(() => {
-        console.log(props.txStatus)
         handleStatus()
-    }, [props.txStatus])
+    }, [web3.tx.status])
     
     const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false)
+    const [visible, setVisible] = useState<boolean>(true)
     
     const handleStatus = () => {
-        if(props.txStatus === "done"){
+        console.log(web3.tx.status)
+        if(web3.tx.status === "done"){
             enableCloseBtn()
-            setTimeout(() => {props.onClickClose()}, 2500)
+            setTimeout(() => {setVisible(false)}, 2500)
         }
-        if(props.txStatus === ("denied" || "failed")){
+        if(web3.tx.status === "denied" || web3.tx.status === "failed"){
             enableCloseBtn(1500)
         }
     }
 
     const enableCloseBtn = (delay?:number) => {
         if(!delay) setCloseBtnVisible(true)
-        console.log(123)
         setTimeout(() => {
             setCloseBtnVisible(true)
         }, delay)
@@ -135,32 +134,33 @@ const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose
         )
     }
 
+    if(!visible) return <></>
     return (
-
-        <ModalSkeleton title={props.txTitle} size="Tx" onClickClose={props.onClickClose} closeBtnDisabled={!closeBtnVisible}>
+        web3.tx.status !== "nonexist" ?
+        <ModalSkeleton title={props.txTitle} size="Tx" onClickClose={() => setVisible(false)} closeBtnDisabled={!closeBtnVisible}>
             <div className={styles.ctn}>
                 {
-                    props.txStatus === "created" ? 
+                    web3.tx.status === "created" ? 
                     <CreatedTx />
                     :
-                    props.txStatus === "submitted" ?
+                    web3.tx.status === "submitted" ?
                     <SubmittedTx />
                     : 
-                    props.txStatus === "done" ? 
+                    web3.tx.status === "done" ? 
                     <DoneTx />
                     :
-                    props.txStatus === "failed" ?
+                    web3.tx.status === "failed" ?
                     <FailedTx />
                     :
-                    props.txStatus === "denied" ?
+                    web3.tx.status === "denied" ?
                     <DeniedTx />
                     :
                     <></>
                 }
             </div>
-
         </ModalSkeleton>
-
+        :
+        <></>
     )
 }
 

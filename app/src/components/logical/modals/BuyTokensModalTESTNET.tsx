@@ -6,7 +6,6 @@ import useLinkToken from "../../../hooks/useLinkToken"
 import chainlink_logo from "../../../assets/chainlink_logo.png"
 import TransactionModal from "./TransactionModal"
 
-
 const BuyTokensModalTESTNET = (
     props: {
         title: string,
@@ -14,7 +13,6 @@ const BuyTokensModalTESTNET = (
     }) => {
 
     const web3 = useContext(Web3Context)
-    const [txModalVisible, setTxModalVisible] = useState<boolean>(false)
     
     const styles = {
         // wrappers, layout only
@@ -143,11 +141,9 @@ const BuyTokensModalTESTNET = (
             if(!value || !web3.linkTokenBalance) return
             if(value > +web3.linkTokenBalance) return 
             if(allowance! < value){
-                setTxModalVisible(true)
                 writeLinkToken.approve(value)
                 return
             }
-            setTxModalVisible(true)
             writeJackpot.depositFees(value)
         }
 
@@ -169,10 +165,8 @@ const BuyTokensModalTESTNET = (
 
 
     return (
+        <>
         <ModalSkeleton {...props} size="Big" >
-
-            {/* {txModalVisible ? <TransactionModal txTitle="Test" txStatus={}} */}
-
             <div className={styles.wrapper}>
 
                 <VerticalContentPanel title="Get chips and LINK">
@@ -188,6 +182,8 @@ const BuyTokensModalTESTNET = (
 
             </div>
         </ModalSkeleton>
+        <TransactionModal txTitle="Test" onClickClose={() => {}}/>
+        </>
     )
 
 }

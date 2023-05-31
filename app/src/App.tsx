@@ -134,7 +134,7 @@ function App() {
 
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
       {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
-      {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' txStatus={txStatus} onClickClose={toggleTransactionModalVisible} />}
+      {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
 
       <MainWrapper>
 
