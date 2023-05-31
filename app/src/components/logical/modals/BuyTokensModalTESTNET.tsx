@@ -182,7 +182,7 @@ const BuyTokensModalTESTNET = (
 
             </div>
         </ModalSkeleton>
-        <TransactionModal txTitle="Test" onClickClose={() => {}}/>
+        <TransactionModal txTitle="Link Transaction" onClickClose={() => {}}/>
         </>
     )
 

@@ -80,11 +80,11 @@ function App() {
   useEffect(() => {
     if(connected && provider && signer && correctNetwork){
       (async() => {
-        
         const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
         const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
         const address = await signer.getAddress()
+        console.log(address)
         
         setChipStableBalance((await chip.balanceOf(address)).toNumber().toString())
         setLinkTokenBalance(ethers.utils.formatUnits((await linkToken.balanceOf(address)),"ether"))
@@ -94,7 +94,7 @@ function App() {
         
       })()
     }
-  }, [connected])
+  }, [correctNetwork])
   
   const testTxTransaction = () => {
     setTxStatus("created")
@@ -112,9 +112,6 @@ function App() {
     }, 16000);
   }
 
-  useEffect(() => {
-    console.log(web3)
-  }, [web3])
   
   //test
   const winnerId = useRef<number>(-1)
@@ -129,7 +126,7 @@ function App() {
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash}, setTxStatus, setTxHash }}>
       
-      {!correctNetwork && <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />}
+      {connected && !correctNetwork && <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />}
       {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />}
 
       {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}

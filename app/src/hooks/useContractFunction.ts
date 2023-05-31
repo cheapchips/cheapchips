@@ -10,10 +10,7 @@ export default function useContractFunction<T extends ContractFunction>(transact
     
     const web3 = useContext(Web3Context)
 
-    useEffect(() => {
-        console.log(web3.tx)
-    }, [web3])
-
+    
     async function perform(...args: Parameters<T>){
         const {setTxHash, setTxStatus} = web3
         try {
