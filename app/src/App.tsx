@@ -1,12 +1,11 @@
 import './App.css'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
-import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
 import JackpotMainCtn from './components/layout/JackpotMainCtn'
 import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
@@ -40,6 +39,7 @@ import TransactionModal from './components/logical/modals/TransactionModal'
 import { TxStatus } from './types/useTransactionTypes'
 import Lobby from './components/logical/cc_testing/lobby/Lobby'
 import cheapchipsLogo from "./assets/logo.png"
+import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
 
 type Player = {
   readonly address: string
@@ -56,7 +56,6 @@ function App() {
   const loading = useLoadingScreen()
   const depositData = useDeposit()
   const [depositAmount, defaultDepositAmount, minDepositAmount, maxDepositAmount, handleDepositPercentage, handleDepositInput, handleDepositTx] = depositData
-  
   
   // local states
   const [active, setActive] = useState(true)
@@ -80,7 +79,7 @@ function App() {
   useEffect(() => {
     if(connected && provider && signer && correctNetwork){
       (async() => {
-
+        
         const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
         const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
@@ -95,7 +94,7 @@ function App() {
       })()
     }
   }, [connected])
-
+  
   const testTxTransaction = () => {
     setTxStatus("created")
     setTimeout(() => {
@@ -111,24 +110,14 @@ function App() {
       setTxStatus("done")
     }, 16000);
   }
-
-  const [players, setPlayers] = useState<Player[]>([
-        {
-            address: 'fgdsgdfgs',
-            ticketAmount: 2,
-            id: 0,
-        },
-        {
-            address: 'sdfdfdsf',
-            ticketAmount: 5,
-            id: 1,
-        },
-        {
-            address: 'fgdsgdffdssdfsdfgs',
-            ticketAmount: 1,
-            id: 2,
-        },
-    ])
+  
+  //test
+  const winnerId = useRef<number>(-1)
+  const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
+  const [playerCount, setPlayerCount] = useState<number>(0)
+  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+  const [players, setPlayers] = useState<Player[]>([])
+  // const iconSize = useResponsiveIconSize()
   
   if(loading){
     return <LoadingScreen />
@@ -155,42 +144,33 @@ function App() {
             active: !connected
           }}
         />
-        
-        <Panel panelType='side'>
 
-          <LobbyHeader
-            playerCount={42}
-            maxPlayerCount={100}
-            timeTillRaffleStartPercentage={44}
-            lobbyId='0'
-            active={active}
-          />
-
-          {/* <LobbyCtn> */}
-          
-            <Lobby playerCount={players.length} players={players} ticketImgSrc={cheapchipsLogo} maxTicketsPerPlayer={5} />
-          
-          {/* </LobbyCtn> */}
-
-        </Panel>
-        
-        <Panel panelType='main'>
-
-          <MainContentCtn>
-
-            <JackpotMainCtn>
-
-              <div className='flex flex-col gap-4 underline text-sm'>
+        <div className='absolute text-sm top-4 left-[33%] flex gap-4 underline border'> 
 
                 <button onClick={() => {
+                      const rand_addr = Math.random().toString(36).substring(2,9)
+                      const rand_ticket = Math.floor(Math.random() * (5 - 1 + 1) + 1)
                       const newPlayer = {
-                        address: 'fgdsgddffgs',
-                        ticketAmount: 2,
-                        id: 0,
+                        address: rand_addr,
+                        ticketAmount: rand_ticket,
+                        id: playerCount,
                       }
-                  setPlayers(players=>[...players, newPlayer])
-                }}>
+                      setPlayers(players=>[...players, newPlayer])
+                      setPlayerCount(playerCount + 1)
+                      setPlayersDeposit(playersDeposit + rand_ticket)
+                    }}
+                      >  
                   <span className="font-content">Add player</span>
+                </button>
+
+                <button onClick={() => {
+                  setJackpotAnimated(true)
+                  setTimeout(() => {
+                    winnerId.current = Math.floor(Math.random() * playerCount)
+                    console.log('winner ', winnerId.current)
+                  }, 4000)
+                  }}>
+                  <span className="font-content">Start jackpot</span>
                 </button>
 
                 <button onClick={() => setActive(!active)}>
@@ -210,9 +190,27 @@ function App() {
                 </button>
 
               </div>
+        
+        <Panel panelType='side'>
 
-              
+          <LobbyHeader
+            playerCount={players.length}
+            maxPlayerCount={100}
+            timeTillRaffleStartPercentage={44}
+            lobbyId='0'
+            active={players.length > 0}
+          />
 
+          {players.length > 0 && <Lobby playerCount={players.length} players={players} ticketImgSrc={cheapchipsLogo} maxTicketsPerPlayer={5} />}
+
+        </Panel>
+        
+        <Panel panelType='main'>
+
+          <MainContentCtn>
+
+            <JackpotMainCtn>
+              {players.length > 0 && <Jackpot players={players} winnerId={winnerId} animated={jackpotAnimated} />}
             </JackpotMainCtn>
 
             <JackpotBottomCtn>
@@ -225,9 +223,9 @@ function App() {
             <JackpotBottomCtn>
               <JackpotInfo
                 active={active}
-                prizePool={215}
-                jackpotRoundId={2}
-                playerCount={42}
+                prizePool={playersDeposit}
+                jackpotRoundId={0}
+                playerCount={players.length}
                 maxPlayerCount={100}
                 maxDepositAmount={5}
                 timeLeftTillJackpot={92}

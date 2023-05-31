@@ -18,13 +18,14 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             flex flex-col
             justify-start
             self-center place-self-center z-50
-            bg-lightBg
-            dark:bg-darkBg
+            bg-lightBg/30
+            dark:bg-darkBg/30
             border
             border-lightBorder
             dark:border-darkBorder
             rounded-md
             z-50
+            backdrop-blur-sm
             ${props.size === "Big" ? `
                 w-3/5 h-[90%]
             `

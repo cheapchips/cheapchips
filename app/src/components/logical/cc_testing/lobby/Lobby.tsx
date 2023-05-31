@@ -18,7 +18,7 @@ const Lobby = (props: LobbyProps) => {
 
     const styles = {
         ctn: `
-            flex flex-col justify-start items-start
+            flex flex-col justify-start
             overflow-y-auto
         `,
     }

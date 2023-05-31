@@ -123,10 +123,10 @@ const JackpotInfo = (props:JackpotInfoProps) => {
                 ?
                     <>
                     <span className={jackpotInfoStyles.infoTitle}>Prize pool:
-                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValuePrizePool}>{props.prizePool} / {props.maxPlayerCount * props.maxDepositAmount}</span>
+                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValuePrizePool}>{props.prizePool}/{props.maxPlayerCount * props.maxDepositAmount}</span>
                     </span>
                     <span className={jackpotInfoStyles.infoTitle}>Game starts in:
-                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValueTimer}>{props.timeLeftTillJackpot} s</span>
+                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValueTimer}>{props.timeLeftTillJackpot}s</span>
                     </span>
                     <span className={jackpotInfoStyles.infoTitle}>Round id:
                         <span className={jackpotInfoStyles.infoValue}>{props.jackpotRoundId}</span>
