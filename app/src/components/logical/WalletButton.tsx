@@ -32,6 +32,7 @@ const WalletButton = (props:ButtonProps) => {
             text-lightText
             dark:text-darkText
             opacity-40
+            select-none
         `,
     }
     

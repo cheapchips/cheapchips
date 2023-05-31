@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import PlayerList from './PlayerList'
 import useResponsiveIconSize from '../../../../hooks/useReponsiveIconSize'
+import JackpotContext from '../../../../contexts/JackpotContext'
+import Web3Context from '../../../../contexts/Web3Context'
 import _ from 'lodash'
 
 type Player = {
@@ -10,7 +12,7 @@ type Player = {
 }
 
 type JackpotProps = {
-  readonly players: Player[]
+  // readonly players: Player[]
   readonly winnerId: React.MutableRefObject<number>
   readonly animated: boolean
 }
@@ -21,36 +23,16 @@ const Jackpot = (props:JackpotProps) => {
   const [rafflePlayersCopy, setRafflePlayersCopy] = useState<Player[]>([])
   const [animationIteration, setAnimationIteration] = useState<number>(0)
   const [runEndingAnimation, setRunEndingAnimation] = useState<boolean>(false)
-  const iconSize = useResponsiveIconSize(rafflePlayers.length)
-
-  const styles = {
-    container: `
-        flex gap-2 items-center w-5/6 h-3/4
-        border border-lightBorder dark:border-darkBorder
-        rounded-md
-        overflow-hidden
-        backdrop-blur-3xl
-        bg-transparent
-        jackpot_center_bar_light
-        dark:jackpot_center_bar_dark
-    `,
-    glassCtn: `
-      absolute
-      w-full h-full
-      backdrop-blur-3xl
-      opacity-50
-    `,
-    players: `
-        flex h-fit gap-2
-        ${props.animated ? 'jackpot_anim' : ''}
-        ${runEndingAnimation ? 'jackpot_anim_ending' : ''}
-    `,
-  }
-
+  
+  const iconSize = useResponsiveIconSize()
+  const jackpotContext = useContext(JackpotContext)
+  const web3 = useContext(Web3Context)
+  
   useEffect(() => {
-    if (!props.players) return
+    console.log('xd', web3.address, jackpotContext.players, jackpotContext.endDepositTime)
+    if (!web3.address || !jackpotContext.players || !jackpotContext.endDepositTime) return
     setupPlayerArrays()
-  }, [props.players])
+  }, [web3, jackpotContext])
 
   useEffect(() => {
     if (props.winnerId.current === -1) return
@@ -59,7 +41,7 @@ const Jackpot = (props:JackpotProps) => {
   }, [animationIteration])
 
   function setupPlayerArrays(): void {
-    const propsPlayersHardCopy = _.cloneDeep(props.players)
+    const propsPlayersHardCopy = _.cloneDeep(jackpotContext.players!)
     shuffleArray(propsPlayersHardCopy)
     setRafflePlayers(propsPlayersHardCopy)
     setRafflePlayersCopy(propsPlayersHardCopy)
@@ -76,10 +58,34 @@ const Jackpot = (props:JackpotProps) => {
   }
 
   function handleWinner(): void {
-    const winnerPlayer = props.players.find((player) => player.id === props.winnerId.current)
+    const winnerPlayer = jackpotContext.players!.find((player) => player.id === props.winnerId.current)
     const tempCopy = _.cloneDeep(rafflePlayersCopy)
     tempCopy[4] = winnerPlayer!
     setRafflePlayersCopy(tempCopy)
+  }
+
+  const styles = {
+    container: `
+        flex gap-2 items-center w-5/6 h-3/4
+        border border-lightBorder dark:border-darkBorder
+        rounded-md
+        overflow-hidden
+        backdrop-blur-3xl
+        bg-transparent
+        jackpot_center_bar_light
+        dark:jackpot_center_bar_dark
+    `,
+    glassCtn: `
+      absolute
+      w-full h-full
+      opacity-50
+      backdrop-blur-3xl
+    `,
+    players: `
+        flex h-fit gap-2
+        ${props.animated ? 'jackpot_anim' : ''}
+        ${runEndingAnimation ? 'jackpot_anim_ending' : ''}
+    `,
   }
 
   const RafflePlayerList = (props: { players: Player[], playerIconSize: number}) => {

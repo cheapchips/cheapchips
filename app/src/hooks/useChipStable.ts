@@ -1,36 +1,23 @@
-import { useState } from "react";
-import { ChipStable, ChipsJackpot } from "../../../contracts/typechain-types";
-import useTrasaction from "./useContractFunction";
+import { useState, useContext } from "react";
+import useContractFunction from "./useContractFunction";
 import { etherToWei, weiToEther } from "./utils/convertion";
+import Web3Context from "../contexts/Web3Context";
 
 
-export default function useChipStable():[(stableContract:ChipStable, jackpotContract:ChipsJackpot) => void, any, any]{
+export default function useChipStable():[any, any]{
 
-    const [contract, setContract] = useState<ChipStable>()
-    const [jackpot, setJackpot] = useState<ChipsJackpot>()
-
-    const [txStatus, performTx] = useTrasaction()
-
-
+    const web3 = useContext(Web3Context)
+    
+    const [performApproveTx] = useContractFunction(web3.chipStable!.approve)    
 
     function approve(amount:number){
-        if(!contract || !jackpot) return
-        performTx(contract.approve, jackpot?.address, etherToWei(amount))
+        performApproveTx(web3.jackpot!.address, etherToWei(amount))
     }
 
     async function checkAllowance(){
-        if(!contract || !jackpot) return
-        const addresss = await contract.signer.getAddress()
-        return (await contract?.allowance(addresss, jackpot.address)).toString()
+        return (await web3.chipStable!.allowance(web3.address!, web3.jackpot!.address)).toString()
     }
 
-
-    function setupContract(stableContract:ChipStable, jackpotContract:ChipsJackpot){
-        setContract(stableContract)
-        setJackpot(jackpotContract)
-    }
-
-
-    return [setupContract, {approve}, {checkAllowance}]
+    return [{approve}, {checkAllowance}]
     
 }

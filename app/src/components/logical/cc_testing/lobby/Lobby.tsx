@@ -1,20 +1,27 @@
+import useJackpot from '../../../../hooks/useJackpot'
 import LobbyElement from './LobbyElement'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useState, useEffect, useContext } from "react"
+import Web3Context from '../../../../contexts/Web3Context'
+import JackpotContext from '../../../../contexts/JackpotContext'
+import useRound from '../../../../hooks/useRound'
 
-type Player = {
-  readonly address: string
-  readonly ticketAmount: number
-  readonly id: number
-}
+const Lobby = () => {
 
-type LobbyProps = {
-  readonly players: Player[]
-  readonly playerCount: number
-  readonly ticketImgSrc: string
-  readonly maxTicketsPerPlayer: number
-}
+    const [lobbyElementsRef] = useAutoAnimate()
+    const [,readJackpot] = useJackpot()
 
-const Lobby = (props: LobbyProps) => {
+    useRound()
+
+    const web3 = useContext(Web3Context)
+    const jackpotContext = useContext(JackpotContext)
+
+    useEffect(() => {
+        (async() => {
+            if(!jackpotContext) return
+            console.log(jackpotContext)
+        })()
+    }, [jackpotContext])
 
     const styles = {
         ctn: `
@@ -23,11 +30,9 @@ const Lobby = (props: LobbyProps) => {
         `,
     }
   
-    const uniquePlayers = Array.from(new Set(props.players))
-    const uniqueLobbyElements = uniquePlayers.map((player, index) => (
-        <LobbyElement player={player} maxTicketsPerPlayer={props.maxTicketsPerPlayer} key={index} />
+    const uniqueLobbyElements = jackpotContext.players!.map((player, index) => (
+        <LobbyElement player={player} maxTicketsPerPlayer={5} key={index} />
     ))
-    const [lobbyElementsRef] = useAutoAnimate()
 
     return (
         <div className={styles.ctn} ref={lobbyElementsRef}>

@@ -9,7 +9,6 @@ import Web3Context from "../contexts/Web3Context"
 export default function useContractFunction<T extends ContractFunction>(transaction: T):[PerformType<T>]{
     
     const web3 = useContext(Web3Context)
-
     
     async function perform(...args: Parameters<T>){
         const {setTxHash, setTxStatus} = web3

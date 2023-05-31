@@ -1,17 +1,22 @@
 import logo from "../../assets/logo.png"
-import DepositProps from "../../proptypes/DepositProps"
 import SvgIcon from "../layout/SvgIcon"
+import DepositProps from "../../proptypes/DepositProps"
+import useJackpot from "../../hooks/useJackpot"
+import { useState } from "react"
 
 const Deposit = (props:DepositProps) => {
 
-    const [depositAmount,
-    defaultDepositAmount,
-    minDepositAmount,
-    maxDepositAmount,
-    handleDepositPercentage,
-    handleDepositInput,
-    handleDepositTx] = props.depositData
+    // const [depositAmount,
+    // defaultDepositAmount,
+    // minDepositAmount,
+    // maxDepositAmount,
+    // handleDepositPercentage,
+    // handleDepositInput,
+    // handleDepositTx] = useDeposit()
+
     
+    const [writeJackpot] = useJackpot()
+
     const depositStyles = {
         ctn: `
             grid grid-flow-row
@@ -169,10 +174,35 @@ const Deposit = (props:DepositProps) => {
         `,
     }
 
+    const DEFAULT_DEPOSIT = 1
+    const MINIMUM_DEPOSIT = 1 // how to fix input and set this to 1 ?
+    const MAX_DEPOSIT = 5
+    const [depositAmount, setDepositAmount] = useState<number>(DEFAULT_DEPOSIT)
+
+    const handleDepositTx = (): void => {
+        if(depositAmount < MINIMUM_DEPOSIT || depositAmount > MAX_DEPOSIT || depositAmount === 0) return
+        console.log(writeJackpot)
+        writeJackpot.deposit(depositAmount)
+    }
+
+    const handleDepositInput = (value: number): void => {
+        // console.log(value)
+        if(value > MAX_DEPOSIT || value < MINIMUM_DEPOSIT) return
+        if(Number.isNaN(value)) return
+        setDepositAmount(value)
+    }
+
+    const handleDepositPercentage = (percentageValue:number): void => {
+        if(percentageValue > 100 || percentageValue < 1) return
+        const percVal = (percentageValue / 100) * MAX_DEPOSIT
+        console.log(percVal)
+        setDepositAmount(percVal)
+    }
+
     const chipsPercentages = [20, 40, 60, 80, 100]
     const DepositChips = chipsPercentages.map((percentage, index) =>
         <div key={index} onClick={() => handleDepositPercentage(percentage)}
-            className={(depositAmount >= ((percentage / 100) * maxDepositAmount))
+            className={(depositAmount >= ((percentage / 100) * MAX_DEPOSIT))
                     ? 
                         depositStyles.chipsImgAndIndicatorCtn
                     :
