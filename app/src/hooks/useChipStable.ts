@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChipStable, ChipsJackpot } from "../../../contracts/typechain-types";
-import useTrasaction from "./useTransaction";
+import useTrasaction from "./useContractFunction";
 import { etherToWei, weiToEther } from "./utils/convertion";
 
 

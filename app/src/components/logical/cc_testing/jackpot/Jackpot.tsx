@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PlayerList from './PlayerList'
 import useResponsiveIconSize from '../../../../hooks/useReponsiveIconSize'
-
 import _ from 'lodash'
 
 type Player = {
@@ -41,7 +40,6 @@ const Jackpot = (props:JackpotProps) => {
       backdrop-blur-3xl
       opacity-50
     `,
-      // ${(props.winnerId.current !== -1) ? "shadow-accentColor" : ""}
     players: `
         flex h-fit gap-2
         ${props.animated ? 'jackpot_anim' : ''}
@@ -61,8 +59,7 @@ const Jackpot = (props:JackpotProps) => {
   }, [animationIteration])
 
   function setupPlayerArrays(): void {
-    // const propsPlayersHardCopy = _.cloneDeep(props.players)
-    const propsPlayersHardCopy = structuredClone(props.players)
+    const propsPlayersHardCopy = _.cloneDeep(props.players)
     shuffleArray(propsPlayersHardCopy)
     setRafflePlayers(propsPlayersHardCopy)
     setRafflePlayersCopy(propsPlayersHardCopy)
@@ -80,8 +77,7 @@ const Jackpot = (props:JackpotProps) => {
 
   function handleWinner(): void {
     const winnerPlayer = props.players.find((player) => player.id === props.winnerId.current)
-    // const tempCopy = _.cloneDeep(rafflePlayersCopy)
-    const tempCopy = structuredClone(rafflePlayersCopy)
+    const tempCopy = _.cloneDeep(rafflePlayersCopy)
     tempCopy[4] = winnerPlayer!
     setRafflePlayersCopy(tempCopy)
   }

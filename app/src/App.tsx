@@ -36,7 +36,7 @@ import { ethers } from 'ethers'
 import Web3Context from './contexts/Web3Context'
 
 import TransactionModal from './components/logical/modals/TransactionModal'
-import { TxStatus } from './types/useTransactionTypes'
+import { TxHash, TxStatus } from './types/useTransactionTypes'
 import Lobby from './components/logical/cc_testing/lobby/Lobby'
 import cheapchipsLogo from "./assets/logo.png"
 import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
@@ -68,13 +68,14 @@ function App() {
   const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
   
   const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
-  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
-
   const [chipStable, setChipStable] = useState<ChipStable>()
   const [jackpot, setJackpot] = useState<ChipsJackpot>()
   const [linkToken, setLinkToken] = useState<LinkTokenInterface>()
   const [chipStableBalance, setChipStableBalance] = useState<string>()
   const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
+  
+  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
+  const [txHash, setTxHash] = useState<TxHash>("")
 
   useEffect(() => {
     if(connected && provider && signer && correctNetwork){
@@ -110,6 +111,10 @@ function App() {
       setTxStatus("done")
     }, 16000);
   }
+
+  useEffect(() => {
+    console.log(web3)
+  }, [web3])
   
   //test
   const winnerId = useRef<number>(-1)
@@ -117,13 +122,12 @@ function App() {
   const [playerCount, setPlayerCount] = useState<number>(0)
   const [playersDeposit, setPlayersDeposit] = useState<number>(0)
   const [players, setPlayers] = useState<Player[]>([])
-  // const iconSize = useResponsiveIconSize()
-  
+
   if(loading){
     return <LoadingScreen />
   }
   return (
-    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash}, setTxStatus, setTxHash }}>
       
       {!correctNetwork && <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />}
       {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />}
@@ -145,7 +149,7 @@ function App() {
           }}
         />
 
-        <div className='absolute text-sm top-4 left-[33%] flex gap-4 underline border'> 
+        <div className='absolute text-sm top-4 left-[23%] flex gap-4 underline border'> 
 
                 <button onClick={() => {
                       const rand_addr = Math.random().toString(36).substring(2,9)

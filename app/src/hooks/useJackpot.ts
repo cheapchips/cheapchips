@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { ChipsJackpot } from "../../../contracts/typechain-types";
-import useTrasaction from "./useTransaction";
+import useTrasaction from "./useContractFunction";
 import { etherToWei, weiToEther } from "./utils/convertion";
 import { BigNumber } from "ethers";
 import Web3Context from "../contexts/Web3Context";
+
 
 interface RoundData {
     id: number,
@@ -14,11 +15,14 @@ interface RoundData {
 }
 
 
-export default function useJackpot():[any, any, any]{
+export default function useJackpot():[any, any]{
 
     const web3 = useContext(Web3Context)
 
-    const [txStatus, performTx] = useTrasaction()
+    const [performDepositTx] = useTrasaction(web3.jackpot?.deposit!)
+    const [performDepositFeesTx] = useTrasaction(web3.jackpot?.depositFees!)
+    const [performCloseRoundTx] = useTrasaction(web3.jackpot?.closeRound!)
+
     const [contract, setContract] = useState<ChipsJackpot>()
 
     useEffect(() => {
@@ -29,7 +33,7 @@ export default function useJackpot():[any, any, any]{
 
     function depositFees(amount:number){
         if(!contract) return
-        performTx(contract.depositFees, etherToWei(amount))
+        performDepositFeesTx(etherToWei(amount))
     }
 
     async function checkFeesBalance(){
@@ -39,7 +43,7 @@ export default function useJackpot():[any, any, any]{
 
     function deposit(amount: number){
         if(!contract) return
-        performTx(contract.deposit, amount)
+        performDepositTx(amount)
     }
 
     async function getCurrentRoundId(){
@@ -76,12 +80,11 @@ export default function useJackpot():[any, any, any]{
 
     function closeRound(){
         if(!contract) return
-        performTx(contract.closeRound)
+        performCloseRoundTx()
     }
 
 
     return [
-        txStatus,
         {depositFees, deposit, closeRound}, 
         {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound}
     ]

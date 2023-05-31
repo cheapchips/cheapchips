@@ -1,18 +1,18 @@
 import { useContext } from "react";
-import useTrasaction from "./useTransaction";
 import { etherToWei, weiToEther } from "./utils/convertion";
 import Web3Context from "../contexts/Web3Context";
+import useContractFunction from "./useContractFunction";
 
-export default function useLinkToken():[any, any, any]{
+export default function useLinkToken():[any, any]{
 
     const web3 = useContext(Web3Context)
 
-    const [txStatus, performTx] = useTrasaction()
-
+    const [performApproveTx] = useContractFunction(web3.linkToken?.approve!)
+    
     function approve(amount:number){
         const {linkToken, jackpot} = web3
         if(!linkToken || !jackpot) return
-        performTx(linkToken.approve, jackpot.address, etherToWei(amount))
+        performApproveTx(jackpot.address, etherToWei(amount))
     }
 
     async function checkAllowance(){
@@ -30,7 +30,6 @@ export default function useLinkToken():[any, any, any]{
     }
 
     return [
-        txStatus,
         {approve},
         {checkAllowance, checkBalance}
     ]    

@@ -4,6 +4,8 @@ import Web3Context from "../../../contexts/Web3Context"
 import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"
 import chainlink_logo from "../../../assets/chainlink_logo.png"
+import TransactionModal from "./TransactionModal"
+
 
 const BuyTokensModalTESTNET = (
     props: {
@@ -12,6 +14,7 @@ const BuyTokensModalTESTNET = (
     }) => {
 
     const web3 = useContext(Web3Context)
+    const [txModalVisible, setTxModalVisible] = useState<boolean>(false)
     
     const styles = {
         // wrappers, layout only
@@ -113,18 +116,13 @@ const BuyTokensModalTESTNET = (
         const [val, setVal] = useState<number>()
         const [deposit, setDeposit] = useState<number>()
         const [allowance, setAllowance] = useState<number>()
-        const [linkTxStatus, writeLinkToken, readLinkToken] = useLinkToken()
-        const [jackpotTxStatus, writeJackpot, readJackpot] = useJackpot()
+        const [writeLinkToken, readLinkToken] = useLinkToken()
+        const [writeJackpot, readJackpot] = useJackpot()
         const [readyToDeposit, setReadyToDeposit] = useState<boolean>(false)
 
         useEffect(() => {
             update() // initial data fetch
         }, [readJackpot])
-
-        useEffect(() => {
-            // console.log(linkTxStatus)
-            update()
-        }, [linkTxStatus])
 
         const update = async () => {
             await getCurrentAllowance()
@@ -145,9 +143,11 @@ const BuyTokensModalTESTNET = (
             if(!value || !web3.linkTokenBalance) return
             if(value > +web3.linkTokenBalance) return 
             if(allowance! < value){
+                setTxModalVisible(true)
                 writeLinkToken.approve(value)
                 return
             }
+            setTxModalVisible(true)
             writeJackpot.depositFees(value)
         }
 
@@ -170,6 +170,9 @@ const BuyTokensModalTESTNET = (
 
     return (
         <ModalSkeleton {...props} size="Big" >
+
+            {/* {txModalVisible ? <TransactionModal txTitle="Test" txStatus={}} */}
+
             <div className={styles.wrapper}>
 
                 <VerticalContentPanel title="Get chips and LINK">

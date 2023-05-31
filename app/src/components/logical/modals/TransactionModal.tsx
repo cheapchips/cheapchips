@@ -155,7 +155,7 @@ const TransactionModal = (props:{txTitle:string, txStatus:TxStatus, onClickClose
                     props.txStatus === "denied" ?
                     <DeniedTx />
                     :
-                    ""
+                    <></>
                 }
             </div>
 
