@@ -14,7 +14,6 @@ const Lobby = () => {
     useEffect(() => {
         (async() => {
             if(!jackpotContext) return
-            console.log(jackpotContext)
         })()
     }, [jackpotContext])
 

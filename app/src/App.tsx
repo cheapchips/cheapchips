@@ -43,11 +43,15 @@ import { TxHash, TxStatus } from './types/useTransactionTypes'
 import Lobby from './components/logical/cc_testing/lobby/Lobby'
 import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
 import { Player } from './types/Player'
+import useTheme from './hooks/useTheme'
+import HoverSpawnModal from './components/logical/modals/HoverSpawnModal'
 
 function App() {
 
+  // hooks
   const [metamask, correctNetwork, connected, provider, signer, connect] = useConnectWallet()
   const loading = useLoadingScreen()
+  const [theme, toggleTheme] = useTheme()
 
   // test modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
@@ -75,6 +79,12 @@ function App() {
   const [prizePool, setPrizePool] = useState<number>()
   const [endDepositTime, setEndDepositTime] = useState<number>()
   const [endTime, setEndTime] = useState<number>()
+
+  //test
+  const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
+  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+
+  const [hoverSpawn, setHoverSpawn] = useState<boolean>(false)
 
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
@@ -118,10 +128,6 @@ function App() {
     }
   }, [correctNetwork])
   
-  //test
-  const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
-  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
-
   if(loading){
     return <LoadingScreen />
   }
@@ -136,12 +142,15 @@ function App() {
         {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
         {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
 
+        {hoverSpawn && <HoverSpawnModal parentElemId='test' placement='bottom' /> }
+
+
         <MainWrapper>
 
           <Navbar walletOnClick={connect} connected={connected} />
 
           {/* white testblock */}
-          <div className='absolute text-sm top-4 left-[23%] flex gap-4 underline border'> 
+          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' onMouseEnter={() => setHoverSpawn(true)} onMouseLeave={() => setHoverSpawn(false)}> 
 
                   <button onClick={() => {
                     

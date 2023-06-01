@@ -1,7 +1,14 @@
 import ModalSkeletonProps from "../../proptypes/ModalSkeletonProps"
 import SvgIcon from "../layout/SvgIcon"
+import { useEffect, useState } from "react"
 
 const ModalSkeleton = (props:ModalSkeletonProps) => {
+
+    const [spawned, setSpawned] = useState<boolean>(false)
+
+    useEffect(() => {
+        setSpawned(true)
+    }, [])
 
     const modalStyles = {
         fullscreenBg: `
@@ -12,6 +19,7 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             font-content select-none
             xl:text-sm lg:text-xxs md:text-xxxs sm:text-xxxxs
             ${props.customBg ? props.customBg : ""}
+            ${!props.fadeAnimationDisabled && spawned ? "fadein_anim" : ""}
         `,
         ctn: `
             absolute
@@ -27,16 +35,16 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             z-50
             backdrop-blur-sm
             ${props.size === "Big" ? `
-                w-3/5 h-[90%]
+            w-3/5 h-[90%]
             `
             : props.size === "Medium" ? `
-                w-1/3 h-2/3
+            w-1/3 h-2/3
             `
             : props.size === "Small" ? `
-                w-1/4 h-1/4
+            w-1/4 h-1/4
             `
             : props.size === "Tx" ? `
-                w-1/4 h-1/3
+            w-1/4 h-1/3
             `
             : ""
             }
@@ -73,7 +81,6 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
         `,
 
     }
-
 
     return (
         <div className={modalStyles.fullscreenBg}>

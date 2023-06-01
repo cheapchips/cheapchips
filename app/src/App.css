@@ -7,6 +7,10 @@
   color-scheme: dark;
 }
 
+.fadein_anim {
+  animation: fade-in ease-out .25s;
+}
+
 .jackpot_anim {
   animation: jackpot-anim var(--duration) linear infinite;
 }
@@ -33,4 +37,9 @@
   to {
     transform: translateX(-100%);
   }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

@@ -25,11 +25,11 @@ const BuyTokensModalTESTNET = (
             lg:text-xxs
             xl:text-sm
             font-content
-            `,
-            verticalContentWrapper: `
+        `,
+        verticalContentWrapper: `
             flex flex-col
-            `,
-            verticalContentTitle: `
+        `,
+        verticalContentTitle: `
             flex justify-center items-center
             px-2 py-4
             hover:transition-opacity duration-700

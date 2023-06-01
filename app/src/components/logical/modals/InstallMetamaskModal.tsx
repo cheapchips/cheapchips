@@ -1,7 +1,7 @@
 import ModalSkeleton from "../ModalSkeleton"
 import metamask_logo from "../../../assets/metamask_logo.png"
 
-const InstallMetamaskModal = (props:{onClickClose:() => void, closeBtnDisabled?:boolean}) => {
+const InstallMetamaskModal = (props:{onClickClose:() => void, closeBtnDisabled?: boolean, fadeAnimationDisabled?: boolean}) => {
 
     const styles = {
        installBg: `
@@ -29,7 +29,7 @@ const InstallMetamaskModal = (props:{onClickClose:() => void, closeBtnDisabled?:
     }
 
     return (
-        <ModalSkeleton title="Please install Metamask to continue!" size="Medium" customBg={styles.installBg} onClickClose={() => props.onClickClose()} closeBtnDisabled={props.closeBtnDisabled}>
+        <ModalSkeleton title="Please install Metamask to continue!" size="Medium" customBg={styles.installBg} fadeAnimationDisabled={true} {...props} >
             <div className={styles.ctn}>
                 <img className={styles.metamaskLogo} src={metamask_logo} alt="MetaMask" />
                 <button className={styles.button} onClick={() => installMetamask()}>Click here to install metamask</button>

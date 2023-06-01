@@ -1,4 +1,3 @@
-// import ProfileHeaderProps from "../../proptypes/ProfileHeaderProps"
 import Blockies from "react-blockies"
 import SvgIcon from "../layout/SvgIcon"
 import chipsLogo from "../../assets/logo.png"
@@ -166,7 +165,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             xl:w-4 xl:h-4 md:w-2 md:h-2
         `,
         inactiveBalanceText: `
-            w-1/4 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive
+            w-5/6 h-5/6 rounded-md bg-lightBgActive dark:bg-darkBgActive
             animate-pulse
         `,
     }

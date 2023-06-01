@@ -7,57 +7,56 @@ import Web3Context from "../../../contexts/Web3Context";
 
 const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
     
-    const web3 = useContext(Web3Context)
-
     const styles = {
         ctn: `
-            flex flex-col grow
-            justify-center items-center content-center
-            overflow-y-auto
-            p-2 gap-2
+        flex flex-col grow
+        justify-center items-center content-center
+        overflow-y-auto
+        p-2 gap-2
         `,
         createdTx: {
             metamaskLogo: `
-                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    animate-pulse
-                `,
-            },
-            submittedTx: {
-                icon: `
-                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    fill-lightBg dark:fill-darkBg
-                    stroke-[2] stroke-lightBorder dark:stroke-darkBorder
-                    animate-bounce-slow
-                `,
-            },
-            deniedTx: {
-                icon: `
-                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    fill-red-500 dark:fill-red-500
-                    animate-pulse
-                `,
-            },
-            failedTx: {
-                icon: `
-                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    fill-red-500 dark:fill-red-500
-                    animate-pulse
-                `,
-            },
-            doneTx: {
-                icon: `
-                    xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                    animate-bounce
+            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+            animate-pulse
+            `,
+        },
+        submittedTx: {
+            icon: `
+            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+            fill-lightBg dark:fill-darkBg
+            stroke-[2] stroke-lightBorder dark:stroke-darkBorder
+            animate-bounce-slow
+            `,
+        },
+        deniedTx: {
+            icon: `
+            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+            fill-red-500 dark:fill-red-500
+            animate-pulse
+            `,
+        },
+        failedTx: {
+            icon: `
+            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+            fill-red-500 dark:fill-red-500
+            animate-pulse
+            `,
+        },
+        doneTx: {
+            icon: `
+            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+            animate-bounce
                 `,
             }
-    }
-
+        }
+    
+    const web3 = useContext(Web3Context)
+    const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false)
+    const [visible, setVisible] = useState<boolean>(true)
+        
     useEffect(() => {
         handleStatus()
     }, [web3.tx.status])
-    
-    const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false)
-    const [visible, setVisible] = useState<boolean>(true)
     
     const handleStatus = () => {
         console.log(web3.tx.status)
@@ -69,20 +68,20 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
             enableCloseBtn(1500)
         }
     }
-
+    
     const enableCloseBtn = (delay?:number) => {
         if(!delay) setCloseBtnVisible(true)
         setTimeout(() => {
             setCloseBtnVisible(true)
         }, delay)
     }
-
+    
     const CreatedTx = () => {
         return (
-            <>
-                <img className={styles.createdTx.metamaskLogo} src={metaMaskLogo} alt="MetaMaskLogo" />
-                <span>Please confirm the transaction in Metamask!</span>
-            </>
+        <>
+            <img className={styles.createdTx.metamaskLogo} src={metaMaskLogo} alt="MetaMaskLogo" />
+            <span>Please confirm the transaction in Metamask!</span>
+        </>
         )
     }
     
