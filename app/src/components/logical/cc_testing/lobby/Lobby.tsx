@@ -9,11 +9,6 @@ import useRound from '../../../../hooks/useRound'
 const Lobby = () => {
 
     const [lobbyElementsRef] = useAutoAnimate()
-    const [,readJackpot] = useJackpot()
-
-    useRound()
-
-    const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
 
     useEffect(() => {

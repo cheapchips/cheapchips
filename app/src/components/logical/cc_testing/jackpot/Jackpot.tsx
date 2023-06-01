@@ -3,19 +3,9 @@ import PlayerList from './PlayerList'
 import useResponsiveIconSize from '../../../../hooks/useReponsiveIconSize'
 import JackpotContext from '../../../../contexts/JackpotContext'
 import Web3Context from '../../../../contexts/Web3Context'
+import { Player } from '../../../../types/Player'
+import { JackpotProps } from '../../../../proptypes/JackpotProps'
 import _ from 'lodash'
-
-type Player = {
-  readonly address: string
-  readonly ticketAmount: number
-  readonly id: number
-}
-
-type JackpotProps = {
-  // readonly players: Player[]
-  readonly winnerId: React.MutableRefObject<number>
-  readonly animated: boolean
-}
 
 const Jackpot = (props:JackpotProps) => {
     
@@ -23,14 +13,16 @@ const Jackpot = (props:JackpotProps) => {
   const [rafflePlayersCopy, setRafflePlayersCopy] = useState<Player[]>([])
   const [animationIteration, setAnimationIteration] = useState<number>(0)
   const [runEndingAnimation, setRunEndingAnimation] = useState<boolean>(false)
+  const [active, setActive] = useState<boolean>(false)
   
   const iconSize = useResponsiveIconSize()
   const jackpotContext = useContext(JackpotContext)
   const web3 = useContext(Web3Context)
   
   useEffect(() => {
-    console.log('xd', web3.address, jackpotContext.players, jackpotContext.endDepositTime)
-    if (!web3.address || !jackpotContext.players || !jackpotContext.endDepositTime) return
+    console.log(jackpotContext.players!.length)
+    if (!web3.address || !jackpotContext.endDepositTime || jackpotContext.players!.length === 0) return
+    setActive(true)
     setupPlayerArrays()
   }, [web3, jackpotContext])
 
@@ -65,15 +57,21 @@ const Jackpot = (props:JackpotProps) => {
   }
 
   const styles = {
-    container: `
-        flex gap-2 items-center w-5/6 h-3/4
-        border border-lightBorder dark:border-darkBorder
-        rounded-md
-        overflow-hidden
-        backdrop-blur-3xl
-        bg-transparent
-        jackpot_center_bar_light
-        dark:jackpot_center_bar_dark
+    ctn: `
+      flex gap-2 items-center w-5/6 h-3/4
+      border border-lightBorder dark:border-darkBorder
+      rounded-md
+      overflow-hidden
+      backdrop-blur-3xl
+      bg-transparent
+      jackpot_center_bar_light
+      dark:jackpot_center_bar_dark
+    `,
+    ctnInactive: `
+      flex justify-center items-center w-5/6 h-3/4
+      bg-lightBgActive dark:bg-darkBgActive
+      rounded-md
+      animate-pulse
     `,
     glassCtn: `
       absolute
@@ -82,9 +80,16 @@ const Jackpot = (props:JackpotProps) => {
       backdrop-blur-3xl
     `,
     players: `
-        flex h-fit gap-2
-        ${props.animated ? 'jackpot_anim' : ''}
-        ${runEndingAnimation ? 'jackpot_anim_ending' : ''}
+      flex h-fit gap-2
+      ${props.animated ? 'jackpot_anim' : ''}
+      ${runEndingAnimation ? 'jackpot_anim_ending' : ''}
+    `,
+    text: `
+      font-content
+      xl:text-lg
+      lg:text-xxs
+      md:text-xxxs
+      sm:text-xxxs
     `,
   }
 
@@ -97,10 +102,24 @@ const Jackpot = (props:JackpotProps) => {
   }
 
   return (
-    <div className={styles.container} id='jackpot_container'>
-        <RafflePlayerList players={rafflePlayers} playerIconSize={iconSize} />
-        <RafflePlayerList players={rafflePlayersCopy} playerIconSize={iconSize} />
-      <div className={styles.glassCtn}></div>
+    <div className={(active) ? styles.ctn : styles.ctnInactive} id='jackpot_container'>
+        {active
+        ?
+          <>
+            <RafflePlayerList players={rafflePlayers} playerIconSize={iconSize} />
+            <RafflePlayerList players={rafflePlayersCopy} playerIconSize={iconSize} />
+            <div className={styles.glassCtn}></div>
+          </>
+        :
+          <>
+          {web3.address
+          ?
+            <span className={styles.text}>Waiting for players...</span>
+          :
+            <></>
+          }
+          </>
+        }
     </div>
   )
 }

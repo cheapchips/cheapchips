@@ -5,15 +5,6 @@ import { useContext, useEffect, useState } from "react"
 
 const LobbyHeader = () => {
     
-    const jackpotContext = useContext(JackpotContext)
-    const web3 = useContext(Web3Context)
-    const [active, setActive] = useState<boolean>(false)
-    
-    useEffect(() => {
-        if(!web3.address || !jackpotContext.endDepositTime) return
-        setActive(true) //
-    }, [jackpotContext, web3])
-    
     const styles = {
         ctn: `
             flex flex-col gap-2
@@ -45,12 +36,19 @@ const LobbyHeader = () => {
             dark:bg-darkBgActive
             rounded-md
             border
-            ${active ? "border-lightBorder dark:border-darkBorder" : "border-lightBgActive dark:border-darkBgActive animate-pulse"}
+            border-lightBorder dark:border-darkBorder
+        `,
+        playerInfoBarBorderInactive: `
+            border-lightBgActive dark:border-darkBgActive animate-pulse
         `,
         playerInfoBar:`
             h-2.5 rounded-md
-            ${active ? "bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300" : ""}
+            bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
             shadow-sm
+        `,
+        playerInfoBarInactive: `
+            h-3 rounded-md
+            bg-lightBgActive dark:bg-darkBgActive
         `,
         lineCtn: `
             flex
@@ -91,6 +89,15 @@ const LobbyHeader = () => {
         `,
     }
 
+    const jackpotContext = useContext(JackpotContext)
+    const web3 = useContext(Web3Context)
+    const [active, setActive] = useState<boolean>(false)
+    
+    useEffect(() => {
+        if(!web3.address || !jackpotContext.endDepositTime) return
+        setActive(true)
+    }, [jackpotContext, web3])
+
     return (
 
         <div className={styles.ctn}>
@@ -123,9 +130,17 @@ const LobbyHeader = () => {
                         <span className={styles.lineCtn + styles.textInactive + styles.inactiveBg}></span>
                 }
                 <div className={styles.playerInfoBarCtn}>
-                    <div className={styles.playerInfoBarBorder}>
-                        <div style={{width: `${jackpotContext.numberOfPlayers}%`}} className={styles.playerInfoBar}></div>
-                    </div>
+                    {active
+                    ?
+                        <div className={styles.playerInfoBarBorder}>
+                            {/* needs a test run */}
+                            <div style={{width: `${((jackpotContext.numberOfPlayers! / jackpotContext.maxNumberOfPlayers!) * 100)}%`}} className={styles.playerInfoBar}></div>
+                        </div>
+                    :
+                        <div className={styles.playerInfoBarBorderInactive}>
+                            <div className={styles.playerInfoBarInactive}></div>
+                        </div>
+                    }
                 </div>
             </div>
         

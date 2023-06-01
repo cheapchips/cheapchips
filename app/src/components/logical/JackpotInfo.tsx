@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from "react" 
-import JackpotInfoProps from "../../proptypes/JackpotInfoProps"
 import SvgIcon from "../layout/SvgIcon"
 import JackpotContext from "../../contexts/JackpotContext"
 import Web3Context from "../../contexts/Web3Context"
 
-const JackpotInfo = (props:JackpotInfoProps) => {
+const JackpotInfo = () => {
 
     const styles = {
         mainCtn: `
@@ -37,7 +36,6 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-7
             md:h-3
             rounded-md
-            animate-pulse
         `,
         infoCtn: `
             w-full grid grid-cols-3 h-fit
@@ -73,7 +71,6 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-6
             md:h-4
             rounded-md
-            animate-pulse
         `,
         poolBarCtn: `
             flex flex-col
@@ -101,6 +98,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
         inactiveBg: `
             bg-lightBgActive
             dark:bg-darkBgActive
+            animate-pulse
         `,
     }
 
@@ -109,7 +107,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
     const [active, setActive] = useState<boolean>(false)
 
     useEffect(() => {
-        if(!web3.address || !jackpotContext.endDepositTime) return
+        if(!web3.address || !jackpotContext.endDepositTime || !jackpotContext.prizePool || !jackpotContext.maxNumberOfPlayers) return
         setActive(true)
     }, [web3, jackpotContext])
 
@@ -117,7 +115,8 @@ const JackpotInfo = (props:JackpotInfoProps) => {
         <div className={styles.mainCtn}>
             
             <div className={styles.titleCtn}>
-                {active ? 
+                {active
+                ? 
                     <span className={styles.titleText}>
                         <SvgIcon style="w-5 h-4" viewBox="0 0 122.88 101.67" pathD="M67.14,55.68h21.15c1.13,0,2.05,0.92,2.05,2.05v41.9c0,1.12-0.92,2.05-2.05,2.05l-21.15,0 c-1.12,0-2.05-0.92-2.05-2.05v-41.9C65.09,56.6,66.01,55.68,67.14,55.68L67.14,55.68z M2.05,0H23.2c1.13,0,2.05,0.93,2.05,2.05 v97.58c0,1.12-0.93,2.05-2.05,2.05H2.05c-1.12,0-2.05-0.92-2.05-2.05V2.05C0,0.92,0.92,0,2.05,0L2.05,0z M99.68,76.33h21.15 c1.13,0,2.05,0.93,2.05,2.05v21.25c0,1.12-0.92,2.05-2.05,2.05H99.68c-1.12,0-2.05-0.92-2.05-2.05V78.38 C97.64,77.25,98.56,76.33,99.68,76.33L99.68,76.33L99.68,76.33z M34.59,31.5h21.15c1.13,0,2.05,0.93,2.05,2.05v66.07 c0,1.12-0.93,2.05-2.05,2.05H34.59c-1.12,0-2.05-0.92-2.05-2.05V33.55C32.54,32.42,33.47,31.5,34.59,31.5L34.59,31.5z" />
                         <span>Round</span>

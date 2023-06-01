@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { etherToWei, weiToEther } from "./utils/convertion";
+import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
 import { BigNumber } from "ethers";
 import Web3Context from "../contexts/Web3Context";
 import useContractFunction from "./useContractFunction";

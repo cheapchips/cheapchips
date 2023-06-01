@@ -2,7 +2,7 @@ import ModalSkeleton from "../ModalSkeleton";
 import polygonLogo from "../../../assets/polygon-logo.png"
 
 
-const SwitchNetworkModal = (props:{onClickClose:() => void}) => {
+const SwitchNetworkModal = (props:{onClickClose:() => void, closeBtnDisabled?:boolean}) => {
 
     const styles = {
         ctn: `
@@ -40,7 +40,7 @@ const SwitchNetworkModal = (props:{onClickClose:() => void}) => {
     }
 
     return (
-        <ModalSkeleton title="Please switch your network" size="Medium" onClickClose={props.onClickClose}>
+        <ModalSkeleton title="Please switch your network" size="Medium" onClickClose={props.onClickClose} closeBtnDisabled={props.closeBtnDisabled}>
 
             <div className={styles.ctn}>
                 <img className={styles.polygonLogo} src={polygonLogo} alt="PolygonLogo" />

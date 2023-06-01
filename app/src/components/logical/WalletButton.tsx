@@ -39,7 +39,7 @@ const WalletButton = (props:ButtonProps) => {
     return (
         props.active
         ?
-        <button className={walletButtonStyles.button} onClick={() => walletButtonFunction!()}>
+        <button className={walletButtonStyles.button} onClick={async () => await walletButtonFunction!()}>
             <span className={walletButtonStyles.text}>CONNECT WALLET</span>
         </button>
         :

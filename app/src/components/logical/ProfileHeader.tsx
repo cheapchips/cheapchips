@@ -7,7 +7,7 @@ import { useContext } from "react"
 import Web3Context from "../../contexts/Web3Context"
 import { useState, useEffect } from "react"
 
-const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() => void}) => {
+const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
 
     const web3 = useContext(Web3Context)
     const [active, setActive] = useState<boolean>(false)
@@ -77,12 +77,11 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             p-2
         `,
         profileBalancesCtn: `
-            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
+            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2
             p-1
         `,
         profileBalancesContent: `
-            flex justify-start items-center gap-1 h-fit
-            flex-flow-col flex-wrap
+            grid grid-flow-col grid-cols-[50%,50%]
             font-semibold
             p-1
             border-b
@@ -92,6 +91,11 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             xl:text-xs
             lg:text-xxs
             md:text-xxxxs
+            `,
+        profileBalanceRowContent: `
+            flex grow gap-2
+            2xl:justify-end xl:justify-center lg:justify-center md:justify-center
+            items-center
         `,
         profileBalancesValue: `
             font-extrabold
@@ -137,7 +141,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             animate-pulse
         `,
         profileSecondaryContentDetailsBtn: `
-            lg:px-6 py-px
+            lg:px-6 py-1
             md:px-2
             border
             border-lightBorder
@@ -202,14 +206,22 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
                         ?
                             <>
                                 <div className={profileStyles.profileBalancesContent}>
-                                    <span>Token balance:</span>
-                                    <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
-                                    <img className={profileStyles.chipsLogo} src={chipsLogo} alt="CheapChips mini logo" ></img>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span>Token balance:</span>
+                                    </div>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
+                                        <img className={profileStyles.chipsLogo} src={chipsLogo} alt="CheapChips mini logo" ></img>
+                                    </div>
                                 </div>
                                 <div className={profileStyles.profileBalancesContent}>
-                                    <span>Link balance:</span>
-                                    <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
-                                    <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} alt="Chainlink mini logo" />
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span>Link balance:</span>
+                                    </div>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
+                                        <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} alt="Chainlink mini logo" />
+                                    </div>
                                 </div>
                             </>
                         :
@@ -239,7 +251,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
                             <span className={profileStyles.profileSecondaryContentValue}>{web3.address!}</span>
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                            <button onClick={() => props.onClickMyDetails()} className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
+                            <button onClick={() => {console.log("My details modal?")}} className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
                             <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
                         </div>
                     </>

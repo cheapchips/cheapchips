@@ -25,13 +25,14 @@ const BuyTokensModalTESTNET = (
             lg:text-xxs
             xl:text-sm
             font-content
-        `,
-        verticalContentWrapper: `
+            `,
+            verticalContentWrapper: `
             flex flex-col
             `,
-        verticalContentTitle: `
+            verticalContentTitle: `
             flex justify-center items-center
             px-2 py-4
+            hover:transition-opacity duration-700
         `,
         verticalContentMain: `
             flex justify-center items-center grow flex-col gap-4
@@ -121,7 +122,7 @@ const BuyTokensModalTESTNET = (
         const [writeChipStable, readChipStable] = useChipStable()
 
         useEffect(() => {
-            update() // initial data fetch
+            update()
         }, [readJackpot])
 
         const update = async () => {

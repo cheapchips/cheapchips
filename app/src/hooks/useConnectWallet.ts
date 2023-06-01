@@ -77,6 +77,7 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
     }
 
     const connect = async() => {
+        console.log('connect')
         await setupProviderAndSigner()
     }
 
