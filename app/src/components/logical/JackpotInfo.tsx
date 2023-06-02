@@ -105,12 +105,18 @@ const JackpotInfo = () => {
     const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
     const [active, setActive] = useState<boolean>(false)
+
     const [depositTimer, setDepositTimer] = useState<number>(0)
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
         setActive(true)
         setDepositTimer(10)
+
+        if(jackpotContext.players!.length >= 3){
+            console.log('Enough players joined. starting timer')
+            // countdownEndTime()
+        }
     }, [web3, jackpotContext])
 
     return (

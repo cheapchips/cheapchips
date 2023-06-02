@@ -121,7 +121,6 @@ const BuyTokensModalTESTNET = (
         const [readyToDeposit, setReadyToDeposit] = useState<boolean>(false)
         
         const web3 = useContext(Web3Context)
-        const [writeChipStable, readChipStable] = useChipStable()
 
         useEffect(() => {
             update()
@@ -144,7 +143,7 @@ const BuyTokensModalTESTNET = (
 
         const submitDeposit = async (value:number | undefined) => {
             if(!value || !web3.linkTokenBalance) return
-            if(value > +web3.linkTokenBalance) return 
+            if(value > +web3.linkTokenBalance) return
             if(allowance! < value){
                 writeLinkToken.approve(value)
                 return

@@ -69,6 +69,7 @@ function App() {
   const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
   const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
   const [txHash, setTxHash] = useState<TxHash>("")
+  const [txErrorMessage, setTxErrorMessage] = useState<string>()
   const [address, setAddress] = useState<string>()
   
   // jackpot states
@@ -130,7 +131,7 @@ function App() {
     return <LoadingScreen />
   }
   return (
-    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash}, setTxStatus, setTxHash }}>
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash, errorMessage:txErrorMessage}, setTxStatus, setTxHash, setTxErrorMessage, setChipStableBalance }}>
       <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState}} >
 
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}

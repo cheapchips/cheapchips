@@ -8,6 +8,7 @@ import { Signer } from "ethers"
 type TxInfo = {
   status: TxStatus
   hash: TxHash
+  errorMessage?: string
 }
 
 export default interface Web3ContextInterface {
@@ -22,4 +23,6 @@ export default interface Web3ContextInterface {
   tx: TxInfo,
   setTxStatus: (status:TxStatus) => void
   setTxHash: (hash: TxHash) => void
+  setTxErrorMessage: (err:string) => void,
+  setChipStableBalance: (newBalance:string) => void,
 }

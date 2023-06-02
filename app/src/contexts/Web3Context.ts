@@ -14,8 +14,11 @@ const Web3Context = createContext<Web3ContextInterface>({
     tx: {
         status: "nonexist",
         hash: undefined,
+        errorMessage: undefined
     },
     setTxStatus: (status:TxStatus) => {},
     setTxHash: (hash:TxHash) => {},
+    setTxErrorMessage: (err:string) => {},
+    setChipStableBalance: (newBalance:string) => {},
 })
 export default Web3Context

@@ -11,7 +11,7 @@ export default function useContractFunction<T extends ContractFunction>(transact
     const web3 = useContext(Web3Context)
     
     async function perform(...args: Parameters<T>){
-        const {setTxHash, setTxStatus} = web3
+        const {setTxHash, setTxStatus, setTxErrorMessage} = web3
         try {
             setTxStatus("created")
             const tx = await transaction(...args) as ContractTransaction
@@ -24,9 +24,17 @@ export default function useContractFunction<T extends ContractFunction>(transact
             
         } catch (error: any) {
             console.log(error)
-            if(error.code === 4001) setTxStatus("denied")
-            if(error.code === -32603) setTxStatus("failed")
+            if(error.code === 4001){
+                setTxStatus("denied")
+                return
+            }
+            if(error.code === -32603){
+                setTxErrorMessage(error.data.message)
+                setTxStatus("failed")
+                return
+            }
             else setTxStatus("failed")
+            return
             
             // transaction may fail due to different reasons
             // -> too small allowance (solution: approve more tokens)

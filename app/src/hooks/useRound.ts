@@ -22,14 +22,21 @@ export default function useRound(){
     function listenForDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {
 
+            // add player
             jackpotContext.addPlayer({
                 address: from === web3.address ? web3.address : id.toString(),
                 ticketAmount: amount.toNumber(),
                 id
             })
 
+            // update chips balance
+            const newChipsBalance = +web3.chipStableBalance! - amount.toNumber()
+            web3.setChipStableBalance(newChipsBalance.toString())
+
+            // increment prize pool by ticket entry value
             jackpotContext.incrementPrizePool(amount.toNumber())
 
+            // handle roundState if needed
             if(jackpotContext.players!.length == 2){
                 jackpotContext.setRoundState("closed")
             }
@@ -43,7 +50,7 @@ export default function useRound(){
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
             jackpotContext.winnerId!.current = winnerId
-            console.log(winnerId)
+            console.log('winner id: ', winnerId)
           })
     }
 }
