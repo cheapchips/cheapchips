@@ -172,7 +172,7 @@ const Deposit = () => {
     const [active, setActive] = useState<boolean>(false)
 
     useEffect(() => {
-        if(!web3.address || !jackpotContext.maxChipsDeposit || !jackpotContext.endDepositTime) return
+        if(!web3.address || !jackpotContext.maxChipsDeposit || !jackpotContext.endTime) return
         setActive(true)
     }, [web3.address, jackpotContext])
     

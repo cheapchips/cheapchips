@@ -44,6 +44,7 @@ import Lobby from './components/logical/cc_testing/lobby/Lobby'
 import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
 import { Player } from './types/Player'
 import useTheme from './hooks/useTheme'
+import RoundState from './types/RoundState'
 import HoverSpawnModal from './components/logical/modals/HoverSpawnModal'
 
 function App() {
@@ -73,12 +74,10 @@ function App() {
   // jackpot states
   const winnerId = useRef(-1)
   const [roundId, setRoundId] = useState<string>()
-  const [numberOfPlayers, setNumberOfPlayers] = useState<number>()
-  const [maxNumberOfPlayers, setMaxNumberOfPlayers] = useState<number>(100)
   const [players, setPlayers] = useState<Player[]>([])
   const [prizePool, setPrizePool] = useState<number>()
-  const [endDepositTime, setEndDepositTime] = useState<number>()
-  const [endTime, setEndTime] = useState<number>()
+  const [endTime, setEndTime] = useState<number>(10)
+  const [roundState, setRoundState] = useState<RoundState>("default")
 
   //test
   const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
@@ -86,6 +85,14 @@ function App() {
 
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
+  }
+
+  function incrementRoundId() {
+    setRoundId(roundId! + 1)
+  }
+
+  function incrementPrizePool(ticketAmount:number) {
+    setPrizePool(prizePool => prizePool! + ticketAmount)
   }
   
   useEffect(() => {
@@ -112,16 +119,9 @@ function App() {
 
         // jackpot context
         setPlayers(players)
-        setNumberOfPlayers(players.length)
         setRoundId(roundId)
         setPrizePool(roundData[1].length)
-        setEndDepositTime(120)
 
-        jackpot.on("RoundEnded", (roundId:BigNumber, randomNumber:BigNumber) => {
-          const id = randomNumber.mod(roundData[1].length).toNumber()
-          winnerId.current = id
-          console.log(id)
-        })
       })()
     }
   }, [connected, correctNetwork])
@@ -131,7 +131,7 @@ function App() {
   }
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash}, setTxStatus, setTxHash }}>
-      <JackpotContext.Provider value={{roundId, numberOfPlayers,maxNumberOfPlayers, players, prizePool, endDepositTime, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, addPlayer}} >
+      <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState}} >
 
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
         {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
@@ -171,9 +171,10 @@ function App() {
             <span className="font-content">Start jackpot</span>
           </button>
 
-          <button onClick={async() => {
+          {/* <button onClick={async() => {
             await jackpot?.closeRound()
-          }}>End jackpot</button>
+          }}>End jackpot
+          </button> */}
 
             <button onClick={() => toggleTutorialVisible()}>
             <span className='font-content'>Tutorial modal</span>
@@ -211,13 +212,10 @@ function App() {
             </MainContentCtn>
           </Panel>
 
-
-
           <Panel panelType='side'>
               <ProfileHeader onClickBuyBalance={toggleBuyTokensVisible} />
               <JackpotArchives />
           </Panel>
-
 
         </MainWrapper>
       </JackpotContext.Provider>

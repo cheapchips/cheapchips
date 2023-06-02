@@ -20,7 +20,7 @@ const Jackpot = (props:JackpotProps) => {
   const web3 = useContext(Web3Context)
   
   useEffect(() => {
-    if (!web3.address || !jackpotContext.endDepositTime || jackpotContext.players!.length === 0) return
+    if (!web3.address || !jackpotContext.endTime || jackpotContext.players!.length === 0) return
     setActive(true)
     setupPlayerArrays()
   }, [web3, jackpotContext])

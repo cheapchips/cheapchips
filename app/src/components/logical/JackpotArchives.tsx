@@ -3,6 +3,8 @@ import useJackpot from "../../hooks/useJackpot"
 import ArchivedJackpotRound from "./ArchivedJackpotRound"
 import Web3Context from "../../contexts/Web3Context"
 import JackpotContext from "../../contexts/JackpotContext"
+import ArchivedJackpot from "../../types/ArchivedJackpot"
+import ParticipationStatus from "../../types/ParticipationStatus"
 import { useEffect, useContext, useState } from "react"
 
 const JackpotArchives = () => {
@@ -49,15 +51,6 @@ const JackpotArchives = () => {
         `,
         }
 
-        type ParticipationStatus = "none" | "win" | "lose" | "withdrawn"
-         
-        type ArchivedJackpot = {
-            participationStatus: ParticipationStatus
-            prizePool: number
-            endTime: string
-            roundId: number
-        }
-        
         const web3 = useContext(Web3Context)
         const jackpotContext = useContext(JackpotContext)
         const [active, setActive] = useState<boolean>(true)
@@ -65,19 +58,13 @@ const JackpotArchives = () => {
         const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])
         
         useEffect(() => {
-            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endDepositTime) return
+            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime) return
             // setActive(true)
             fetchArchivedRounds()
         },[jackpotContext])
 
         const fetchArchivedRounds = async () => {
             
-            const roundData = await readJackpot.getRoundData(0)
-
-            console.log(roundData)
-
-
-
             const currentRoundId = jackpotContext.roundId
             // console.log('current round', currentRoundId)
             if(!currentRoundId) return

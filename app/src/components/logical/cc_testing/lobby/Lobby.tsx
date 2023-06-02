@@ -2,14 +2,11 @@ import LobbyElement from './LobbyElement'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useState, useEffect, useContext } from "react"
 import JackpotContext from '../../../../contexts/JackpotContext'
-import useRound from '../../../../hooks/useRound'
 
 const Lobby = () => {
 
     const [lobbyElementsRef] = useAutoAnimate()
     const jackpotContext = useContext(JackpotContext)
-    
-    useRound()
 
     const styles = {
         ctn: `

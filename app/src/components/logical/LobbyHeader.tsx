@@ -103,7 +103,7 @@ const LobbyHeader = () => {
     const [active, setActive] = useState<boolean>(false)
     
     useEffect(() => {
-        if(!web3.address || !jackpotContext.endDepositTime) return
+        if(!web3.address || !jackpotContext.endTime || !jackpotContext.players) return
         setActive(true)
     }, [jackpotContext, web3])
 
@@ -134,7 +134,7 @@ const LobbyHeader = () => {
             <div className={styles.playerInfoCtn}>
                 {active
                     ?
-                        <span className={styles.lineCtn + styles.text}>Players: {jackpotContext.numberOfPlayers!} / {jackpotContext.maxNumberOfPlayers!}</span>
+                        <span className={styles.lineCtn + styles.text}>Players: {jackpotContext.players!.length} / {jackpotContext.maxPlayers!}</span>
                     :
                         <span className={styles.lineCtn + styles.textInactive + styles.inactiveBg}></span>
                 }
@@ -142,7 +142,7 @@ const LobbyHeader = () => {
                     {active
                     ?
                         <div className={styles.playerInfoBarBorder}>
-                            <div style={{width: `${((jackpotContext.numberOfPlayers! / jackpotContext.maxNumberOfPlayers!) * 100)}%`}} className={styles.playerInfoBar}></div>
+                            <div style={{width: `${((jackpotContext.players!.length / jackpotContext.maxPlayers!) * 100)}%`}} className={styles.playerInfoBar}></div>
                         </div>
                     :
                         <div className={styles.playerInfoBarBorderInactive}>

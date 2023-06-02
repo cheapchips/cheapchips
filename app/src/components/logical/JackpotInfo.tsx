@@ -105,10 +105,12 @@ const JackpotInfo = () => {
     const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
     const [active, setActive] = useState<boolean>(false)
+    const [depositTimer, setDepositTimer] = useState<number>(0)
 
     useEffect(() => {
-        if(!web3.address || !jackpotContext.endDepositTime || !jackpotContext.maxNumberOfPlayers) return
+        if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
         setActive(true)
+        setDepositTimer(10)
     }, [web3, jackpotContext])
 
     return (
@@ -131,10 +133,10 @@ const JackpotInfo = () => {
                 ?
                     <>
                     <span className={styles.infoTitle}>Prize pool:
-                        <span className={styles.infoValue + styles.infoValuePrizePool}>{jackpotContext.prizePool}/{jackpotContext.maxNumberOfPlayers! * jackpotContext.maxChipsDeposit!}</span>
+                        <span className={styles.infoValue + styles.infoValuePrizePool}>{jackpotContext.prizePool}/{jackpotContext.maxPlayers! * jackpotContext.maxChipsDeposit!}</span>
                     </span>
                     <span className={styles.infoTitle}>Game starts in:
-                        <span className={styles.infoValue + styles.infoValueTimer}>{jackpotContext.endDepositTime}s</span>
+                        <span className={styles.infoValue + styles.infoValueTimer}>{depositTimer}s</span>
                     </span>
                     <span className={styles.infoTitle}>Round id:
                         <span className={styles.infoValue}>{jackpotContext.roundId}</span>
@@ -154,11 +156,10 @@ const JackpotInfo = () => {
                 ?
                     <>
                         <div className={styles.poolBarBorder}>
-                            <div style={{width: `${(jackpotContext.prizePool! * 100) / (jackpotContext.maxChipsDeposit! * jackpotContext.maxNumberOfPlayers!)}%`}} className={styles.poolBar + styles.poolBarPrize}></div>
+                            <div style={{width: `${(jackpotContext.prizePool! * 100) / (jackpotContext.maxChipsDeposit! * jackpotContext.maxPlayers!)}%`}} className={styles.poolBar + styles.poolBarPrize}></div>
                         </div>
                         <div className={styles.poolBarBorder}>
-                            {/* fix this later */}
-                            <div style={{width: `${(jackpotContext.endDepositTime! * 100) / 400}%`}}  className={styles.poolBar + styles.poolBarTimer}></div>
+                            <div style={{width: `${(depositTimer! / jackpotContext.endTime!) * 100}%`}}  className={styles.poolBar + styles.poolBarTimer}></div>
                         </div>
                     </>
                 :
