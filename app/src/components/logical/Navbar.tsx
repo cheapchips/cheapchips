@@ -57,8 +57,8 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, connected:boolean}) =>
         `,
         themeBtnCtn: `
             flex justify-center items-center
-            px-2
             cursor-pointer
+            px-2
         `,
         themeBtn: `
             xl:w-5 xl:h-5

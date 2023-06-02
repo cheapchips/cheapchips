@@ -7,7 +7,7 @@ const LobbyHeader = () => {
     
     const styles = {
         ctn: `
-            flex flex-col gap-2
+            flex flex-col
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
@@ -15,21 +15,20 @@ const LobbyHeader = () => {
         `,
         titleCtn: `
             w-full grid grid-cols-2
+            border-b border-lightBorder dark:border-darkBorder
+            xl:p-2
+            lg:p-2
+            md:p-1
+        `,
+        playerInfoCtn: `
+            grid grid-rows-2 gap-2
             p-2
             border-b
             border-lightBorder
             dark:border-darkBorder
         `,
-        playerInfoCtn: `
-            grid grid-rows-2
-            px-2
-            border-b
-            border-lightBorder
-            dark:border-darkBorder
-        `,
         playerInfoBarCtn: `
-            w-full h-fit py-2
-            px-1
+            w-full h-full
         `,
         playerInfoBarBorder: `
             bg-lightBgActive
@@ -37,17 +36,21 @@ const LobbyHeader = () => {
             rounded-md
             border
             border-lightBorder dark:border-darkBorder
+            h-full
         `,
         playerInfoBarBorderInactive: `
             border-lightBgActive dark:border-darkBgActive animate-pulse
+            h-full
         `,
         playerInfoBar:`
-            h-2.5 rounded-md
+            h-full
+            rounded-md
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
             shadow-sm
         `,
         playerInfoBarInactive: `
-            h-3 rounded-md
+            rounded-md
+            h-full
             bg-lightBgActive dark:bg-darkBgActive
         `,
         lineCtn: `
@@ -60,17 +63,23 @@ const LobbyHeader = () => {
             dark:fill-darkText
             font-semibold
             lightText
-            dark:text-darkText
-            p-1
+            dark:text-darkText select-none
+            2xl:p-1
+            xl:p-1
+            md:p-0
         `,
         textTitleInactive: `
-            rounded-md
             w-1/2 h-7
-            p-1
             animate-pulse
+            rounded-md
+            p-1
+        `,
+        textTitleIdInactive: `
+            justify-self-end
         `,
         textLobbyId:`
-            font-normal
+            flex justify-end
+            font-normal select-none
             p-1
         `,
         text: `
@@ -118,7 +127,7 @@ const LobbyHeader = () => {
                             id: {jackpotContext.roundId}
                         </span>
                     :
-                        <span className={styles.textTitleInactive + styles.inactiveBg}></span>
+                        <span className={styles.textTitleInactive + styles.inactiveBg + styles.textTitleIdInactive}></span>
                 }
             </div>
 

@@ -8,8 +8,6 @@ const JackpotInfo = () => {
     const styles = {
         mainCtn: `
             grid grid-flow-row
-            auto-rows-max
-            w-full h-full
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
@@ -21,6 +19,7 @@ const JackpotInfo = () => {
             border-lightBorder
             dark:border-darkBorder
             xl:p-2
+            lg:p-2
             md:p-1
         `,
         titleText: `
@@ -28,7 +27,8 @@ const JackpotInfo = () => {
             fill-lightText
             dark:fill-darkText
             font-semibold
-            lg:p-1
+            2xl:p-1
+            xl:p-1
             md:p-0
         `,
         titleTextInactive: `
@@ -107,7 +107,7 @@ const JackpotInfo = () => {
     const [active, setActive] = useState<boolean>(false)
 
     useEffect(() => {
-        if(!web3.address || !jackpotContext.endDepositTime || !jackpotContext.prizePool || !jackpotContext.maxNumberOfPlayers) return
+        if(!web3.address || !jackpotContext.endDepositTime || !jackpotContext.maxNumberOfPlayers) return
         setActive(true)
     }, [web3, jackpotContext])
 
@@ -118,8 +118,8 @@ const JackpotInfo = () => {
                 {active
                 ? 
                     <span className={styles.titleText}>
-                        <SvgIcon style="w-5 h-4" viewBox="0 0 122.88 101.67" pathD="M67.14,55.68h21.15c1.13,0,2.05,0.92,2.05,2.05v41.9c0,1.12-0.92,2.05-2.05,2.05l-21.15,0 c-1.12,0-2.05-0.92-2.05-2.05v-41.9C65.09,56.6,66.01,55.68,67.14,55.68L67.14,55.68z M2.05,0H23.2c1.13,0,2.05,0.93,2.05,2.05 v97.58c0,1.12-0.93,2.05-2.05,2.05H2.05c-1.12,0-2.05-0.92-2.05-2.05V2.05C0,0.92,0.92,0,2.05,0L2.05,0z M99.68,76.33h21.15 c1.13,0,2.05,0.93,2.05,2.05v21.25c0,1.12-0.92,2.05-2.05,2.05H99.68c-1.12,0-2.05-0.92-2.05-2.05V78.38 C97.64,77.25,98.56,76.33,99.68,76.33L99.68,76.33L99.68,76.33z M34.59,31.5h21.15c1.13,0,2.05,0.93,2.05,2.05v66.07 c0,1.12-0.93,2.05-2.05,2.05H34.59c-1.12,0-2.05-0.92-2.05-2.05V33.55C32.54,32.42,33.47,31.5,34.59,31.5L34.59,31.5z" />
-                        <span>Round</span>
+                        <SvgIcon style="w-5 h-4" viewBox="0 0 122.88 108.91" pathD="M2.79,41.59L61.44,0l58.95,41.59L2.79,41.59L2.79,41.59z M0,102.28h9.08v-6.33h1.32v-3.02l3.85,0V56.7H6.38 v-8.68h110.11v8.68h-7.86v36.23h3.85v3.02l1.32,0v6.33h9.08v6.63H0V102.28L0,102.28z M32.59,95.95h4.44v-3.02l3.85,0V56.7H28.74 v36.23h3.85V95.95L32.59,95.95L32.59,95.95z M59.22,95.95h4.45v-3.02l3.84,0V56.7H55.37v36.23h3.85V95.95L59.22,95.95L59.22,95.95z M85.85,95.95h4.45v-3.02l3.85,0V56.7H82v36.23h3.85V95.95L85.85,95.95L85.85,95.95z M41.69,31.1l19.84-15.22L81.48,31.1H41.69 L41.69,31.1z" />
+                        <span>Round info</span>
                     </span>
                 :
                     <span className={styles.titleTextInactive + styles.inactiveBg}></span>    

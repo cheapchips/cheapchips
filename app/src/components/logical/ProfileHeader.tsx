@@ -19,7 +19,6 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
     const profileStyles = {
         ctn: `
             grid grid-flow-row grid-rows-[auto,fit,auto]
-            gap-2
             text-lightText
             dark:text-darkText
             md:text-xxxs
@@ -30,19 +29,22 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             dark:border-darkBorder
             font-content
         `,
-            profileTitleCtn: `
+        profileTitleCtn: `
             flex justify-start content-center w-full h-fit
             border-b
             border-lightBorder
             dark:border-darkBorder
             font-semibold
-            p-2
+            xl:p-2
+            lg:p-2
+            md:p-1
         `,
         profileTitleContent: `
             flex flex-row gap-1 justify-center items-center
-            p-1
-            fill-lightText
-            dark:fill-darkText
+            fill-lightText dark:fill-darkText
+            2xl:p-1
+            xl:p-1
+            md:p-0
         `,
         profileTitleContentInactive: `
             w-1/4
@@ -52,13 +54,13 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             animate-pulse
         `,
         profileMainContentCtn: `
-            grid grid-flow-col grid-cols-[1fr,1fr,1fr]
+            grid grid-flow-col grid-cols-3
             w-full h-fit
-            px-2
             gap-1
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
+            p-2
         `,
         profileIconCtn: `
             flex justify-center items-center content-center
@@ -76,13 +78,12 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             p-2
         `,
         profileBalancesCtn: `
-            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2
+            grid grid-flow-row grid-rows-2 col-span-2
             p-1
         `,
         profileBalancesContent: `
-            grid grid-flow-col grid-cols-[50%,50%]
+            grid grid-flow-col grid-cols-2
             font-semibold
-            p-1
             border-b
             border-lightBorder
             dark:border-darkBorder
@@ -90,10 +91,11 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             xl:text-xs
             lg:text-xxs
             md:text-xxxxs
-            `,
+            p-1
+        `,
         profileBalanceRowContent: `
-            flex grow gap-2
-            2xl:justify-end xl:justify-center lg:justify-center md:justify-center
+            flex grow gap-1
+            justify-end
             items-center
         `,
         profileBalancesValue: `
@@ -140,19 +142,23 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             animate-pulse
         `,
         profileSecondaryContentDetailsBtn: `
-            lg:px-6 py-1
+            lg:px-4 py-1
             md:px-2
+            mx-1
             border
             border-lightBorder
             dark:border-darkBorder
             rounded-md
             bg-lightBgActive
             dark:bg-darkBgActive
-            hover:text-black
-            dark:hover:text-accentColor
-            xl:text-sm
+            xl:text-xs
             lg:text-xxxs
             md:text-xxxxs
+            xl:overflow-hidden xl:whitespace-nowrap
+            hover:text-black
+            dark:hover:text-accentColor
+            transition ease-in-out
+            hover:scale-110
         `,
         inactiveBg: `
             bg-lightBgActive
@@ -250,7 +256,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                             <span className={profileStyles.profileSecondaryContentValue}>{web3.address!}</span>
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                            <button onClick={() => {console.log("My details modal?")}} className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
+                            <button onClick={() => {console.log("My details modal?")}} className={profileStyles.profileSecondaryContentDetailsBtn}>My details</button>
                             <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
                         </div>
                     </>

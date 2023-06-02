@@ -84,7 +84,7 @@ function App() {
   const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
   const [playersDeposit, setPlayersDeposit] = useState<number>(0)
 
-  const [hoverSpawn, setHoverSpawn] = useState<boolean>(false)
+  // const [hoverSpawn, setHoverSpawn] = useState<boolean>(false)
 
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
@@ -142,7 +142,7 @@ function App() {
         {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
         {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
 
-        {hoverSpawn && <HoverSpawnModal parentElemId='test' placement='bottom' /> }
+        {/* {hoverSpawn && <HoverSpawnModal parentElemId='test' placement='bottom' /> } */}
 
 
         <MainWrapper>
@@ -150,46 +150,45 @@ function App() {
           <Navbar walletOnClick={connect} connected={connected} />
 
           {/* white testblock */}
-          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' onMouseEnter={() => setHoverSpawn(true)} onMouseLeave={() => setHoverSpawn(false)}> 
+          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' onMouseEnter={() => {}} onMouseLeave={() => {}}> 
 
-                  <button onClick={() => {
-                    
-                    const rand_addr = Math.random().toString(36).substring(2,9)
-                    const rand_ticket = Math.floor(Math.random() * (5 - 1 + 1) + 1)
-                    const newPlayer = {
-                      address: rand_addr,
-                      ticketAmount: rand_ticket,
-                      id: players.length,
-                    }
-                    
-                    setPlayers(players=>[...players, newPlayer])
-                    setPlayersDeposit(playersDeposit + rand_ticket)
-                  }}>  
-                    <span className="font-content">Add player</span>
-                  </button>
+            <button onClick={() => {
 
-                  <button onClick={() => {
-                    setJackpotAnimated(true)
-                  }}>
-                    <span className="font-content">Start jackpot</span>
-                  </button>
+            const rand_addr = Math.random().toString(36).substring(2,9)
+            const rand_ticket = Math.floor(Math.random() * (5 - 1 + 1) + 1)
+            const newPlayer = {
+              address: rand_addr,
+              ticketAmount: rand_ticket,
+              id: players.length,
+            }
+            setPlayers(players=>[...players, newPlayer])
+            setPlayersDeposit(playersDeposit + rand_ticket)
+          }}>  
+            <span className="font-content">Add player</span>
+          </button>
 
-                  <button onClick={async() => {
-                    await jackpot?.closeRound()
-                  }}>End jackpot</button>
+          <button onClick={() => {
+            setJackpotAnimated(true)
+            }}>
+            <span className="font-content">Start jackpot</span>
+          </button>
 
-                  <button onClick={() => toggleTutorialVisible()}>
-                    <span className='font-content'>Tutorial modal</span>
-                  </button>
+          <button onClick={async() => {
+            await jackpot?.closeRound()
+          }}>End jackpot</button>
 
-                  <button onClick={() => {
-                    if(!connected) return
-                    toggleBuyTokensVisible()
-                  }}>
-                    <span className='font-content'>Buy tokens modal</span>
-                  </button>
+            <button onClick={() => toggleTutorialVisible()}>
+            <span className='font-content'>Tutorial modal</span>
+          </button>
 
-                </div>
+          <button onClick={() => {
+            if(!connected) return
+            toggleBuyTokensVisible()
+          }}>
+            <span className='font-content'>Buy tokens modal</span>
+          </button>
+
+          </div>
           
           <Panel panelType='side'>
             <LobbyHeader />
