@@ -68,6 +68,10 @@ const ArchivedJackpotRound = (props: {
         jackpotDetailsBtnInactive: `
 
         `,
+        participateWithdrawn: `
+            border-accentColor
+            dark:border-accentColor
+        `,
         participateLose: `
             border-red-600
             dark:border-red-600
@@ -78,7 +82,14 @@ const ArchivedJackpotRound = (props: {
         `,
     }
     return (
-        <div className={archivedJackpotStyles.ctn + (props.participationStatus === "win" ? archivedJackpotStyles.participateWin : archivedJackpotStyles.participateLose)}>
+        <div className={archivedJackpotStyles.ctn + 
+            (props.participationStatus === "withdrawn"
+            ? archivedJackpotStyles.participateWithdrawn
+            : (props.participationStatus === "win"
+            ? archivedJackpotStyles.participateWin
+            : (props.participationStatus === "lose"
+            ? archivedJackpotStyles.participateLose
+            : "")))}>
             <span className={archivedJackpotStyles.jackpotGameTextTitle}>Pool:
                 <span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentOrange}>{props.prizePool}</span>
             </span>
