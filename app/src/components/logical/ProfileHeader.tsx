@@ -1,4 +1,3 @@
-// import ProfileHeaderProps from "../../proptypes/ProfileHeaderProps"
 import Blockies from "react-blockies"
 import SvgIcon from "../layout/SvgIcon"
 import chipsLogo from "../../assets/logo.png"
@@ -7,7 +6,7 @@ import { useContext } from "react"
 import Web3Context from "../../contexts/Web3Context"
 import { useState, useEffect } from "react"
 
-const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() => void}) => {
+const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
 
     const web3 = useContext(Web3Context)
     const [active, setActive] = useState<boolean>(false)
@@ -20,7 +19,6 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
     const profileStyles = {
         ctn: `
             grid grid-flow-row grid-rows-[auto,fit,auto]
-            gap-2
             text-lightText
             dark:text-darkText
             md:text-xxxs
@@ -31,19 +29,22 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             dark:border-darkBorder
             font-content
         `,
-            profileTitleCtn: `
+        profileTitleCtn: `
             flex justify-start content-center w-full h-fit
             border-b
             border-lightBorder
             dark:border-darkBorder
             font-semibold
-            p-2
+            xl:p-2
+            lg:p-2
+            md:p-1
         `,
         profileTitleContent: `
             flex flex-row gap-1 justify-center items-center
-            p-1
-            fill-lightText
-            dark:fill-darkText
+            fill-lightText dark:fill-darkText
+            2xl:p-1
+            xl:p-1
+            md:p-0
         `,
         profileTitleContentInactive: `
             w-1/4
@@ -53,13 +54,13 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             animate-pulse
         `,
         profileMainContentCtn: `
-            grid grid-flow-col grid-cols-[1fr,1fr,1fr]
+            grid grid-flow-col grid-cols-3
             w-full h-fit
-            px-2
             gap-1
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
+            p-2
         `,
         profileIconCtn: `
             flex justify-center items-center content-center
@@ -77,14 +78,12 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             p-2
         `,
         profileBalancesCtn: `
-            grid grid-flow-row grid-rows-[1fr,1fr] col-span-2 items-center
+            grid grid-flow-row grid-rows-2 col-span-2
             p-1
         `,
         profileBalancesContent: `
-            flex justify-start items-center gap-1 h-fit
-            flex-flow-col flex-wrap
+            grid grid-flow-col grid-cols-2
             font-semibold
-            p-1
             border-b
             border-lightBorder
             dark:border-darkBorder
@@ -92,6 +91,12 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             xl:text-xs
             lg:text-xxs
             md:text-xxxxs
+            p-1
+        `,
+        profileBalanceRowContent: `
+            flex grow gap-1
+            justify-end
+            items-center
         `,
         profileBalancesValue: `
             font-extrabold
@@ -137,19 +142,23 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             animate-pulse
         `,
         profileSecondaryContentDetailsBtn: `
-            lg:px-6 py-px
+            lg:px-4 py-1
             md:px-2
+            mx-1
             border
             border-lightBorder
             dark:border-darkBorder
             rounded-md
             bg-lightBgActive
             dark:bg-darkBgActive
-            hover:text-black
-            dark:hover:text-accentColor
-            xl:text-sm
+            xl:text-xs
             lg:text-xxxs
             md:text-xxxxs
+            xl:overflow-hidden xl:whitespace-nowrap
+            hover:text-black
+            dark:hover:text-accentColor
+            transition ease-in-out
+            hover:scale-110
         `,
         inactiveBg: `
             bg-lightBgActive
@@ -162,7 +171,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
             xl:w-4 xl:h-4 md:w-2 md:h-2
         `,
         inactiveBalanceText: `
-            w-1/4 h-5 rounded-md bg-lightBgActive dark:bg-darkBgActive
+            w-5/6 h-5/6 rounded-md bg-lightBgActive dark:bg-darkBgActive
             animate-pulse
         `,
     }
@@ -202,14 +211,22 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
                         ?
                             <>
                                 <div className={profileStyles.profileBalancesContent}>
-                                    <span>Token balance:</span>
-                                    <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
-                                    <img className={profileStyles.chipsLogo} src={chipsLogo} alt="CheapChips mini logo" ></img>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span>Token balance:</span>
+                                    </div>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
+                                        <img className={profileStyles.chipsLogo} src={chipsLogo} alt="CheapChips mini logo" ></img>
+                                    </div>
                                 </div>
                                 <div className={profileStyles.profileBalancesContent}>
-                                    <span>Link balance:</span>
-                                    <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
-                                    <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} alt="Chainlink mini logo" />
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span>Link balance:</span>
+                                    </div>
+                                    <div className={profileStyles.profileBalanceRowContent}>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
+                                        <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} alt="Chainlink mini logo" />
+                                    </div>
                                 </div>
                             </>
                         :
@@ -239,7 +256,7 @@ const ProfileHeader = (props:{onClickMyDetails:() => void, onClickBuyBalance:() 
                             <span className={profileStyles.profileSecondaryContentValue}>{web3.address!}</span>
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                            <button onClick={() => props.onClickMyDetails()} className={profileStyles.profileSecondaryContentDetailsBtn}>My Details</button>
+                            <button onClick={() => {console.log("My details modal?")}} className={profileStyles.profileSecondaryContentDetailsBtn}>My details</button>
                             <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
                         </div>
                     </>

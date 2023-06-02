@@ -1,12 +1,10 @@
 import './App.css'
-import { useState, useEffect, useContext } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
-import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
 import JackpotMainCtn from './components/layout/JackpotMainCtn'
 import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
@@ -17,7 +15,7 @@ import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
 import JackpotInfo from './components/logical/JackpotInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
-import TutorialModal from './components/logical/modals/tutorial/TutorialModal'
+import TutorialModal from './components/logical/modals/TutorialModal'
 
 // modals
 import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
@@ -25,204 +23,206 @@ import InstallMetamaskModal from './components/logical/modals/InstallMetamaskMod
 import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
 
 // hooks
+import { useState, useEffect, useContext, useRef } from 'react'
 import useConnectWallet from './hooks/useConnectWallet'
-import useDeposit from './hooks/useDeposit'
-import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
 import useModal from './hooks/useModal' 
 
 // contracts
 import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
+
+// context
 import Web3Context from './contexts/Web3Context'
-import ModalSkeleton from './components/logical/ModalSkeleton'
+import JackpotContext from './contexts/JackpotContext'
 
-
-
-
+// local testing
+import formatTicketsToPlayers from './hooks/utils/formatTicketsToPlayers'
 import TransactionModal from './components/logical/modals/TransactionModal'
-import { TxStatus } from './types/useTransactionTypes'
+import { TxHash, TxStatus } from './types/useTransactionTypes'
+import Lobby from './components/logical/cc_testing/lobby/Lobby'
+import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
+import { Player } from './types/Player'
+import useTheme from './hooks/useTheme'
+import HoverSpawnModal from './components/logical/modals/HoverSpawnModal'
 
 function App() {
 
-  const web3 = useContext(Web3Context)
-
-  const [metamask, connected, provider, signer, connect] = useConnectWallet()
-  const [theme, toggleTheme] = useTheme()
+  // hooks
+  const [metamask, correctNetwork, connected, provider, signer, connect] = useConnectWallet()
   const loading = useLoadingScreen()
-  const depositData = useDeposit()
-  const [depositAmount, defaultDepositAmount, minDepositAmount, maxDepositAmount, handleDepositPercentage, handleDepositInput, handleDepositTx] = depositData
-  
-  
-  // local states
-  const [active, setActive] = useState(true)
-  const [address, setAddress] = useState<string>()
+  const [theme, toggleTheme] = useTheme()
 
   // test modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
   const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
   const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
-  
   const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
-  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
-
+  
+  // web3 states
   const [chipStable, setChipStable] = useState<ChipStable>()
   const [jackpot, setJackpot] = useState<ChipsJackpot>()
   const [linkToken, setLinkToken] = useState<LinkTokenInterface>()
   const [chipStableBalance, setChipStableBalance] = useState<string>()
   const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
+  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
+  const [txHash, setTxHash] = useState<TxHash>("")
+  const [address, setAddress] = useState<string>()
+  
+  // jackpot states
+  const winnerId = useRef(-1)
+  const [roundId, setRoundId] = useState<string>()
+  const [numberOfPlayers, setNumberOfPlayers] = useState<number>()
+  const [maxNumberOfPlayers, setMaxNumberOfPlayers] = useState<number>(100)
+  const [players, setPlayers] = useState<Player[]>([])
+  const [prizePool, setPrizePool] = useState<number>()
+  const [endDepositTime, setEndDepositTime] = useState<number>()
+  const [endTime, setEndTime] = useState<number>()
 
+  //test
+  const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
+  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+
+  // const [hoverSpawn, setHoverSpawn] = useState<boolean>(false)
+
+  function addPlayer(newPlayer:Player) {
+    setPlayers(prevPlayers => [...prevPlayers, newPlayer])
+  }
+  
   useEffect(() => {
-    if(connected && provider && signer){
+    if(connected && provider && signer && correctNetwork){
       (async() => {
-
+        
         const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
         const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
         const address = await signer.getAddress()
         
+        // web3 context
+        setChipStable(chip)
         setChipStableBalance((await chip.balanceOf(address)).toNumber().toString())
         setLinkTokenBalance(ethers.utils.formatUnits((await linkToken.balanceOf(address)),"ether"))
         setAddress(address)
         setJackpot(jackpot)
         setLinkToken(linkToken)
-        
+
+        const roundId = (await jackpot.getCurrentRoundId()).toString()
+        const roundData = await jackpot.getRoundData(roundId)
+        const players = formatTicketsToPlayers(roundData[1])
+        // console.log(roundData)
+
+        // jackpot context
+        setPlayers(players)
+        setNumberOfPlayers(players.length)
+        setRoundId(roundId)
+        setPrizePool(roundData[1].length)
+        setEndDepositTime(120)
+
+        jackpot.on("RoundEnded", (roundId:BigNumber, randomNumber:BigNumber) => {
+          const id = randomNumber.mod(roundData[1].length).toNumber()
+          winnerId.current = id
+          console.log(id)
+        })
       })()
     }
-  }, [connected])
-
-  const testTxTransaction = () => {
-    setTxStatus("created")
-    setTimeout(() => {
-      setTxStatus("submitted")
-    }, 4000);
-    setTimeout(() => {
-      setTxStatus("denied")
-    }, 8000);
-    setTimeout(() => {
-      setTxStatus("failed")
-    }, 12000)
-    setTimeout(() => {
-      setTxStatus("done")
-    }, 16000);
-  }
+  }, [correctNetwork])
   
   if(loading){
     return <LoadingScreen />
   }
-  // if(networkId !== NETWORK_ID){
-  //   return <SwitchNetworkModal onClickClose={toggleSwitchNetworkVisible} />
-  // }
-  if(!metamask){
-    return <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} />
-  }
   return (
-    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot}}>
-      
-      {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
-      {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
-      {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' txStatus={txStatus} onClickClose={toggleTransactionModalVisible} />}
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash}, setTxStatus, setTxHash }}>
+      <JackpotContext.Provider value={{roundId, numberOfPlayers,maxNumberOfPlayers, players, prizePool, endDepositTime, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, addPlayer}} >
 
-      <MainWrapper>
+        {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
+        {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
 
-        <Navbar
-          theme={theme}
-          themeBtnOnClick={() => toggleTheme()}
-          walletConnected={connected}
-          connectWalletProps={{
-            onClickFunction: connect,
-            clickable: !connected,
-            active: !connected
-          }}
-        />
-        
-        <Panel panelType='side'>
+        {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
+        {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
+        {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
 
-          <LobbyHeader
-            playerCount={42}
-            maxPlayerCount={100}
-            timeTillRaffleStartPercentage={44}
-            lobbyId='0'
-            active={active}
-          />
+        {/* {hoverSpawn && <HoverSpawnModal parentElemId='test' placement='bottom' /> } */}
 
-          <LobbyCtn>
 
-          </LobbyCtn>
+        <MainWrapper>
 
-        </Panel>
-        
-        <Panel panelType='main'>
+          <Navbar walletOnClick={connect} connected={connected} />
 
-          <MainContentCtn>
+          {/* white testblock */}
+          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' onMouseEnter={() => {}} onMouseLeave={() => {}}> 
 
-            <JackpotMainCtn>
+            <button onClick={() => {
 
-              <div className='flex flex-col gap-4 underline text-sm'>
+            const rand_addr = Math.random().toString(36).substring(2,9)
+            const rand_ticket = Math.floor(Math.random() * (5 - 1 + 1) + 1)
+            const newPlayer = {
+              address: rand_addr,
+              ticketAmount: rand_ticket,
+              id: players.length,
+            }
+            setPlayers(players=>[...players, newPlayer])
+            setPlayersDeposit(playersDeposit + rand_ticket)
+          }}>  
+            <span className="font-content">Add player</span>
+          </button>
 
-                <span>{metamask.toString()}</span>
+          <button onClick={() => {
+            setJackpotAnimated(true)
+            }}>
+            <span className="font-content">Start jackpot</span>
+          </button>
 
-                <button onClick={() => setActive(!active)}>
-                  <span className="font-content">Toggle active</span>
-                </button>
-                
-                <button onClick={() => {testTxTransaction(); toggleTransactionModalVisible()}}>
-                  <span className='font-content'>Tx modal</span>
-                </button>
+          <button onClick={async() => {
+            await jackpot?.closeRound()
+          }}>End jackpot</button>
 
-                <button onClick={() => toggleTutorialVisible()}>
-                  <span className='font-content'>Tutorial modal</span>
-                </button>
+            <button onClick={() => toggleTutorialVisible()}>
+            <span className='font-content'>Tutorial modal</span>
+          </button>
 
-                <button onClick={() => toggleBuyTokensVisible()}>
-                  <span className='font-content'>Buy tokens modal</span>
-                </button>
+          <button onClick={() => {
+            if(!connected) return
+            toggleBuyTokensVisible()
+          }}>
+            <span className='font-content'>Buy tokens modal</span>
+          </button>
 
-              </div>
-
-              
-
-            </JackpotMainCtn>
-
-            <JackpotBottomCtn>
-              <Deposit
-                active={active}
-                depositData={depositData}
-              />
-            </JackpotBottomCtn>
-
-            <JackpotBottomCtn>
-              <JackpotInfo
-                active={active}
-                prizePool={215}
-                jackpotRoundId={2}
-                playerCount={42}
-                maxPlayerCount={100}
-                maxDepositAmount={5}
-                timeLeftTillJackpot={92}
-                maxTimeLeftTillJackpot={120}
-              />
-            </JackpotBottomCtn>
+          </div>
           
-          </MainContentCtn>
+          <Panel panelType='side'>
+            <LobbyHeader />
+            <Lobby />
+          </Panel>
+          
+          <Panel panelType='main'>
+            <MainContentCtn>
 
-        </Panel>
+              <JackpotMainCtn>
+                <Jackpot winnerId={winnerId} animated={jackpotAnimated} />
+              </JackpotMainCtn>
 
-        <Panel panelType='side'>
+              <JackpotBottomCtn>
+                <Deposit />
+              </JackpotBottomCtn>
 
-            <ProfileHeader
-              onClickMyDetails={() => console.log(123)} // make a modal for this later
-              onClickBuyBalance={toggleBuyTokensVisible}
-            />
-
-            <JackpotArchives
-              active={active}
-            />
+              <JackpotBottomCtn>
+                <JackpotInfo />
+              </JackpotBottomCtn>
             
-        </Panel>
+            </MainContentCtn>
+          </Panel>
 
-      </MainWrapper>
+
+
+          <Panel panelType='side'>
+              <ProfileHeader onClickBuyBalance={toggleBuyTokensVisible} />
+              <JackpotArchives />
+          </Panel>
+
+
+        </MainWrapper>
+      </JackpotContext.Provider>
     </Web3Context.Provider>
   )
 }

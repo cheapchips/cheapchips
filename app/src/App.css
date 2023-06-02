@@ -1,3 +1,45 @@
+:root {
+  --duration: 1s;
+  --duration-end: 2s;
+}
+
 .dark {
   color-scheme: dark;
+}
+
+.fadein_anim {
+  animation: fade-in ease-out .25s;
+}
+
+.jackpot_anim {
+  animation: jackpot-anim var(--duration) linear infinite;
+}
+
+.jackpot_anim_ending {
+  animation: jackpot-anim-ending var(--duration-end);
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes jackpot-anim {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes jackpot-anim-ending {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

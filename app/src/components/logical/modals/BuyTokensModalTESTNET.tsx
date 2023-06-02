@@ -1,9 +1,11 @@
-import { useState, useEffect, useContext, useTransition } from "react"
+import { useState, useEffect, useContext } from "react"
 import ModalSkeleton from "../ModalSkeleton"
 import Web3Context from "../../../contexts/Web3Context"
 import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"
 import chainlink_logo from "../../../assets/chainlink_logo.png"
+import TransactionModal from "./TransactionModal"
+import useChipStable from "../../../hooks/useChipStable"
 
 const BuyTokensModalTESTNET = (
     props: {
@@ -11,8 +13,6 @@ const BuyTokensModalTESTNET = (
         onClickClose: () => void,
     }) => {
 
-    const web3 = useContext(Web3Context)
-    
     const styles = {
         // wrappers, layout only
         wrapper: `
@@ -28,10 +28,11 @@ const BuyTokensModalTESTNET = (
         `,
         verticalContentWrapper: `
             flex flex-col
-            `,
+        `,
         verticalContentTitle: `
             flex justify-center items-center
             px-2 py-4
+            hover:transition-opacity duration-700
         `,
         verticalContentMain: `
             flex justify-center items-center grow flex-col gap-4
@@ -113,18 +114,16 @@ const BuyTokensModalTESTNET = (
         const [val, setVal] = useState<number>()
         const [deposit, setDeposit] = useState<number>()
         const [allowance, setAllowance] = useState<number>()
-        const [linkTxStatus, writeLinkToken, readLinkToken] = useLinkToken()
-        const [jackpotTxStatus, writeJackpot, readJackpot] = useJackpot()
+        const [writeLinkToken, readLinkToken] = useLinkToken()
+        const [writeJackpot, readJackpot] = useJackpot()
         const [readyToDeposit, setReadyToDeposit] = useState<boolean>(false)
+        
+        const web3 = useContext(Web3Context)
+        const [writeChipStable, readChipStable] = useChipStable()
 
         useEffect(() => {
-            update() // initial data fetch
-        }, [readJackpot])
-
-        useEffect(() => {
-            // console.log(linkTxStatus)
             update()
-        }, [linkTxStatus])
+        }, [readJackpot])
 
         const update = async () => {
             await getCurrentAllowance()
@@ -150,6 +149,14 @@ const BuyTokensModalTESTNET = (
             }
             writeJackpot.depositFees(value)
         }
+        
+        const checkChipAllowance = async() => {
+            console.log(await readChipStable.checkAllowance())
+        }
+
+        const allowChips = () => {
+            writeChipStable.approve(10)
+        }
 
         return (
             <>
@@ -163,12 +170,16 @@ const BuyTokensModalTESTNET = (
                 <span>Current deposit: {!deposit ? "..." : deposit}</span>
                 <button onClick={() => submitDeposit(val)} className={styles.button + ((readyToDeposit || allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
                 <span className="w-1/2">{(!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
+
+                <button onClick={() => allowChips()}>Allow CHIPS</button>
+                <button onClick={() => {checkChipAllowance()}}>Chips allowance</button>
             </>
         )
     }
 
 
     return (
+        <>
         <ModalSkeleton {...props} size="Big" >
             <div className={styles.wrapper}>
 
@@ -185,6 +196,8 @@ const BuyTokensModalTESTNET = (
 
             </div>
         </ModalSkeleton>
+        <TransactionModal txTitle="Link Transaction" onClickClose={() => {}}/>
+        </>
     )
 
 }

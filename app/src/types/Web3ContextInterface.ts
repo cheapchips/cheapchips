@@ -2,8 +2,13 @@ import { Web3Provider } from "./ethersTypes"
 import { ChipsJackpot } from "../../../contracts/typechain-types"
 import { LinkTokenInterface } from "../../../contracts/typechain-types"
 import { ChipStable } from "../../../contracts/typechain-types"
+import { TxStatus, TxHash } from "./useTransactionTypes"
 import { Signer } from "ethers"
 
+type TxInfo = {
+  status: TxStatus
+  hash: TxHash
+}
 
 export default interface Web3ContextInterface {
   address: string | undefined
@@ -14,4 +19,7 @@ export default interface Web3ContextInterface {
   linkTokenBalance: string | undefined
   jackpot: ChipsJackpot | undefined
   chipStableBalance: string | undefined
+  tx: TxInfo,
+  setTxStatus: (status:TxStatus) => void
+  setTxHash: (hash: TxHash) => void
 }

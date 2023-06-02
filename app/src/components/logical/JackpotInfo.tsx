@@ -1,13 +1,13 @@
-import JackpotInfoProps from "../../proptypes/JackpotInfoProps"
+import { useState, useEffect, useContext } from "react" 
 import SvgIcon from "../layout/SvgIcon"
+import JackpotContext from "../../contexts/JackpotContext"
+import Web3Context from "../../contexts/Web3Context"
 
-const JackpotInfo = (props:JackpotInfoProps) => {
+const JackpotInfo = () => {
 
-    const jackpotInfoStyles = {
+    const styles = {
         mainCtn: `
             grid grid-flow-row
-            auto-rows-max
-            w-full h-full
             xl:text-sm
             lg:text-xxs
             md:text-xxxs
@@ -19,6 +19,7 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             border-lightBorder
             dark:border-darkBorder
             xl:p-2
+            lg:p-2
             md:p-1
         `,
         titleText: `
@@ -26,7 +27,8 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             fill-lightText
             dark:fill-darkText
             font-semibold
-            lg:p-1
+            2xl:p-1
+            xl:p-1
             md:p-0
         `,
         titleTextInactive: `
@@ -34,7 +36,6 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-7
             md:h-3
             rounded-md
-            animate-pulse
         `,
         infoCtn: `
             w-full grid grid-cols-3 h-fit
@@ -70,7 +71,6 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             lg:h-6
             md:h-4
             rounded-md
-            animate-pulse
         `,
         poolBarCtn: `
             flex flex-col
@@ -79,13 +79,10 @@ const JackpotInfo = (props:JackpotInfoProps) => {
             md:p-1
             gap-2
         `,
-            poolBarBorder: `
+        poolBarBorder: `
+            border border-lightBorder dark:border-darkBorder
+            bg-lightBgActivedark:bg-darkBgActive
             rounded-md
-            border
-            border-lightBorder
-            dark:border-darkBorder
-            bg-lightBgActive
-            dark:bg-darkBgActive
         `,
         poolBar: `
             rounded-md
@@ -101,61 +98,73 @@ const JackpotInfo = (props:JackpotInfoProps) => {
         inactiveBg: `
             bg-lightBgActive
             dark:bg-darkBgActive
+            animate-pulse
         `,
     }
 
+    const web3 = useContext(Web3Context)
+    const jackpotContext = useContext(JackpotContext)
+    const [active, setActive] = useState<boolean>(false)
+
+    useEffect(() => {
+        if(!web3.address || !jackpotContext.endDepositTime || !jackpotContext.maxNumberOfPlayers) return
+        setActive(true)
+    }, [web3, jackpotContext])
+
     return (
-        <div className={jackpotInfoStyles.mainCtn}>
+        <div className={styles.mainCtn}>
             
-            <div className={jackpotInfoStyles.titleCtn}>
-                {props.active ? 
-                    <span className={jackpotInfoStyles.titleText}>
-                        <SvgIcon style="w-5 h-4" viewBox="0 0 122.88 101.67" pathD="M67.14,55.68h21.15c1.13,0,2.05,0.92,2.05,2.05v41.9c0,1.12-0.92,2.05-2.05,2.05l-21.15,0 c-1.12,0-2.05-0.92-2.05-2.05v-41.9C65.09,56.6,66.01,55.68,67.14,55.68L67.14,55.68z M2.05,0H23.2c1.13,0,2.05,0.93,2.05,2.05 v97.58c0,1.12-0.93,2.05-2.05,2.05H2.05c-1.12,0-2.05-0.92-2.05-2.05V2.05C0,0.92,0.92,0,2.05,0L2.05,0z M99.68,76.33h21.15 c1.13,0,2.05,0.93,2.05,2.05v21.25c0,1.12-0.92,2.05-2.05,2.05H99.68c-1.12,0-2.05-0.92-2.05-2.05V78.38 C97.64,77.25,98.56,76.33,99.68,76.33L99.68,76.33L99.68,76.33z M34.59,31.5h21.15c1.13,0,2.05,0.93,2.05,2.05v66.07 c0,1.12-0.93,2.05-2.05,2.05H34.59c-1.12,0-2.05-0.92-2.05-2.05V33.55C32.54,32.42,33.47,31.5,34.59,31.5L34.59,31.5z" />
-                        <span>Round</span>
+            <div className={styles.titleCtn}>
+                {active
+                ? 
+                    <span className={styles.titleText}>
+                        <SvgIcon style="w-5 h-4" viewBox="0 0 122.88 108.91" pathD="M2.79,41.59L61.44,0l58.95,41.59L2.79,41.59L2.79,41.59z M0,102.28h9.08v-6.33h1.32v-3.02l3.85,0V56.7H6.38 v-8.68h110.11v8.68h-7.86v36.23h3.85v3.02l1.32,0v6.33h9.08v6.63H0V102.28L0,102.28z M32.59,95.95h4.44v-3.02l3.85,0V56.7H28.74 v36.23h3.85V95.95L32.59,95.95L32.59,95.95z M59.22,95.95h4.45v-3.02l3.84,0V56.7H55.37v36.23h3.85V95.95L59.22,95.95L59.22,95.95z M85.85,95.95h4.45v-3.02l3.85,0V56.7H82v36.23h3.85V95.95L85.85,95.95L85.85,95.95z M41.69,31.1l19.84-15.22L81.48,31.1H41.69 L41.69,31.1z" />
+                        <span>Round info</span>
                     </span>
                 :
-                    <span className={jackpotInfoStyles.titleTextInactive + jackpotInfoStyles.inactiveBg}></span>    
+                    <span className={styles.titleTextInactive + styles.inactiveBg}></span>    
                 }
             </div>
 
-            <div className={jackpotInfoStyles.infoCtn}>
-                {props.active
+            <div className={styles.infoCtn}>
+                {active
                 ?
                     <>
-                    <span className={jackpotInfoStyles.infoTitle}>Prize pool:
-                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValuePrizePool}>{props.prizePool} / {props.maxPlayerCount * props.maxDepositAmount}</span>
+                    <span className={styles.infoTitle}>Prize pool:
+                        <span className={styles.infoValue + styles.infoValuePrizePool}>{jackpotContext.prizePool}/{jackpotContext.maxNumberOfPlayers! * jackpotContext.maxChipsDeposit!}</span>
                     </span>
-                    <span className={jackpotInfoStyles.infoTitle}>Game starts in:
-                        <span className={jackpotInfoStyles.infoValue + jackpotInfoStyles.infoValueTimer}>{props.timeLeftTillJackpot} s</span>
+                    <span className={styles.infoTitle}>Game starts in:
+                        <span className={styles.infoValue + styles.infoValueTimer}>{jackpotContext.endDepositTime}s</span>
                     </span>
-                    <span className={jackpotInfoStyles.infoTitle}>Round id:
-                        <span className={jackpotInfoStyles.infoValue}>{props.jackpotRoundId}</span>
+                    <span className={styles.infoTitle}>Round id:
+                        <span className={styles.infoValue}>{jackpotContext.roundId}</span>
                     </span>
                     </>
                 :
                     <>
-                        <span className={jackpotInfoStyles.infoInactive + jackpotInfoStyles.inactiveBg}></span>
-                        <span className={jackpotInfoStyles.infoInactive + jackpotInfoStyles.inactiveBg}></span>
-                        <span className={jackpotInfoStyles.infoInactive + jackpotInfoStyles.inactiveBg}></span>
+                        <span className={styles.infoInactive + styles.inactiveBg}></span>
+                        <span className={styles.infoInactive + styles.inactiveBg}></span>
+                        <span className={styles.infoInactive + styles.inactiveBg}></span>
                     </>
                 }
             </div>
 
-            <div className={jackpotInfoStyles.poolBarCtn}>
-                {props.active
+            <div className={styles.poolBarCtn}>
+                {active
                 ?
                     <>
-                    <div className={jackpotInfoStyles.poolBarBorder}>
-                        <div style={{width: `${(props.prizePool * 100) / (props.maxDepositAmount * props.maxPlayerCount)}%`}} className={jackpotInfoStyles.poolBar + jackpotInfoStyles.poolBarPrize}></div>
-                    </div>
-                    <div className={jackpotInfoStyles.poolBarBorder}>
-                        <div style={{width: `${(props.timeLeftTillJackpot * 100) / props.maxTimeLeftTillJackpot}%`}}  className={jackpotInfoStyles.poolBar + jackpotInfoStyles.poolBarTimer}></div>
-                    </div>
+                        <div className={styles.poolBarBorder}>
+                            <div style={{width: `${(jackpotContext.prizePool! * 100) / (jackpotContext.maxChipsDeposit! * jackpotContext.maxNumberOfPlayers!)}%`}} className={styles.poolBar + styles.poolBarPrize}></div>
+                        </div>
+                        <div className={styles.poolBarBorder}>
+                            {/* fix this later */}
+                            <div style={{width: `${(jackpotContext.endDepositTime! * 100) / 400}%`}}  className={styles.poolBar + styles.poolBarTimer}></div>
+                        </div>
                     </>
                 :
                     <>
-                        <div className={jackpotInfoStyles.poolBar + jackpotInfoStyles.inactiveBg}></div>
-                        <div className={jackpotInfoStyles.poolBar + jackpotInfoStyles.inactiveBg}></div>
+                        <div className={styles.poolBar + styles.inactiveBg}></div>
+                        <div className={styles.poolBar + styles.inactiveBg}></div>
                     </>
                 }
             </div>

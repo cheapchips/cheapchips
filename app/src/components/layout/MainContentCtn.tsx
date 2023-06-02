@@ -11,7 +11,7 @@ const MainContentCtn = (props:WrapperProps) => {
     }
 
     return (
-        <div className={mainCtnStyles.ctn}>
+        <div className={mainCtnStyles.ctn} id="main_container" >
             {props.children}
         </div>
     )

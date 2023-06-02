@@ -12,7 +12,12 @@ export default {
         content: ["Roboto mono"]
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
+        'bounce-slow': 'bounce 1.5s ease-in infinite',
+      },
+      theme: {
+        boxShadow: {
+          'accent': '0 35px 60px -15px rgba(251, 191, 36, 0.3)',
+        }
       },
       screens: {
         'sm': {'max': '767px'},
