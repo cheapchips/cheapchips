@@ -161,9 +161,9 @@ const BuyTokensModalTESTNET = (
                     <span className={styles.depositBalanceInfo}>Balance: {!web3.linkTokenBalance ? "..." : web3.linkTokenBalance}</span>
                 </div>
                 <span>Current allowance: {!allowance ? "..." : allowance} </span>
-                <span>Current deposit: {!deposit ? "..." : deposit}</span>
+                <span>Current deposit: {!deposit ? "..." : (deposit.toString()).substring(0, 5)}</span>
                 <button onClick={() => submitDeposit(val)} className={styles.button + ((readyToDeposit || allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
-                <span className="w-1/2">{(!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
+                <span className="w-1/2 text-center">{(val! > +web3.linkTokenBalance!) ? "Not enough balance" : (!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
             </>
         )
     }
@@ -177,6 +177,8 @@ const BuyTokensModalTESTNET = (
                 <img className={styles.chainlinkLogo} src={cheapchips_logo} alt="ChainlinkLogo" />
                 <span>Claim free CHIPS here</span>
                 <button onClick={() => writeChipStable.mint()} className={styles.button}>CHIPS minter</button>
+                <span>Claim free LINK here</span>
+                <button onClick={() => window.open("https://faucets.chain.link/mumbai")} className={styles.button}>MATIC + LINK faucet</button>
             </>
         )
 
