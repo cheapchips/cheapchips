@@ -6,9 +6,10 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
 
     const [spawned, setSpawned] = useState<boolean>(false)
 
-    useEffect(() => {
-        setSpawned(true)
-    }, [])
+    // useEffect(() => {
+    //     console.log('modal mount')
+    //     setSpawned(true)
+    // }, [props.onSpawn])
 
     const modalStyles = {
         fullscreenBg: `

@@ -7,7 +7,6 @@ export default function useRound(){
     const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
 
-
     useEffect(() => {
         if(!web3.jackpot) return
         listenForDeposit()
@@ -21,7 +20,6 @@ export default function useRound(){
                 ticketAmount: amount.toNumber(),
                 id
             })
-
         })
     }
 }

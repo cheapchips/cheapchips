@@ -3,9 +3,11 @@ import ModalSkeleton from "../ModalSkeleton"
 import Web3Context from "../../../contexts/Web3Context"
 import useJackpot from "../../../hooks/useJackpot"
 import useLinkToken from "../../../hooks/useLinkToken"
-import chainlink_logo from "../../../assets/chainlink_logo.png"
 import TransactionModal from "./TransactionModal"
 import useChipStable from "../../../hooks/useChipStable"
+
+import chainlink_logo from "../../../assets/chainlink_logo.png"
+import cheapchips_logo from "../../../assets/logo.png"
 
 const BuyTokensModalTESTNET = (
     props: {
@@ -150,14 +152,6 @@ const BuyTokensModalTESTNET = (
             writeJackpot.depositFees(value)
         }
         
-        const checkChipAllowance = async() => {
-            console.log(await readChipStable.checkAllowance())
-        }
-
-        const allowChips = () => {
-            writeChipStable.approve(10)
-        }
-
         return (
             <>
                 <img className={styles.chainlinkLogo} src={chainlink_logo} alt="ChainlinkLogo" />
@@ -170,11 +164,22 @@ const BuyTokensModalTESTNET = (
                 <span>Current deposit: {!deposit ? "..." : deposit}</span>
                 <button onClick={() => submitDeposit(val)} className={styles.button + ((readyToDeposit || allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
                 <span className="w-1/2">{(!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
-
-                <button onClick={() => allowChips()}>Allow CHIPS</button>
-                <button onClick={() => {checkChipAllowance()}}>Chips allowance</button>
             </>
         )
+    }
+
+    const ClaimChipsPanel = () => {
+
+        const [writeChipStable] = useChipStable()
+
+        return (
+            <>
+                <img className={styles.chainlinkLogo} src={cheapchips_logo} alt="ChainlinkLogo" />
+                <span>Claim free CHIPS here</span>
+                <button onClick={() => writeChipStable.mint()} className={styles.button}>CHIPS minter</button>
+            </>
+        )
+
     }
 
 
@@ -184,10 +189,7 @@ const BuyTokensModalTESTNET = (
             <div className={styles.wrapper}>
 
                 <VerticalContentPanel title="Get chips and LINK">
-                    <span>Claim free chips here</span>
-                    <button className={styles.button}>CHIPS minter</button>
-                    <span>Claim free link here</span>
-                    <button onClick={() => window.open("https://faucets.chain.link/mumbai")} className={styles.button}>LINK faucet</button>
+                    <ClaimChipsPanel />
                 </VerticalContentPanel>
 
                 <VerticalContentPanel title="Deposit Link (service fee)">

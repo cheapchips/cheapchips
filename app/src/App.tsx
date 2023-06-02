@@ -84,8 +84,6 @@ function App() {
   const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
   const [playersDeposit, setPlayersDeposit] = useState<number>(0)
 
-  // const [hoverSpawn, setHoverSpawn] = useState<boolean>(false)
-
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
   }
@@ -94,8 +92,8 @@ function App() {
     if(connected && provider && signer && correctNetwork){
       (async() => {
         
-        const chip = ChipStable__factory.connect("0xCb121efF8eAdB7Ab2CaA0660cFD02e5BE4C946b6", signer)
-        const jackpot = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", signer)
+        const chip = ChipStable__factory.connect("0xBaC7365170e65F56A94E80739940ef514E4E19Ce", signer)
+        const jackpot = ChipsJackpot__factory.connect("0x4FD7595a346081738f6E959f3E037A3695370804", signer)
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
         const address = await signer.getAddress()
         
@@ -126,7 +124,7 @@ function App() {
         })
       })()
     }
-  }, [correctNetwork])
+  }, [connected, correctNetwork])
   
   if(loading){
     return <LoadingScreen />

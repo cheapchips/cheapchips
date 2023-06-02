@@ -1,8 +1,6 @@
-import useJackpot from '../../../../hooks/useJackpot'
 import LobbyElement from './LobbyElement'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useState, useEffect, useContext } from "react"
-import Web3Context from '../../../../contexts/Web3Context'
 import JackpotContext from '../../../../contexts/JackpotContext'
 import useRound from '../../../../hooks/useRound'
 
@@ -10,12 +8,8 @@ const Lobby = () => {
 
     const [lobbyElementsRef] = useAutoAnimate()
     const jackpotContext = useContext(JackpotContext)
-
-    useEffect(() => {
-        (async() => {
-            if(!jackpotContext) return
-        })()
-    }, [jackpotContext])
+    
+    useRound()
 
     const styles = {
         ctn: `

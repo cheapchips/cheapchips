@@ -1,6 +1,6 @@
 import SvgIcon from "../layout/SvgIcon"
 import useJackpot from "../../hooks/useJackpot"
-import ArchivedJackpot from "./ArchivedJackpot"
+import ArchivedJackpotRound from "./ArchivedJackpotRound"
 import Web3Context from "../../contexts/Web3Context"
 import JackpotContext from "../../contexts/JackpotContext"
 import { useEffect, useContext, useState } from "react"
@@ -48,12 +48,21 @@ const JackpotArchives = () => {
             gap-2
         `,
         }
+
+        type ParticipationStatus = "none" | "win" | "lose" | "withdrawn"
+         
+        type ArchivedJackpot = {
+            participationStatus: ParticipationStatus
+            prizePool: number
+            endTime: string
+            roundId: number
+        }
         
-        const testDate = (new Date()).toLocaleDateString('en-US')
         const web3 = useContext(Web3Context)
         const jackpotContext = useContext(JackpotContext)
         const [active, setActive] = useState<boolean>(true)
-        const [writeJackpot, readJackpot] = useJackpot() 
+        const [writeJackpot, readJackpot] = useJackpot()
+        const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])
         
         useEffect(() => {
             if(!web3.address || !jackpotContext.roundId || !jackpotContext.endDepositTime) return
@@ -61,29 +70,51 @@ const JackpotArchives = () => {
             fetchArchivedRounds()
         },[jackpotContext])
 
-        type ArchivedJackpot = {
-            participationStatus: "win" | "lose" | "none" // (web3.address === archivedRound.winnerAddress)
-            prizePool: number
-            endTime: string
-            roundId: number
-        }
-
         const fetchArchivedRounds = async () => {
             
+            const roundData = await readJackpot.getRoundData(0)
+
+            console.log(roundData)
+
+
+
             const currentRoundId = jackpotContext.roundId
-            console.log('current round', currentRoundId)
+            // console.log('current round', currentRoundId)
             if(!currentRoundId) return
             
+            async function getArchivedRoundData(id:number){
+                const roundData = await readJackpot.getRoundData(id)
+                const participantStatus = await readJackpot.getParticipationStatus(id)
+                const participantId = await readJackpot.getPlayerIdInRound(id)
+                return {roundData, participantStatus, participantId}
+            }
+            
             let archivedRounds = []
-            for (let i = +currentRoundId; i > 0; i--) {
-                
-                
-                const roundData = readJackpot.getRoundData(i)
-                console.log(await roundData)
-                // archivedRounds.push()
-                
+            for (let i = +currentRoundId - 1; i >= 0; i--) {
+                archivedRounds.push(getArchivedRoundData(i))
             }
 
+            archivedRounds = (await Promise.all(archivedRounds)).map<ArchivedJackpot>((round) => ({
+                prizePool: round.roundData.tickets.length as number,
+                participationStatus: round.participantStatus as ParticipationStatus,
+                participantId: round.participantId as number,
+                endTime: round.roundData.endTime.toLocaleDateString('en-US') ,
+                roundId: round.roundData.id as number
+            }))
+            setArchivedRounds(archivedRounds) 
+        }
+        
+        const ArchivedRoundList = () => {
+            const archivesList = archivedRounds.map((roundData, index) => (
+                <ArchivedJackpotRound
+                    participationStatus={roundData.participationStatus}
+                    prizePool={roundData.prizePool}
+                    endTime={roundData.endTime}
+                    roundId={roundData.roundId}
+                    key={index}
+                />
+            ))
+            return <>{archivesList}</>
         }
         
         return (
@@ -105,26 +136,7 @@ const JackpotArchives = () => {
 
             {/* Game list */}
             <div className={styles.jackpotCtn}>
-
-                <ArchivedJackpot
-                    userAddress="test_addr"
-                    winnerAddress="winner"
-                    prizePool={200}
-                    endTime={testDate}
-                    roundId={2}
-                    active={active}
-                />
-               
-                
-                <ArchivedJackpot
-                    userAddress="winner"
-                    winnerAddress="winner"
-                    prizePool={325}
-                    endTime={testDate}
-                    roundId={1}
-                    active={active}
-                />
-               
+                <ArchivedRoundList />
             </div>  
 
         </div>

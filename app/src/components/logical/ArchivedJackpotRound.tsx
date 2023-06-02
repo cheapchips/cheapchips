@@ -1,10 +1,8 @@
-const ArchivedJackpot = (props: {
-    userAddress: string,
-    winnerAddress: string,
+const ArchivedJackpotRound = (props: {
+    participationStatus: "none" | "win" | "lose" | "withdrawn"
     prizePool: number,
     endTime: string,
     roundId: number,
-    active: boolean
 }) => {
 
     
@@ -79,11 +77,8 @@ const ArchivedJackpot = (props: {
             dark:border-lime-400
         `,
     }
-    if(!props.active){
-        return <></>
-    }
     return (
-        <div className={archivedJackpotStyles.ctn + (props.userAddress === props.winnerAddress ? archivedJackpotStyles.participateWin : archivedJackpotStyles.participateLose)}>
+        <div className={archivedJackpotStyles.ctn + (props.participationStatus === "win" ? archivedJackpotStyles.participateWin : archivedJackpotStyles.participateLose)}>
             <span className={archivedJackpotStyles.jackpotGameTextTitle}>Pool:
                 <span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentOrange}>{props.prizePool}</span>
             </span>
@@ -93,7 +88,7 @@ const ArchivedJackpot = (props: {
                     <span>...</span>
                 </div>
             </span>
-            <span className={archivedJackpotStyles.jackpotGameTextTitle}>Id:
+            <span className={archivedJackpotStyles.jackpotGameTextTitle}>Round id:
                 <span className={archivedJackpotStyles.jackpotGameTextValue}>{props.roundId}</span>
             </span>
         </div>   
@@ -101,4 +96,4 @@ const ArchivedJackpot = (props: {
 
 }
 
-export default ArchivedJackpot
+export default ArchivedJackpotRound

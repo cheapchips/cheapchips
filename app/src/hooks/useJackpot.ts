@@ -5,12 +5,14 @@ import Web3Context from "../contexts/Web3Context";
 import useContractFunction from "./useContractFunction";
 
 
+
 interface RoundData {
     id: number,
     numberOfPlayers: number,
     tickets: number[],
-    endTime: BigNumber,
-    randomNumber: BigNumber
+    endTime: Date,
+    randomNumber: BigNumber,
+    status: number
 }
 
 
@@ -40,15 +42,32 @@ export default function useJackpot():[any, any]{
         return (await web3.jackpot!.getCurrentRoundId()).toString()
     }
 
-    async function getRoundData(id:number):Promise<RoundData | undefined>{
-        const [numberOfPlayers, tickets,, endTime, randomNumber] = await web3.jackpot!.getRoundData(id)
+    async function getPlayerIdInRound(roundId:number){
+        return await web3.jackpot!.getPlayerIdInRound(roundId)
+    }
+
+    async function getParticipationStatus(roundId:number) {
+        const status = await web3.jackpot!.getParticipationStatus(roundId)
+
+        switch(status){
+            case 0: return "none"
+            case 1: return "win"
+            case 2: return "lose"
+            case 3: return "withdrawn"
+        }
+    }
+    async function getRoundData(roundId:number):Promise<RoundData | undefined>{
+        const [numberOfPlayers, tickets,, endTime, randomNumber, status] = await web3.jackpot!.getRoundData(roundId)
+        const formattedEndTime = new Date(endTime.toNumber() * 1000)
+
 
         return {
-            id,
+            id: roundId,
             numberOfPlayers,
             tickets,
-            endTime,
-            randomNumber
+            endTime: formattedEndTime,
+            randomNumber,
+            status
         } 
     }
     
@@ -71,7 +90,7 @@ export default function useJackpot():[any, any]{
 
     return [
         {depositFees, deposit, closeRound}, 
-        {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound}
+        {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound, getPlayerIdInRound, getParticipationStatus, checkUpkeep}
     ]
     
 }

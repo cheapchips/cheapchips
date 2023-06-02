@@ -42,7 +42,7 @@ contract ChipsJackpot is ChipsJackpotCore, ChipsJackpotConsumer, ChipsJackpotMai
     }
 
     function checkUpkeep(bytes calldata /* checkData */) external view override returns(bool upkeepNeeded, bytes memory perfomData){
-        upkeepNeeded = rounds[currentRoundId].endTime < block.timestamp && rounds[currentRoundId].state == RoundState.DEFAULT;
+        upkeepNeeded = rounds[currentRoundId].endTime != 0 && rounds[currentRoundId].endTime < block.timestamp && rounds[currentRoundId].state == RoundState.DEFAULT;
         perfomData = "";
     }
 

@@ -134,7 +134,7 @@ const LobbyHeader = () => {
             <div className={styles.playerInfoCtn}>
                 {active
                     ?
-                        <span className={styles.lineCtn + styles.text}>Players: {jackpotContext.numberOfPlayers} / {jackpotContext.maxNumberOfPlayers}</span>
+                        <span className={styles.lineCtn + styles.text}>Players: {jackpotContext.numberOfPlayers!} / {jackpotContext.maxNumberOfPlayers!}</span>
                     :
                         <span className={styles.lineCtn + styles.textInactive + styles.inactiveBg}></span>
                 }
@@ -142,7 +142,6 @@ const LobbyHeader = () => {
                     {active
                     ?
                         <div className={styles.playerInfoBarBorder}>
-                            {/* needs a test run */}
                             <div style={{width: `${((jackpotContext.numberOfPlayers! / jackpotContext.maxNumberOfPlayers!) * 100)}%`}} className={styles.playerInfoBar}></div>
                         </div>
                     :

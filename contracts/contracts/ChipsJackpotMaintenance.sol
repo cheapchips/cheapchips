@@ -106,7 +106,7 @@ contract ChipsJackpotMaintenance {
 
         if(vrfFee != 0){
             LinkToken.transferAndCall(address(VRFCoordinator), vrfFee, abi.encode(SUBSCRIPTION_ID));
-            VRFCoordinatorV2ExtendedInterface(address(VRFCoordinator)).fundSubscription(SUBSCRIPTION_ID, uint96(vrfFee)); // only for local env
+            // VRFCoordinatorV2ExtendedInterface(address(VRFCoordinator)).fundSubscription(SUBSCRIPTION_ID, uint96(vrfFee)); // only for local env
         } 
         if(upkeepFee != 0) AutomationRegistry.addFunds(UPKEEP_ID, upkeepFee);
     }

@@ -45,7 +45,8 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
     const connectWallet = async () => {
         if(!provider) return
         const accounts:string[] = await provider.send("eth_requestAccounts", []);
-        (accounts.length > 0) ? setConnected(true) : setConnected(false)
+        console.log(accounts)
+        accounts.length > 0 ? setConnected(true) : setConnected(false)
     }
     
     const setupProviderAndSigner = async() => {
