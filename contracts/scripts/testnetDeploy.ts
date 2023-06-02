@@ -41,6 +41,8 @@ async function deploy(){
     const jackpot = await ChipsJackpot.deploy(token.address, coordinator.address, subId, UPKEEP_REGISTRY_ADDRESS, linkToken.address, KEYHASH)
     console.log("Jackpot address:", jackpot.address)
 
+    token.setJackpot(jackpot.address)
+
     await vrfCreator.addConsumer(jackpot.address)
 
   
@@ -52,7 +54,7 @@ async function deploy(){
     await tx0.wait()
 
     const tx1 = await upkeepCreator.register({
-        name: "cheapchips_test", 
+        name: "cheapchips_test2", 
         encryptedEmail: "0x", 
         upkeepContract: jackpot.address, 
         gasLimit: 500000, 

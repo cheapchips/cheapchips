@@ -26,13 +26,27 @@ contract ChipsJackpotCore is ChipsJackpotCoreInterface {
         return currentRoundId;
     }
 
-    function getRoundData(uint256 _roundId) external view returns (uint8, uint8[] memory, uint256, uint256, uint256){
+    function getRoundData(uint256 _roundId) external view returns (uint8, uint8[] memory, uint256, uint256, uint256, RoundState){
         Round storage round = rounds[_roundId];
-        return (round.numberOfPlayers, round.tickets, round.tickets.length, round.endTime, round.randomNumber);
+        return (round.numberOfPlayers, round.tickets, round.tickets.length, round.endTime, round.randomNumber, round.state);
     }
 
     function getPlayerIdInRound(uint256 _roundId) external view returns(uint8){
         return rounds[_roundId].players[msg.sender].id;
+    }
+
+    function getParticipationStatus(uint256 _roundId) external view returns(ParicipationStatus) {
+        Round storage round = rounds[_roundId];
+        Player memory player = round.players[msg.sender];
+
+        ParicipationStatus status = ParicipationStatus.NONE;
+
+        if(player.exists && round.state == RoundState.ENDED) {
+            if(round.tickets[round.randomNumber % round.tickets.length] == player.id) status = ParicipationStatus.WIN;
+            else status = ParicipationStatus.LOSE;
+        }
+
+        return status;
     }
 
 

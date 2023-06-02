@@ -9,6 +9,7 @@ interface ChipsJackpotCoreInterface {
     }
 
     enum RoundState { DEFAULT, CLOSED, ENDED }
+    enum ParicipationStatus { NONE, WIN, LOSE, WITHDRAWN }
 
     struct Round {
         RoundState state;
@@ -22,7 +23,8 @@ interface ChipsJackpotCoreInterface {
 
 
     function getCurrentRoundId() external returns (uint256);
-    function getRoundData(uint256 _roundId) external returns (uint8, uint8[] memory, uint256, uint256, uint256);
+    function getRoundData(uint256 _roundId) external returns (uint8, uint8[] memory, uint256, uint256, uint256, RoundState);
     function getPlayerIdInRound(uint256 _roundId) external returns (uint8);
     function withdrawPrize(uint256 _roundId) external;
+    function getParticipationStatus(uint256 _roundId) external view returns (ParicipationStatus);
 }
