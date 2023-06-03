@@ -30,7 +30,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             font-content
         `,
         profileTitleCtn: `
-            flex justify-start content-center w-full h-fit
+            flex justify-start content-center h-fit
             border-b
             border-lightBorder
             dark:border-darkBorder
@@ -55,7 +55,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
         `,
         profileMainContentCtn: `
             grid grid-flow-col grid-cols-3
-            w-full h-fit
+            h-fit
             gap-1
             xl:text-sm
             lg:text-xxs
@@ -108,7 +108,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             text-accentColor2
         `,
         profileSecondaryContentCtn: `
-            grid grid-flow-row grid-rows-[1fr,1fr]
+            grid grid-flow-row grid-rows-2
             gap-1
             items-center
             border-t
@@ -151,7 +151,8 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             rounded-md
             bg-lightBgActive
             dark:bg-darkBgActive
-            xl:text-xs
+            2xl:text-xs
+            xl:text-xxs
             lg:text-xxxs
             md:text-xxxxs
             xl:overflow-hidden xl:whitespace-nowrap

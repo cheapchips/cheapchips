@@ -55,7 +55,7 @@ const LobbyHeader = () => {
         `,
         lineCtn: `
             flex
-            px-1
+            p-1
         `,
         textTitle:`
             flex justify-start items-center gap-1

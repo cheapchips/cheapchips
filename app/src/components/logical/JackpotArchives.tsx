@@ -12,7 +12,7 @@ const JackpotArchives = () => {
     const styles = {
         ctn: `
             grid grid-flow-row grid-flow-rows-[fit,fit]
-            w-full h-full
+            h-full
             md:text-xxxs
             lg:text-xxs
             xl:text-sm
@@ -49,18 +49,27 @@ const JackpotArchives = () => {
             p-2
             gap-2
         `,
-        }
+        inactiveArchive: `
+            bg-lightBgActive
+            dark:bg-darkBgActive
+            2xl:h-20 xl:h-14 lg:h-10 md:h-10
+            2xl:p-2 xl:p-1 md:p-1
+            rounded-md
+            2xl:text-sm xl:text-xs lg:text-xxxs md:text-xxxxxs
+            animate-pulse
+        `,
+    }
 
         const web3 = useContext(Web3Context)
         const jackpotContext = useContext(JackpotContext)
-        const [active, setActive] = useState<boolean>(true)
+        const [active, setActive] = useState<boolean>(false)
         const [writeJackpot, readJackpot] = useJackpot()
         const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])
         
         useEffect(() => {
             if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime) return
-            // setActive(true)
             fetchArchivedRounds()
+            setActive(true)
         },[jackpotContext])
 
         const fetchArchivedRounds = async () => {
@@ -103,9 +112,16 @@ const JackpotArchives = () => {
             ))
             return <>{archivesList}</>
         }
-        
-        return (
 
+        const InactiveArchivedRoundList = () => {
+            const inactiveOpacities = [100, 85, 70, 55, 40, 25, 10]
+            const inactiveArchives = inactiveOpacities.map((opacity, index) => (
+                <div className={styles.inactiveArchive} style={{opacity: `${opacity}%`}} key={index}></div>
+            ))
+            return <>{inactiveArchives}</>
+        }
+
+    return (
         <div className={styles.ctn}>
 
             {/* Title */}
@@ -123,12 +139,15 @@ const JackpotArchives = () => {
 
             {/* Game list */}
             <div className={styles.jackpotCtn}>
-                <ArchivedRoundList />
-            </div>  
+                {active
+                ?
+                    <ArchivedRoundList /> 
+                :
+                    <InactiveArchivedRoundList />
+                }
+            </div>
 
         </div>
-
-
     )
 }
 

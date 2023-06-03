@@ -113,6 +113,8 @@ function App() {
         setJackpot(jackpot)
         setLinkToken(linkToken)
 
+        // evyt listener for link transfer? approve? etc
+
         const roundId = (await jackpot.getCurrentRoundId()).toString()
         const roundData = await jackpot.getRoundData(roundId)
         const players = formatTicketsToPlayers(roundData[1])
@@ -131,7 +133,7 @@ function App() {
     return <LoadingScreen />
   }
   return (
-    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash, errorMessage:txErrorMessage}, setTxStatus, setTxHash, setTxErrorMessage, setChipStableBalance }}>
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash, errorMessage:txErrorMessage}, setTxStatus, setTxHash, setTxErrorMessage, setChipStableBalance, setLinkTokenBalance }}>
       <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState}} >
 
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}

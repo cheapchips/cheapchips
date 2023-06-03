@@ -13,9 +13,9 @@ const LobbyElement = (props: {player: Player, maxTicketsPerPlayer: number }) => 
         ctn: `
             flex
             2xl:w-full
-            xl:w-max
-            lg:w-max
-            md:w-max
+            xl:w-full
+            lg:w-full
+            md:w-full
             p-2
             odd:bg-lightBgActive dark:odd:bg-darkBgActive
             border-b border-lightBorder dark:border-darkBorder
@@ -49,14 +49,14 @@ const LobbyElement = (props: {player: Player, maxTicketsPerPlayer: number }) => 
             select-none
         `,
         rowCtn: `
-            flex h-1/2
+            flex h-1/2 items-center
         `,
         chipToken: `
-            xl:w-7 xl:h-7
-            lg:w-5 lg:h-5
-            md:w-4 md:h-4
+            xl:w-5 xl:h-5
+            lg:w-4 lg:h-4
+            md:w-3 md:h-3
             -rotate-12
-            mr-2
+            mr-1
         `,
         inactiveChipToken: `
             opacity-[23%]

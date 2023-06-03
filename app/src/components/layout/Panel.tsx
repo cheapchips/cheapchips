@@ -9,14 +9,15 @@ const Panel = (props:PanelProps) => {
                 dark:bg-darkBg dark:border-darkBorder
                 text-lightText
                 dark:text-darkText
-            ${props.panelType === "nav" ? `col-span-full` : ""}
-            ${props.panelType === "main" ? `
+                ${props.panelType === "nav" ? `col-span-full` : ""}
+                ${props.panelType === "main" ? `
                 flex justify-center items-center content-center
             ` : ""}
-            ${props.panelType === "side" ? `
+                ${props.panelType === "side" ? `
                 grid grid-flow-row grid-rows-[auto,1fr]
                 overflow-y-auto
             ` : ""}
+            
             ${props.additionalClasses ? props.additionalClasses : ""}
         `
     }

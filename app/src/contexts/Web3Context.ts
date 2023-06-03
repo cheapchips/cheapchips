@@ -20,5 +20,6 @@ const Web3Context = createContext<Web3ContextInterface>({
     setTxHash: (hash:TxHash) => {},
     setTxErrorMessage: (err:string) => {},
     setChipStableBalance: (newBalance:string) => {},
+    setLinkTokenBalance: (newBalance:string) => {},
 })
 export default Web3Context

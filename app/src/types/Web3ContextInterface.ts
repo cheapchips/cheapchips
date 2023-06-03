@@ -25,4 +25,5 @@ export default interface Web3ContextInterface {
   setTxHash: (hash: TxHash) => void
   setTxErrorMessage: (err:string) => void,
   setChipStableBalance: (newBalance:string) => void,
+  setLinkTokenBalance: (newBalance:string) => void,
 }
