@@ -11,15 +11,15 @@ export default function useRound(){
 
     useEffect(() => {
         if(!web3.jackpot) return
-        listenForDeposit()
+        listenForChipsDeposit()
         listenForRandomNumber()
     }, [web3.jackpot])
 
     useEffect(()=> {
-        console.log(jackpotContext)
+        // console.log(jackpotContext)
     }, [jackpotContext])
     
-    function listenForDeposit(){
+    function listenForChipsDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {
 
             // add player
@@ -43,6 +43,10 @@ export default function useRound(){
 
         })
     }
+
+    function listenForLinkFeeDeposit(){
+        web3.linkToken
+    }
     
     function listenForRandomNumber(){
         web3.jackpot!.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {
@@ -50,6 +54,7 @@ export default function useRound(){
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
             jackpotContext.winnerId!.current = winnerId
+            jackpotContext.setRoundState("ended")
             console.log('winner id: ', winnerId)
           })
     }

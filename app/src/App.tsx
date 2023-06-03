@@ -13,7 +13,7 @@ import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
 import LobbyHeader from './components/logical/LobbyHeader'
 import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
-import JackpotInfo from './components/logical/JackpotInfo'
+import JackpotRoundInfo from './components/logical/JackpotRoundInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
 import TutorialModal from './components/logical/modals/TutorialModal'
 
@@ -174,6 +174,10 @@ function App() {
             <span className="font-content">Start jackpot</span>
           </button>
 
+          <button onClick={() => {
+            winnerId.current = 0
+          }}>End jackpot</button>
+
             <button onClick={() => toggleTutorialVisible()}>
             <span className='font-content'>Tutorial modal</span>
           </button>
@@ -204,7 +208,7 @@ function App() {
               </JackpotBottomCtn>
 
               <JackpotBottomCtn>
-                <JackpotInfo />
+                <JackpotRoundInfo />
               </JackpotBottomCtn>
             
             </MainContentCtn>

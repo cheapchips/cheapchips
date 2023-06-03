@@ -9,6 +9,7 @@ const Lobby = () => {
         ctn: `
             flex flex-col justify-start
             overflow-y-auto
+            overflow-x-hidden
         `,
         inactiveLobbyElementCtn: `
             flex flex-col gap-2

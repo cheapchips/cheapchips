@@ -3,7 +3,7 @@ import SvgIcon from "../layout/SvgIcon"
 import JackpotContext from "../../contexts/JackpotContext"
 import Web3Context from "../../contexts/Web3Context"
 
-const JackpotInfo = () => {
+const JackpotRoundInfo = () => {
 
     const styles = {
         mainCtn: `
@@ -30,6 +30,7 @@ const JackpotInfo = () => {
             2xl:p-1
             xl:p-1
             md:p-0
+            select-none
         `,
         titleTextInactive: `
             w-1/5
@@ -55,10 +56,12 @@ const JackpotInfo = () => {
         infoTitle: `
             font-semibold
             px-1
+            select-none
         `,
         infoValue: `
             font-extrabold
             px-1
+            select-none
         `,
         infoValuePrizePool: `
             text-accentColor
@@ -105,19 +108,32 @@ const JackpotInfo = () => {
     const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
     const [active, setActive] = useState<boolean>(false)
+    const [timer, setTimer] = useState<NodeJS.Timer>()
 
-    const [depositTimer, setDepositTimer] = useState<number>(0)
+    const [depositTimer, setDepositTimer] = useState<number>(10)
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
         setActive(true)
         setDepositTimer(10)
-
-        if(jackpotContext.players!.length >= 3){
+        
+        if(jackpotContext.players!.length === 3){
             console.log('Enough players joined. starting timer')
-            // countdownEndTime()
+            countdownEndTime()
         }
     }, [web3, jackpotContext])
+
+    useEffect(() => {
+        if(depositTimer === 0) clearInterval(timer)
+    }, [depositTimer])
+
+    function countdownEndTime() {
+        const timer = setInterval(() => {
+            setDepositTimer(prev => prev - 1)
+        }, 1000)
+
+        setTimer(timer)
+    }
 
     return (
         <div className={styles.mainCtn}>
@@ -183,4 +199,4 @@ const JackpotInfo = () => {
 
 
 
-export default JackpotInfo
+export default JackpotRoundInfo

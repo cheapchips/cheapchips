@@ -45,6 +45,7 @@ const JackpotArchives = () => {
         `,
         jackpotCtn: `
             overflow-y-auto
+            overflow-x-hidden
             flex flex-col
             h-auto
             p-2
@@ -73,19 +74,48 @@ const JackpotArchives = () => {
             setActive(true)
         },[jackpotContext])
 
+
+        function x() {
+            jackpotContext.setRoundState("ended")
+        }
+
+        useEffect(() => {
+            if(jackpotContext.roundState !== "ended") return
+            (async() => {
+                console.log('archives update live')
+                const round = await getArchivedRoundData(+jackpotContext.roundId! + 1)
+                const participantId = await readJackpot.getPlayerIdInRound(+jackpotContext.roundId!)
+
+                console.log(participantId)
+
+                const newRoundToArchive:ArchivedJackpot = {
+                    prizePool: round.roundData.tickets.length as number,
+                    participationStatus: round.participantStatus as ParticipationStatus,
+                    participantId: participantId as number,
+                    endTime: round.roundData.endTime.toLocaleDateString('en-US'),
+                    roundId: round.roundData.id as number
+                }
+
+                console.log(newRoundToArchive)
+
+                setArchivedRounds(prev => [newRoundToArchive, ...prev])
+
+            })()
+        }, [jackpotContext.roundState])
+
+        async function getArchivedRoundData(id:number){
+            const roundData = await readJackpot.getRoundData(id)
+            const participantStatus = await readJackpot.getParticipationStatus(id)
+            const participantId = await readJackpot.getPlayerIdInRound(id)
+            return {roundData, participantStatus, participantId}
+        }
+        
+
         const fetchArchivedRounds = async () => {
             
             const currentRoundId = jackpotContext.roundId
             // console.log('current round', currentRoundId)
             if(!currentRoundId) return
-            
-            async function getArchivedRoundData(id:number){
-                const roundData = await readJackpot.getRoundData(id)
-                const participantStatus = await readJackpot.getParticipationStatus(id)
-                const participantId = await readJackpot.getPlayerIdInRound(id)
-                return {roundData, participantStatus, participantId}
-            }
-            
             let archivedRounds = []
             for (let i = +currentRoundId - 1; i >= 0; i--) {
                 archivedRounds.push(getArchivedRoundData(i))
@@ -105,6 +135,7 @@ const JackpotArchives = () => {
             const archivesList = archivedRounds.map((roundData, index) => (
                 <ArchivedJackpotRound
                     participationStatus={roundData.participationStatus}
+                    participantId={roundData.participantId}
                     prizePool={roundData.prizePool}
                     endTime={roundData.endTime}
                     roundId={roundData.roundId}
@@ -144,6 +175,7 @@ const JackpotArchives = () => {
             </div>
 
             {/* Game list */}
+            <button onClick={() => x()}>skldfjf</button>
             <div className={styles.jackpotCtn}>
                 {active
                 ?

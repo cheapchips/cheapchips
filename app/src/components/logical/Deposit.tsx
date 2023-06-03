@@ -141,10 +141,7 @@ const Deposit = () => {
             border-lightBorder
             dark:border-darkBorder
             px-2
-            2xl:h-10
-            xl:h-8
-            lg:h-6
-            md:h-3
+            2xl:h-10 xl:h-8 lg:h-6 md:h-3
         `,
         inactiveInput: `
             w-full
@@ -172,6 +169,7 @@ const Deposit = () => {
             transition
             hover:scale-105 hover:opacity-90
             active:opacity-80
+            select-none
         `,
         depositBtnInactive: `
             w-2/3

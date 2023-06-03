@@ -66,7 +66,6 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
             border-lime-400
             dark:border-lime-400
         `,
-
         detailsIcon: `
             w-[50%] h-[50%]
             fill-lightBorder dark:fill-darkBorder

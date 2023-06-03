@@ -5,16 +5,32 @@ import chainlinkLogo from "../../assets/chainlink_logo.png"
 import { useContext } from "react"
 import Web3Context from "../../contexts/Web3Context"
 import { useState, useEffect } from "react"
+import useJackpot from "../../hooks/useJackpot"
 
 const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
 
     const web3 = useContext(Web3Context)
     const [active, setActive] = useState<boolean>(false)
+    const [feeBalance, setFeeBalance] = useState<number>()
+    const [,readJackpot] = useJackpot()
 
     useEffect(() => {
-        if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance) return
+        // console.log(feeBalance)
+        if(!feeBalance) return
+        getFeesBalance()
+    }, [feeBalance])
+    
+    useEffect(() => {
+        console.log(feeBalance)
+        if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance || !web3.jackpot) return
         setActive(true)
+        getFeesBalance()
     }, [web3])
+
+    async function getFeesBalance() {
+        const feesBalance = await readJackpot.checkFeesBalance()
+        setFeeBalance(feesBalance)
+    }
 
     const profileStyles = {
         ctn: `
@@ -233,7 +249,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                                         <span className="select-none">Link balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{feeBalance?.toString().substring(0, 4)}</span>
                                         <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} draggable={false} alt="Chainlink mini logo" />
                                     </div>
                                 </div>
