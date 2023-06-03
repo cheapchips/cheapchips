@@ -9,6 +9,7 @@ const Panel = (props:PanelProps) => {
                 dark:bg-darkBg dark:border-darkBorder
                 text-lightText
                 dark:text-darkText
+                overflow-hidden
                 ${props.panelType === "nav" ? `col-span-full` : ""}
                 ${props.panelType === "main" ? `
                 flex justify-center items-center content-center
@@ -16,6 +17,7 @@ const Panel = (props:PanelProps) => {
                 ${props.panelType === "side" ? `
                 grid grid-flow-row grid-rows-[auto,1fr]
                 overflow-y-auto
+                overflow-x-hidden
             ` : ""}
             
             ${props.additionalClasses ? props.additionalClasses : ""}

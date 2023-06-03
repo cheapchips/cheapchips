@@ -174,11 +174,6 @@ function App() {
             <span className="font-content">Start jackpot</span>
           </button>
 
-          {/* <button onClick={async() => {
-            await jackpot?.closeRound()
-          }}>End jackpot
-          </button> */}
-
             <button onClick={() => toggleTutorialVisible()}>
             <span className='font-content'>Tutorial modal</span>
           </button>

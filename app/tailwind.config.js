@@ -14,11 +14,6 @@ export default {
       animation: {
         'bounce-slow': 'bounce 1.5s ease-in infinite',
       },
-      theme: {
-        boxShadow: {
-          'accent': '0 35px 60px -15px rgba(251, 191, 36, 0.3)',
-        }
-      },
       screens: {
         'sm': {'max': '767px'},
       },

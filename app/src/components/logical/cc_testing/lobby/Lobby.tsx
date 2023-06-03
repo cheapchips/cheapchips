@@ -34,24 +34,32 @@ const Lobby = () => {
         setActive(true)
     }, [jackpotContext])
 
-    const uniqueLobbyElements = jackpotContext.players!.map((player, index) => (
-        <LobbyElement player={player} maxTicketsPerPlayer={5} key={index} />
-    ))
+    const ActiveLobby = () => {
+        const uniqueLobbyElements = jackpotContext.players!.map((player, index) => (
+            <LobbyElement player={player} maxTicketsPerPlayer={5} key={index} />
+        ))
+        return <>{uniqueLobbyElements}</>
+    }
 
-    const inactiveOpacities = [100, 85, 70, 55, 40, 25, 10]
-    const inactiveLobbyElements = inactiveOpacities.map((opacity, index) => (
-        <div className={styles.inactiveLobbyElement} style={{opacity: `${opacity}%`}} key={index}></div>
-    ))
+    const InactiveLobby = () => {
+        const inactiveOpacities = [100, 85, 70, 55, 40, 25, 10]
+        const inactiveLobbyElements = inactiveOpacities.map((opacity, index) => (
+            <div className={styles.inactiveLobbyElement} style={{opacity: `${opacity}%`}} key={index}></div>
+        ))
+        return (
+            <div className={styles.inactiveLobbyElementCtn}>
+                {inactiveLobbyElements}
+            </div>
+        )
+    }
 
     return (
         <div className={styles.ctn} ref={lobbyElementsRef}>
             {active
             ?
-                <>{uniqueLobbyElements}</>
+                <ActiveLobby />
             :
-            <div className={styles.inactiveLobbyElementCtn}>
-                <>{inactiveLobbyElements}</>
-            </div>
+                <InactiveLobby />
             }
         </div>
     )

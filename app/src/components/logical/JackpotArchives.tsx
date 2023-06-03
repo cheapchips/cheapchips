@@ -33,6 +33,7 @@ const JackpotArchives = () => {
         titleText: `
             p-1
             font-semibold
+            select-none
         `,
         titleTextInactive: `
             w-1/3
@@ -108,9 +109,14 @@ const JackpotArchives = () => {
                     endTime={roundData.endTime}
                     roundId={roundData.roundId}
                     key={index}
+                    onClickDetailsBtn={() => displayRoundDetailsModal(roundData.roundId)}
                 />
             ))
             return <>{archivesList}</>
+        }
+
+        const displayRoundDetailsModal = (roundId:number) => {
+            console.log('details for ', roundId)
         }
 
         const InactiveArchivedRoundList = () => {

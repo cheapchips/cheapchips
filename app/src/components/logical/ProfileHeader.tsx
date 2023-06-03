@@ -45,6 +45,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             2xl:p-1
             xl:p-1
             md:p-0
+            select-none
         `,
         profileTitleContentInactive: `
             w-1/4
@@ -75,6 +76,10 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
         `,
         profileIcon: `
             rounded-full
+            transition
+            hover:scale-75
+            hover:cursor-pointer
+            hover:animate-pulse
             p-2
         `,
         profileBalancesCtn: `
@@ -124,6 +129,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             w-full h-5 rounded-md animate-pulse
         `,
         profileSecondaryContentTitle: `
+            select-none
         `,
         profileSecondaryContentValue: `
             font-thin
@@ -131,7 +137,8 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             md:text-xxxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
-            flex justify-center content-center items-center gap-2
+            flex justify-center items-center
+            gap-2
         `,
         profileSecondaryContentDetailsBtnCtnInactive: `
             w-4/5
@@ -160,16 +167,17 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             dark:hover:text-accentColor
             transition ease-in-out
             hover:scale-110
+            font-semibold
         `,
         inactiveBg: `
             bg-lightBgActive
             dark:bg-darkBgActive
         `,
         chipsLogo: `
-            xl:w-4 xl:h-4 md:w-2 md:h-2 -rotate-6
+            xl:w-4 xl:h-4 md:w-2 md:h-2 -rotate-6 select-none
         `,
         chainlinkLogo: `
-            xl:w-4 xl:h-4 md:w-2 md:h-2
+            xl:w-4 xl:h-4 md:w-2 md:h-2 select-none
         `,
         inactiveBalanceText: `
             w-5/6 h-5/6 rounded-md bg-lightBgActive dark:bg-darkBgActive
@@ -186,7 +194,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                 ?
                     <span className={profileStyles.profileTitleContent}>
                         <SvgIcon style="w-4 h-4" viewBox="0 0 122.88 121.42" pathD="M0,121.42l0-19.63c10.5-4.67,42.65-13.56,44.16-26.41c0.34-2.9-6.5-13.96-8.07-19.26 c-3.36-5.35-4.56-13.85-0.89-19.5c1.46-2.25,0.84-10.44,0.84-13.53c0-30.77,53.92-30.78,53.92,0c0,3.89-0.9,11.04,1.22,14.1 c3.54,5.12,1.71,14.19-1.27,18.93c-1.91,5.57-9.18,16.11-8.56,19.26c2.31,11.74,32.13,19.63,41.52,23.8l0,22.23L0,121.42L0,121.42z" />
-                        <span>Profile</span>
+                        <span>My profile</span>
                     </span>
                 :
                     <span className={profileStyles.profileTitleContentInactive + profileStyles.inactiveBg}></span>
@@ -213,20 +221,20 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                             <>
                                 <div className={profileStyles.profileBalancesContent}>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span>Token balance:</span>
+                                        <span className="select-none">Token balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
                                         <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
-                                        <img className={profileStyles.chipsLogo} src={chipsLogo} alt="CheapChips mini logo" ></img>
+                                        <img className={profileStyles.chipsLogo} src={chipsLogo} draggable={false} alt="CheapChips mini logo" ></img>
                                     </div>
                                 </div>
                                 <div className={profileStyles.profileBalancesContent}>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span>Link balance:</span>
+                                        <span className="select-none">Link balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
                                         <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{web3.linkTokenBalance}</span>
-                                        <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} alt="Chainlink mini logo" />
+                                        <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} draggable={false} alt="Chainlink mini logo" />
                                     </div>
                                 </div>
                             </>
