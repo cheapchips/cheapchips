@@ -10,7 +10,7 @@ const PlayerList = (props:{players: Player[], playerIconSize: number}) => {
 
     const styles = {
         playerIcon: `
-          rounded-md
+          rounded-lg
           border-2 border-lightBorder dark:border-darkBorder p-px
         `,
     }

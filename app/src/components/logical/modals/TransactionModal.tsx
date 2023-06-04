@@ -9,9 +9,7 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
     
     const styles = {
         ctn: `
-            flex flex-col grow
-            justify-center items-center content-center
-            overflow-y-auto
+            flex flex-col grow justify-center items-center content-center overflow-y-auto
             p-2 gap-2
         `,
         text: `
@@ -30,7 +28,7 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
         submittedTx: {
             icon: `
                 xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-                fill-lightBg dark:fill-darkBg bg-opacity-50
+                fill-transparent
                 stroke-[2] stroke-lightBorder dark:stroke-darkBorder
                 animate-bounce-slow
             `,

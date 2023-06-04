@@ -15,7 +15,7 @@ export default function useResponsiveIconSize(watchElem:string = "jackpot_contai
 
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-    const iconSize = Math.ceil(containerWidth! / 10 / 4)
+    const iconSize = Math.ceil(containerWidth! / 10 / 3.75)
     return iconSize
     
 }

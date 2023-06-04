@@ -27,8 +27,8 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             flex flex-col
             justify-start
             self-center place-self-center z-50
-            bg-lightBg/60
-            dark:bg-darkBg/60
+            bg-lightBg/80
+            dark:bg-darkBg/80
             border
             border-lightBorder
             dark:border-darkBorder
