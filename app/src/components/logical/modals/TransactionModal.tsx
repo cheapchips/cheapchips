@@ -9,10 +9,10 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
     
     const styles = {
         ctn: `
-        flex flex-col grow
-        justify-center items-center content-center
-        overflow-y-auto
-        p-2 gap-2
+            flex flex-col grow
+            justify-center items-center content-center
+            overflow-y-auto
+            p-2 gap-2
         `,
         text: `
             w-1/2
@@ -23,37 +23,37 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
         `,
         createdTx: {
             metamaskLogo: `
-            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-            animate-pulse
+                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                animate-pulse
             `,
         },
         submittedTx: {
             icon: `
-            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-            fill-lightBg dark:fill-darkBg
-            stroke-[2] stroke-lightBorder dark:stroke-darkBorder
-            animate-bounce-slow
+                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                fill-lightBg dark:fill-darkBg bg-opacity-50
+                stroke-[2] stroke-lightBorder dark:stroke-darkBorder
+                animate-bounce-slow
             `,
         },
         deniedTx: {
             icon: `
-            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-            fill-red-500 dark:fill-red-500
-            animate-pulse
+                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                fill-red-500 dark:fill-red-500
+                animate-pulse
             `,
         },
         failedTx: {
             icon: `
-            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-            fill-red-500 dark:fill-red-500
-            animate-pulse
+                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                fill-red-500 dark:fill-red-500
+                animate-pulse
             `,
         },
         doneTx: {
             icon: `
-            xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
-            animate-bounce
-                `,
+                xl:w-20 xl:h-20 lg:w-16 lg:h-16 md:w-12 md:h-12 sm:w-6 sm:h-6
+                animate-bounce
+            `,
             }
         }
     

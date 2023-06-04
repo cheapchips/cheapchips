@@ -45,9 +45,8 @@ const JackpotArchives = () => {
         `,
         jackpotCtn: `
             overflow-y-auto
-            overflow-x-auto
             flex flex-col
-            h-auto
+            h-auto w-content
             p-2
             gap-2
         `,

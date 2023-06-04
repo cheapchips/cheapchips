@@ -48,67 +48,45 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
     const profileStyles = {
         ctn: `
             grid grid-flow-row grid-rows-[auto,fit,auto]
-            text-lightText
-            dark:text-darkText
-            md:text-xxxs
-            lg:text-xxs
-            xl:text-sm
-            border-b
-            border-lightBorder
-            dark:border-darkBorder
+            text-lightText dark:text-darkText
+            xl:text-sm lg:text-xxs md:text-xxxs
+            border-b border-lightBorder dark:border-darkBorder
             font-content
         `,
         profileTitleCtn: `
             flex justify-start content-center h-fit
-            border-b
-            border-lightBorder
-            dark:border-darkBorder
+            border-b border-lightBorder dark:border-darkBorder
             font-semibold
-            xl:p-2
-            lg:p-2
-            md:p-1
+            xl:p-2 lg:p-2 md:p-1
         `,
         profileTitleContent: `
             flex flex-row gap-1 justify-center items-center
             fill-lightText dark:fill-darkText
-            2xl:p-1
-            xl:p-1
-            md:p-0
+            2xl:p-1 xl:p-1 md:p-0
             select-none
         `,
         profileTitleContentInactive: `
-            w-1/4
-            lg:h-7
-            md:h-5
+            w-1/4 lg:h-7 md:h-5
             rounded-md
             animate-pulse
         `,
         profileMainContentCtn: `
-            grid grid-flow-col grid-cols-3
-            h-fit
-            gap-1
-            xl:text-sm
-            lg:text-xxs
-            md:text-xxxs
-            p-2
+            grid grid-flow-col grid-cols-3 h-fit
+            gap-1 p-2
+            xl:text-sm lg:text-xxs md:text-xxxs
         `,
         profileIconCtn: `
             flex justify-center items-center content-center
-            rounded-full
             bg-lightBgActive dark:bg-darkBgActive
             border border-lightBorder dark:border-darkBorder
-            aspect-square
-            overflow-hidden
+            aspect-square rounded-full overflow-hidden
         `,
         profileIconCtnInactive: `
             animate-pulse border-none
         `,
         profileIcon: `
             rounded-full
-            transition
-            hover:scale-75
-            hover:cursor-pointer
-            hover:animate-pulse
+            transition hover:scale-75 hover:cursor-pointer hover:animate-pulse
             p-2
         `,
         profileBalancesCtn: `
@@ -118,19 +96,13 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
         profileBalancesContent: `
             grid grid-flow-col grid-cols-2
             font-semibold
-            border-b
-            border-lightBorder
-            dark:border-darkBorder
-            2xl:text-sm
-            xl:text-xs
-            lg:text-xxs
-            md:text-xxxxs
+            border-b border-lightBorder dark:border-darkBorder
+            2xl:text-sm xl:text-xs lg:text-xxs md:text-xxxxs
             p-1
         `,
         profileBalanceRowContent: `
-            flex grow gap-1
-            justify-end
-            items-center
+            flex gap-1
+            justify-end items-center
         `,
         profileBalancesValue: `
             font-extrabold
@@ -142,14 +114,9 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             text-accentColor2
         `,
         profileSecondaryContentCtn: `
-            grid grid-flow-row grid-rows-2
-            gap-1
-            items-center
-            border-t
-            border-lightBorder
-            dark:border-darkBorder
-            lg:p-2
-            md:p-1
+            grid grid-flow-row grid-rows-2 items-center
+            border-t border-lightBorder dark:border-darkBorder
+            gap-1 lg:p-2 md:p-1
         `,
         profileSecondaryContent: `
             px-1 break-normal truncate
@@ -161,42 +128,27 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
             select-none
         `,
         profileSecondaryContentValue: `
-            font-thin
-            lg:text-xxs
-            md:text-xxxs
+            font-thin lg:text-xxs md:text-xxxs
         `,
         profileSecondaryContentDetailsBtnCtn: `
-            flex justify-center items-center
+            grid grid-flow-col
             gap-2
         `,
         profileSecondaryContentDetailsBtnCtnInactive: `
-            w-4/5
+            w-4/5 place-self-center
+            lg:h-6 md:h-2 
             rounded-md
-            lg:h-6
-            md:h-2
-            place-self-center
             animate-pulse
         `,
         profileSecondaryContentDetailsBtn: `
-            lg:px-4 py-1
-            md:px-2
-            mx-1
-            border
-            border-lightBorder
-            dark:border-darkBorder
-            rounded-md
-            bg-lightBgActive
-            dark:bg-darkBgActive
-            2xl:text-xs
-            xl:text-xxs
-            lg:text-xxxs
-            md:text-xxxxs
+            lg:px-3 py-1 md:px-2 mx-1
+            border border-lightBorder dark:border-darkBorder
+            bg-lightBgActive dark:bg-darkBgActive
+            2xl:text-xs xl:text-xxxs lg:text-xxxs md:text-xxxxs
             xl:overflow-hidden xl:whitespace-nowrap
-            hover:text-black
-            dark:hover:text-accentColor
-            transition ease-in-out
-            hover:scale-110
-            font-semibold
+            hover:text-black dark:hover:text-accentColor
+            transition ease-in-out hover:scale-110
+            font-semibold rounded-md
         `,
         inactiveBg: `
             bg-lightBgActive
