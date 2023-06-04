@@ -16,17 +16,17 @@ export default function useLinkToken():[any, any]{
     }
 
     async function checkAllowance(){
-        const {linkToken, jackpot, signer} = web3
-        if(!linkToken || !jackpot || !signer) return
-        const address = await signer.getAddress()
-        return weiToEther(await linkToken.allowance(address, jackpot.address))
+        // const {linkToken, jackpot, signer} = web3
+        // if(!linkToken || !jackpot || !signer) return
+        const address = await web3.signer!.getAddress()
+        return weiToEther(await web3.linkToken!.allowance(address, web3.jackpot!.address))
     }
 
     async function checkBalance() {
-        const {linkToken, signer} = web3
-        if(!linkToken || !signer) return
-        const address = await signer.getAddress()
-        return weiToEther(await linkToken.balanceOf(address))
+        // const {linkToken, signer} = web3
+        // if(!linkToken || !signer) return
+        const address = await web3.signer!.getAddress()
+        return weiToEther(await web3.linkToken!.balanceOf(address))
     }
 
     return [

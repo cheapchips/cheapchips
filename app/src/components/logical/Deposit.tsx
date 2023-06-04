@@ -286,7 +286,7 @@ const Deposit = () => {
             <div className={styles.inputCtn}>
                 {active
                     ?
-                        <input className={styles.input} type="number" min="1" placeholder="Custom amount" onChange={(e) => setDepositAmount(+e.target.value)} />
+                        <input className={styles.input} type="number" min="1" placeholder="Custom amount" onChange={() => {}} />
                         :
                         <div className={styles.inactiveInput}></div>
                     }

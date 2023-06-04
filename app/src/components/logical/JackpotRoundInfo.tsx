@@ -119,21 +119,21 @@ const JackpotRoundInfo = () => {
         
         if(jackpotContext.players!.length === 3){
             console.log('Enough players joined. starting timer')
-            countdownEndTime()
+            // countdownEndTime()
         }
     }, [web3, jackpotContext])
 
-    useEffect(() => {
-        if(depositTimer === 0) clearInterval(timer)
-    }, [depositTimer])
+    // useEffect(() => {
+    //     if(depositTimer === 0) clearInterval(timer)
+    // }, [depositTimer])
 
-    function countdownEndTime() {
-        const timer = setInterval(() => {
-            setDepositTimer(prev => prev - 1)
-        }, 1000)
+    // function countdownEndTime() {
+    //     const timer = setInterval(() => {
+    //         setDepositTimer(prev => prev - 1)
+    //     }, 1000)
 
-        setTimer(timer)
-    }
+    //     setTimer(timer)
+    // }
 
     return (
         <div className={styles.mainCtn}>

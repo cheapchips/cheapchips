@@ -74,7 +74,7 @@ function App() {
   
   // jackpot states
   const winnerId = useRef(-1)
-  const [roundId, setRoundId] = useState<string>()
+  const [roundId, setRoundId] = useState<number>()
   const [players, setPlayers] = useState<Player[]>([])
   const [prizePool, setPrizePool] = useState<number>()
   const [endTime, setEndTime] = useState<number>(10)
@@ -89,7 +89,7 @@ function App() {
   }
 
   function incrementRoundId() {
-    setRoundId(roundId! + 1)
+    setRoundId(prev => prev ? prev + 1 : 0)
   }
 
   function incrementPrizePool(ticketAmount:number) {
@@ -115,14 +115,14 @@ function App() {
 
         // evyt listener for link transfer? approve? etc
 
-        const roundId = (await jackpot.getCurrentRoundId()).toString()
+        const roundId = await jackpot.getCurrentRoundId()
         const roundData = await jackpot.getRoundData(roundId)
         const players = formatTicketsToPlayers(roundData[1])
         // console.log(roundData)
 
         // jackpot context
         setPlayers(players)
-        setRoundId(roundId)
+        setRoundId(roundId.toNumber())
         setPrizePool(roundData[1].length)
 
       })()

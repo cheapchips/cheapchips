@@ -8,9 +8,8 @@ export default function useChipStable():[any, any]{
 
     const web3 = useContext(Web3Context)
     
-    const [performApproveTx] = useContractFunction(web3.chipStable!.approve)    
-    const [performMintTx] = useContractFunction(web3.chipStable!.mint)    
-
+    const [performApproveTx] = useContractFunction(web3.chipStable?.approve!)    
+    const [performMintTx] = useContractFunction(web3.chipStable?.mint!)
 
     function approve(amount:number){
         performApproveTx(web3.jackpot!.address, etherToWei(amount))
@@ -20,10 +19,15 @@ export default function useChipStable():[any, any]{
         performMintTx()
     }
 
+    async function getBalance(){
+        const balance = await web3.chipStable!.balanceOf(web3.address!)
+        return balance
+    }
+
     async function checkAllowance(){
         return (await web3.chipStable!.allowance(web3.address!, web3.jackpot!.address)).toString()
     }
 
-    return [{approve, mint}, {checkAllowance}]
+    return [{approve, mint}, {checkAllowance, getBalance}]
     
 }

@@ -6,13 +6,20 @@ import { useContext } from "react"
 import Web3Context from "../../contexts/Web3Context"
 import { useState, useEffect } from "react"
 import useJackpot from "../../hooks/useJackpot"
+import useChipStable from "../../hooks/useChipStable"
 
 const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
 
     const web3 = useContext(Web3Context)
     const [active, setActive] = useState<boolean>(false)
     const [feeBalance, setFeeBalance] = useState<number>()
+    const [chipStableBalance, setChipStableBalance] = useState<number>()
     const [,readJackpot] = useJackpot()
+    const [,readChipStable] = useChipStable()
+
+    useEffect(() => {
+        console.log(readChipStable)
+    },[])
 
     useEffect(() => {
         // console.log(feeBalance)
@@ -22,14 +29,20 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
     
     useEffect(() => {
         console.log(feeBalance)
-        if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance || !web3.jackpot) return
+        if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance || !web3.jackpot || !web3.chipStable) return
         setActive(true)
         getFeesBalance()
+        getChipsStableBalance()
     }, [web3])
 
     async function getFeesBalance() {
         const feesBalance = await readJackpot.checkFeesBalance()
         setFeeBalance(feesBalance)
+    }
+
+    async function getChipsStableBalance(){
+        const chipStableBalance = await readChipStable.getBalance()
+        setChipStableBalance(chipStableBalance)
     }
 
     const profileStyles = {
@@ -240,7 +253,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                                         <span className="select-none">Token balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{web3.chipStableBalance}</span>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{chipStableBalance ? chipStableBalance?.toString().substring(0,5) : "..."}</span>
                                         <img className={profileStyles.chipsLogo} src={chipsLogo} draggable={false} alt="CheapChips mini logo" ></img>
                                     </div>
                                 </div>
@@ -249,7 +262,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                                         <span className="select-none">Link balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{feeBalance?.toString().substring(0, 4)}</span>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{feeBalance ? feeBalance?.toString().substring(0, 4) : "..."}</span>
                                         <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} draggable={false} alt="Chainlink mini logo" />
                                     </div>
                                 </div>

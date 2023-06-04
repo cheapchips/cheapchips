@@ -97,6 +97,8 @@ const BuyTokensModalTESTNET = (
         `,
     }
 
+    const [txModalVisible, setTxModalVisible] = useState<boolean>(false)
+
     const VerticalContentPanel = (props: {title:string, children:any}) => {
         return (
             <div className={styles.verticalContentWrapper}>
@@ -146,9 +148,11 @@ const BuyTokensModalTESTNET = (
             if(value > +web3.linkTokenBalance) return
             if(allowance! < value){
                 writeLinkToken.approve(value)
+                setTxModalVisible(true)
                 return
             }
             writeJackpot.depositFees(value)
+            setTxModalVisible(true)
         }
         
         return (
@@ -175,7 +179,7 @@ const BuyTokensModalTESTNET = (
             <>
                 <img className={styles.chainlinkLogo} src={cheapchips_logo} alt="ChainlinkLogo" />
                 <span>Claim free CHIPS here</span>
-                <button onClick={() => writeChipStable.mint()} className={styles.button}>CHIPS minter</button>
+                <button onClick={() => {writeChipStable.mint(); setTxModalVisible(true)}} className={styles.button}>CHIPS minter</button>
                 <span>Claim free LINK here</span>
                 <button onClick={() => window.open("https://faucets.chain.link/mumbai")} className={styles.button}>MATIC + LINK faucet</button>
             </>
@@ -199,7 +203,12 @@ const BuyTokensModalTESTNET = (
 
             </div>
         </ModalSkeleton>
-        <TransactionModal txTitle="Link Transaction" onClickClose={() => {}}/>
+        {
+            txModalVisible ?
+            <TransactionModal txTitle="Link Transaction" onClickClose={() => {setTxModalVisible(false)}}/>
+            :
+            <></>
+        }
         </>
     )
 

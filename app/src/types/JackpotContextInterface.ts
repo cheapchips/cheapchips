@@ -2,7 +2,7 @@ import { Player } from "./Player";
 import RoundState from "./RoundState";
 
 export default interface JackpotContextInterface{
-    roundId: string | undefined
+    roundId: number | undefined
     roundState: RoundState | undefined
     players:Player[] | undefined
     maxPlayers: number | undefined

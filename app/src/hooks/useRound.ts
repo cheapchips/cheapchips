@@ -11,6 +11,10 @@ export default function useRound(){
 
     useEffect(() => {
         if(!web3.jackpot) return
+        web3.jackpot!.removeAllListeners("Deposit")
+        web3.jackpot!.removeAllListeners("RoundEnded")
+
+
         listenForChipsDeposit()
         listenForRandomNumber()
     }, [web3.jackpot])
@@ -37,24 +41,26 @@ export default function useRound(){
             jackpotContext.incrementPrizePool(amount.toNumber())
 
             // handle roundState if needed
-            if(jackpotContext.players!.length == 2){
-                jackpotContext.setRoundState("closed")
-            }
+            // if(jackpotContext.players!.length == 2){
+            //     jackpotContext.setRoundState("closed")
+            // }
 
         })
     }
 
-    function listenForLinkFeeDeposit(){
-        web3.linkToken
-    }
+    // function listenForLinkFeeDeposit(){
+        // web3.linkToken
+    // }
     
     function listenForRandomNumber(){
         web3.jackpot!.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {
+            jackpotContext.setRoundState("ended")
             const { tickets } = await readJackpot.getRoundData(roundId)
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
             jackpotContext.winnerId!.current = winnerId
-            jackpotContext.setRoundState("ended")
+            jackpotContext.incrementRoundId()
+            jackpotContext.setRoundState("default")
             console.log('winner id: ', winnerId)
           })
     }

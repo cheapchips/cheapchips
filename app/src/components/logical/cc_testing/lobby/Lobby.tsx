@@ -29,7 +29,7 @@ const Lobby = () => {
 
     useEffect(() => {
         if(jackpotContext.players!.length <= 0){
-            setActive(false)    
+            setActive(false)
             return
         }
         setActive(true)

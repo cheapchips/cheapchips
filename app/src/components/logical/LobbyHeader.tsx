@@ -124,7 +124,7 @@ const LobbyHeader = () => {
                 {active
                     ?
                         <span className={styles.textLobbyId}>
-                            id: {jackpotContext.roundId}
+                            id: {jackpotContext.roundId?.toString()}
                         </span>
                     :
                         <span className={styles.textTitleInactive + styles.inactiveBg + styles.textTitleIdInactive}></span>

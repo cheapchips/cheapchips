@@ -81,11 +81,11 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
             : (props.participationStatus === "lose"
             ? archivedJackpotStyles.participateLose
             : "")))}>
-            <span className={archivedJackpotStyles.jackpotGameTextTitle}>Pool:
-                <span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentOrange}>{props.prizePool}</span>
-            </span>
             <span className={archivedJackpotStyles.jackpotGameTextTitle}>Round id:
                 <span className={archivedJackpotStyles.jackpotGameTextValue}>{props.roundId}</span>
+            </span>
+            <span className={archivedJackpotStyles.jackpotGameTextTitle}>Prize pool:
+                <span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentOrange}>{props.prizePool}</span>
             </span>
             <span className={archivedJackpotStyles.jackpotGameLastRow}>
                 <span className={archivedJackpotStyles.jackpotGameTextTitle}>Ended on:<span className={archivedJackpotStyles.jackpotGameTextValue + archivedJackpotStyles.textAccentBlue}>{props.endTime}</span></span>

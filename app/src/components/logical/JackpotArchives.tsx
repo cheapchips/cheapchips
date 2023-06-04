@@ -45,7 +45,7 @@ const JackpotArchives = () => {
         `,
         jackpotCtn: `
             overflow-y-auto
-            overflow-x-hidden
+            overflow-x-auto
             flex flex-col
             h-auto
             p-2
@@ -67,24 +67,38 @@ const JackpotArchives = () => {
         const [active, setActive] = useState<boolean>(false)
         const [writeJackpot, readJackpot] = useJackpot()
         const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])
+        const [isArchivesFetched, setIsArchivesFetched] = useState<boolean>(false)
+        const [previousRoundId, setPreviousRoundId] = useState<number>()
         
         useEffect(() => {
-            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime) return
+            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
+            console.log("jackpot context default []")
             fetchArchivedRounds()
             setActive(true)
+            setIsArchivesFetched(true)
+            setPreviousRoundId(jackpotContext.roundId)
         },[jackpotContext])
-
-
+        
         function x() {
             jackpotContext.setRoundState("ended")
-        }
+            jackpotContext.incrementRoundId()
+            // setTimeout(() => {
+                //
+                // jackpotContext.setRoundState("default")
 
+            // }, 1000)
+
+            // jackpotContext.setRoundState("ended")
+        }
+        
         useEffect(() => {
-            if(jackpotContext.roundState !== "ended") return
+            
             (async() => {
+                // console.log('roundState ten glowny[]')
                 console.log('archives update live')
-                const round = await getArchivedRoundData(+jackpotContext.roundId! + 1)
-                const participantId = await readJackpot.getPlayerIdInRound(+jackpotContext.roundId!)
+                if(previousRoundId === jackpotContext.roundId || !previousRoundId) return
+                const round = await getArchivedRoundData(+previousRoundId)
+                const participantId = await readJackpot.getPlayerIdInRound(previousRoundId)
 
                 console.log(participantId)
 
@@ -99,9 +113,9 @@ const JackpotArchives = () => {
                 console.log(newRoundToArchive)
 
                 setArchivedRounds(prev => [newRoundToArchive, ...prev])
-
+                setPreviousRoundId(roundId => roundId! + 1)
             })()
-        }, [jackpotContext.roundState])
+        }, [jackpotContext.roundId])
 
         async function getArchivedRoundData(id:number){
             const roundData = await readJackpot.getRoundData(id)
