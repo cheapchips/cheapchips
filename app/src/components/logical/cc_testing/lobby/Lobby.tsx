@@ -36,7 +36,8 @@ const Lobby = () => {
     }, [jackpotContext])
 
     const ActiveLobby = () => {
-        const uniqueLobbyElements = jackpotContext.players!.map((player, index) => (
+        if(!jackpotContext.players) return <></>
+        const uniqueLobbyElements = jackpotContext.players.map((player, index) => (
             <LobbyElement player={player} maxTicketsPerPlayer={5} key={index} />
         ))
         return <>{uniqueLobbyElements}</>

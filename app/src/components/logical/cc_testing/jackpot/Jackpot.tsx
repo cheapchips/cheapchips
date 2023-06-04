@@ -6,14 +6,18 @@ import Web3Context from '../../../../contexts/Web3Context'
 import { Player } from '../../../../types/Player'
 import { JackpotProps } from '../../../../proptypes/JackpotProps'
 import _ from 'lodash'
+import useJackpot from '../../../../hooks/useJackpot'
 
 const Jackpot = (props:JackpotProps) => {
+
+  const [,readJackpot] = useJackpot()
     
   const [rafflePlayers, setRafflePlayers] = useState<Player[]>([])
   const [rafflePlayersCopy, setRafflePlayersCopy] = useState<Player[]>([])
   const [animationIteration, setAnimationIteration] = useState<number>(0)
   const [runEndingAnimation, setRunEndingAnimation] = useState<boolean>(false)
   const [active, setActive] = useState<boolean>(false)
+  const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
   
   const iconSize = useResponsiveIconSize()
   const jackpotContext = useContext(JackpotContext)
@@ -26,13 +30,42 @@ const Jackpot = (props:JackpotProps) => {
   }, [web3, jackpotContext])
 
   useEffect(() => {
+    console.log(jackpotContext.roundState)
+    if(jackpotContext.roundState === "closed") setAnimateJackpot(true)
+  }, [jackpotContext.roundState])
+
+  useEffect(() => {
     if (props.winnerId.current === -1) return
     setRunEndingAnimation(true)
     handleWinner()
   }, [animationIteration])
 
-  function setupPlayerArrays(): void {
-    const propsPlayersHardCopy = _.cloneDeep(jackpotContext.players!)
+  async function setupPlayerArrays() {
+
+    const tickets = (await readJackpot.getRoundData(jackpotContext.roundId)).tickets
+    const localPlayerId = await readJackpot.getPlayerIdInRound(jackpotContext.roundId)
+    // const localPlayerId = await 
+    
+    const players = tickets.map((id:number) => ({
+      address: tickets[id] === localPlayerId ? web3.address : "00000llffffff" + id.toString(),
+      tickets: 1,
+      id
+    }))
+
+    if(players.length < 10){
+      for (let i = 0; i < 10; i++) {
+        players.push({
+          address: Math.random().toString(),
+          tickets: 1,
+          id: 2,
+        })
+      }
+    }
+
+    // console.log(tickets)
+    setRafflePlayers(players)
+
+    const propsPlayersHardCopy = _.cloneDeep(players)
     shuffleArray(propsPlayersHardCopy)
     setRafflePlayers(propsPlayersHardCopy)
     setRafflePlayersCopy(propsPlayersHardCopy)
@@ -57,7 +90,7 @@ const Jackpot = (props:JackpotProps) => {
 
   const styles = {
     ctn: `
-      flex gap-2 items-center w-5/6 h-3/4
+      flex items-center w-5/6 h-3/4
       border border-lightBorder dark:border-darkBorder
       rounded-md
       overflow-hidden
@@ -79,8 +112,8 @@ const Jackpot = (props:JackpotProps) => {
       backdrop-blur-3xl
     `,
     players: `
-      flex h-fit gap-2
-      ${props.animated ? 'jackpot_anim' : ''}
+      flex h-fit
+      ${props.animated || animateJackpot ? 'jackpot_anim' : ''}
       ${runEndingAnimation ? 'jackpot_anim_ending' : ''}
     `,
     text: `

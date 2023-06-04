@@ -15,7 +15,7 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
         fullscreenBg: `
             flex justify-center items-center
             w-screen h-screen absolute
-            backdrop-blur-2xl drop-shadow-2xl
+            backdrop-blur-3xl drop-shadow-2xl
             z-10
             font-content select-none
             xl:text-sm lg:text-xxs md:text-xxxs sm:text-xxxxs
@@ -34,7 +34,6 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             dark:border-darkBorder
             rounded-md
             z-50
-            backdrop-blur-sm
             ${props.size === "Big" ? `
             w-3/5 h-[90%]
             `

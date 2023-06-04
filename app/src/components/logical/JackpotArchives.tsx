@@ -79,18 +79,6 @@ const JackpotArchives = () => {
             setPreviousRoundId(jackpotContext.roundId)
         },[jackpotContext])
         
-        function x() {
-            jackpotContext.setRoundState("ended")
-            jackpotContext.incrementRoundId()
-            // setTimeout(() => {
-                //
-                // jackpotContext.setRoundState("default")
-
-            // }, 1000)
-
-            // jackpotContext.setRoundState("ended")
-        }
-        
         useEffect(() => {
             
             (async() => {
@@ -189,7 +177,6 @@ const JackpotArchives = () => {
             </div>
 
             {/* Game list */}
-            <button onClick={() => x()}>skldfjf</button>
             <div className={styles.jackpotCtn}>
                 {active
                 ?

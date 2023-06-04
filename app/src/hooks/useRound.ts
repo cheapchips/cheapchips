@@ -20,8 +20,17 @@ export default function useRound(){
     }, [web3.jackpot])
 
     useEffect(()=> {
-        // console.log(jackpotContext)
-    }, [jackpotContext])
+
+        if(jackpotContext.players?.length! >= 3){
+            console.log('jazda')
+            if(jackpotContext.roundState === "closed"){ 
+                console.log('chuj')
+                return
+            }
+            jackpotContext.setRoundState("closed")
+            console.log('closed chuj')
+        }
+    }, [jackpotContext.players])
     
     function listenForChipsDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {
@@ -39,11 +48,6 @@ export default function useRound(){
 
             // increment prize pool by ticket entry value
             jackpotContext.incrementPrizePool(amount.toNumber())
-
-            // handle roundState if needed
-            // if(jackpotContext.players!.length == 2){
-            //     jackpotContext.setRoundState("closed")
-            // }
 
         })
     }

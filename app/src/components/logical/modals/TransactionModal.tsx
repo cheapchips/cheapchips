@@ -64,11 +64,11 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
     useEffect(() => {
         if(web3.tx.status === "nonexist") return
         handleStatus()
-        console.log(web3.tx.errorMessage)
+        // console.log(web3.tx.errorMessage)
     }, [web3.tx.status, web3.tx.errorMessage])
     
     const handleStatus = () => {
-        console.log(web3.tx.status)
+        // console.log(web3.tx.status)
         if(web3.tx.status === "done"){
             enableCloseBtn()
             setTimeout(() => {props.onClickClose()}, 2500)

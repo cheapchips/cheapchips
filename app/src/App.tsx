@@ -84,6 +84,11 @@ function App() {
   const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
   const [playersDeposit, setPlayersDeposit] = useState<number>(0)
 
+  useEffect(() => {
+    console.log(players.length)
+    console.log(players)
+  }, [players])
+
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
   }
@@ -113,12 +118,10 @@ function App() {
         setJackpot(jackpot)
         setLinkToken(linkToken)
 
-        // evyt listener for link transfer? approve? etc
-
         const roundId = await jackpot.getCurrentRoundId()
         const roundData = await jackpot.getRoundData(roundId)
-        const players = formatTicketsToPlayers(roundData[1])
-        // console.log(roundData)
+        const localPlayerId = await jackpot.getPlayerIdInRound(roundId)
+        const players = formatTicketsToPlayers(roundData[1], localPlayerId, address)
 
         // jackpot context
         setPlayers(players)
