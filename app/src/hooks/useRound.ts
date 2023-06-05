@@ -20,49 +20,34 @@ export default function useRound(){
     }, [web3.jackpot])
 
     useEffect(()=> {
-
         if(jackpotContext.players?.length! >= 3){
-            console.log('jazda')
-            if(jackpotContext.roundState === "closed"){ 
-                return
-            }
-            // jackpotContext.setRoundState("closed")
+            if(jackpotContext.roundState === "closed") return
+            jackpotContext.setRoundState("closed")
         }
     }, [jackpotContext.players])
     
     function listenForChipsDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {
-
-            // add player
             jackpotContext.addPlayer({
                 address: from === web3.address ? web3.address : id.toString(),
                 ticketAmount: amount.toNumber(),
                 id
             })
-
-            // update chips balance
             const newChipsBalance = +web3.chipStableBalance! - amount.toNumber()
             web3.setChipStableBalance(newChipsBalance.toString())
-
-            // increment prize pool by ticket entry value
             jackpotContext.incrementPrizePool(amount.toNumber())
-
         })
     }
 
-    // function listenForLinkFeeDeposit(){
-        // web3.linkToken
-    // }
-    
     function listenForRandomNumber(){
         web3.jackpot!.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {
-            jackpotContext.setRoundState("ended")
             const { tickets } = await readJackpot.getRoundData(roundId)
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
             jackpotContext.winnerId!.current = winnerId
-            jackpotContext.incrementRoundId()
-            jackpotContext.setRoundState("default")
+            jackpotContext.setRoundState("ended")
+            // jackpotContext.incrementRoundId()
+            // jackpotContext.setRoundState("default")
             console.log('winner id: ', winnerId)
           })
     }

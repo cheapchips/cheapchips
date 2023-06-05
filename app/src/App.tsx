@@ -180,7 +180,12 @@ function App() {
 
           <button onClick={() => {
             winnerId.current = 0
+            setRoundState("ended")
           }}>End jackpot</button>
+
+          <button onClick={() => {
+            incrementRoundId() 
+          }}>Add archive</button>
 
             <button onClick={() => toggleTutorialVisible()}>
             <span className='font-content'>Tutorial modal</span>

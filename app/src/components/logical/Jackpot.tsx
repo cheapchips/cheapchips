@@ -1,70 +1,45 @@
-import {useState, useEffect, useContext} from "react"
+import {useState, useEffect, useContext, useRef } from "react"
 import Blockies from "react-blockies"
 import useResponsiveSizes from "../../hooks/useReponsiveIconSize"
 import JackpotContext from "../../contexts/JackpotContext"
 import { Player } from "../../types/Player"
+import _ from "lodash"
 
-const Jackpot = () => {
-    
-    const styles = {
-        ctn: `
-            flex flex-row justify-center items-center w-full h-full
-            overflow-hidden
-            backdrop-blur-3xl
-            gap-2
-        `,
-        playerBlock: `
-            flex justify-center items-center
-            border border-lightBorder dark:border-darkBorder
-            overflow-hidden rounded-md
-        `,
-        playerBlockInactive: `
-            border-none
-            bg-lightBgActive dark:bg-darkBgActive
-            animate-pulse
-        `,
-        glassCtn: `
-            absolute
-            w-full h-full
-            opacity-50
-            backdrop-blur-3xl
-        `,
-    }
+interface JackpotBlocksInterface{
+    displayPlayers:(Player | null)[]
+    setDisplayPlayers(players:(Player | null)[]): void
+}
 
-    const jackpotContext = useContext(JackpotContext)  
-    const [containerWidth, blockCtnSize, blockiesSize] = useResponsiveSizes()
-    const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))
-    const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
-    const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
+const styles = {
+    ctn: `
+        flex flex-row justify-center items-center w-full h-full
+        overflow-hidden
+        backdrop-blur-3xl
+        gap-2
+    `,
+    playerBlock: `
+        flex justify-center items-center
+        border border-lightBorder dark:border-darkBorder
+        overflow-hidden rounded-lg
+    `,
+    playerBlockInactive: `
+        border-none
+        bg-lightBgActive dark:bg-darkBgActive
+        animate-pulse rounded-lg
+    `,
+    glassCtn: `
+        absolute
+        w-full h-full
+        opacity-50
+        backdrop-blur-3xl
+    `,
+}
 
-    useEffect(() => {
-        console.log(jackpotContext.roundState)
-        if(jackpotContext.roundState === "closed") setAnimateJackpot(true)
-      }, [jackpotContext.roundState])
 
-    useEffect(() => () => {clearInterval(animationTimer)}, [])
+ const JackpotBlocks = ({displayPlayers, setDisplayPlayers}:JackpotBlocksInterface) => {
 
-    useEffect(() => {
-        if(!animateJackpot) return
+    const jackpotContext = useContext(JackpotContext)
 
-        const animationTimer = setInterval(() => {
-            const playersShuffled = shuffleArray(jackpotContext.players!)
-            setDisplayPlayers(playersShuffled.slice(0, 7))
-        }, 1000)
-
-        setAnimationTimer(animationTimer)
-    }, [animateJackpot])
-
-    function shuffleArray(array: Player[]): Array<Player> {
-        // optimized fisher-yates
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1))
-            const temp = array[i]
-            array[i] = array[j]
-            array[j] = temp
-        }
-        return array
-    }
 
     useEffect(() => {
         if(jackpotContext.players?.length === 0) return
@@ -81,37 +56,90 @@ const Jackpot = () => {
 
     }, [jackpotContext.players])
 
-    const JackpotBlocks = () => {
-        const blocksAmount = [1, 1.2, 1.4, 1.6, 1.4, 1.2, 1]
-        const blocks = displayPlayers?.map((player, index) => {
-            return <TestBlock blockCtnRatio={blocksAmount[index]} seed={player?.address ? player.address : "0"} key={index} active={player?.address ? true : false} />
-        })
-        return <>{blocks}</>
+    
+    const blocksAmount = [1, 1.2, 1.4, 1.6, 1.4, 1.2, 1]
+    const blocks = displayPlayers?.map((player, index) => {
+        return <TestBlock blockCtnRatio={blocksAmount[index]} seed={player?.address ? player.address : "0"} key={index} active={player?.address ? true : false} />
+    })
+    return <>{blocks}</>
+}
+
+const TestBlock = (props:{blockCtnRatio:number, seed:string, active:boolean}) => {
+    const [containerWidth, blockCtnSize, blockiesSize] = useResponsiveSizes()
+    return (
+        <div className={props.active ? styles.playerBlock : styles.playerBlock + styles.playerBlockInactive} style={{width: `${blockCtnSize * props.blockCtnRatio}px`, height: `${blockCtnSize * props.blockCtnRatio}px`}}>
+            <Blockies seed={props.seed} size={Math.round(blockiesSize * props.blockCtnRatio)} scale={8} className={props.active ? "rounded-lg" : "hidden"}/>
+        </div>
+    )
+}
+
+const Jackpot = () => {
+
+    const jackpotContext = useContext(JackpotContext)  
+    const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
+    const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
+    const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))
+
+    useEffect(() => {
+        console.log(jackpotContext.roundState)
+        if(jackpotContext.roundState === "closed") setAnimateJackpot(true)
+        if(jackpotContext.roundState === "ended") {
+            console.log(jackpotContext.winnerId!.current)
+            clearInterval(animationTimer)
+            handleWinner()
+        }
+      }, [jackpotContext.roundState])
+
+    useEffect(() => () => {clearInterval(animationTimer)}, [])
+
+    function handleWinner(){
+        const winner = jackpotContext.players!.find(player => player.id === jackpotContext.winnerId?.current)
+        const winnerArray = new Array(7).fill(null, 0, 7)
+        console.log(winner)
+        winnerArray[3] = winner!
+        setDisplayPlayers(winnerArray)
     }
 
-    const TestBlock = (props:{blockCtnRatio:number, seed:string, active:boolean}) => {
-        return (
-            <div className={props.active ? styles.playerBlock : styles.playerBlock + styles.playerBlockInactive} style={{width: `${blockCtnSize * props.blockCtnRatio}px`, height: `${blockCtnSize * props.blockCtnRatio}px`}}>
-                <Blockies seed={props.seed} size={Math.round(blockiesSize * props.blockCtnRatio)} scale={8} className={props.active ? "" : "hidden"}/>
-            </div>
-        )
+     useEffect(() => {
+        if(!animateJackpot) return
+        if(animationTimer) clearInterval(animationTimer)
+        
+        const timer = setInterval(() => {
+            const playersCopy = _.cloneDeep(jackpotContext.players!) as (Player | null)[]
+            shuffleArray(playersCopy as Player[])
+            if(playersCopy.length < 7) {
+                playersCopy.length = 7
+                playersCopy.fill(null, jackpotContext.players?.length, 7)
+            }
+
+            const order = [3, 4, 2, 5, 1, 6, 0]
+            const temp:(Player | null)[] = []
+            order.forEach((value, index) => {
+                temp[value] = playersCopy[index]  
+            })
+            setDisplayPlayers(temp)
+        }, 500)
+
+        setAnimationTimer(timer)
+    }, [animateJackpot])
+
+   
+    function shuffleArray(array: Player[]): Array<Player> {
+        // optimized fisher-yates
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            const temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
+        return array
     }
-
-
-
 
     return (
-        <>
         <div className={styles.ctn}>
-            <>
-            <JackpotBlocks />
+            <JackpotBlocks displayPlayers={displayPlayers} setDisplayPlayers={setDisplayPlayers}/>
             <div className={styles.glassCtn}></div>
-            </>
         </div>
-        </>
-
-
-
 
     )
 }

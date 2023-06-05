@@ -18,22 +18,16 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
     const [,readChipStable] = useChipStable()
 
     useEffect(() => {
-        console.log(readChipStable)
-    },[])
-
-    useEffect(() => {
-        // console.log(feeBalance)
         if(!feeBalance) return
         getFeesBalance()
     }, [feeBalance])
     
     useEffect(() => {
-        console.log(feeBalance)
         if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance || !web3.jackpot || !web3.chipStable) return
         setActive(true)
         getFeesBalance()
         getChipsStableBalance()
-    }, [web3])
+    }, [web3.chipStableBalance, web3.linkTokenBalance])
 
     async function getFeesBalance() {
         const feesBalance = await readJackpot.checkFeesBalance()

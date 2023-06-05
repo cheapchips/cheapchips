@@ -205,7 +205,7 @@ const BuyTokensModalTESTNET = (
         </ModalSkeleton>
         {
             txModalVisible ?
-            <TransactionModal txTitle="Link Transaction" onClickClose={() => {setTxModalVisible(false)}}/>
+            <TransactionModal txTitle="Transaction" onClickClose={() => {setTxModalVisible(false)}}/>
             :
             <></>
         }
