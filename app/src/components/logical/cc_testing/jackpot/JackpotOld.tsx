@@ -19,7 +19,8 @@ const Jackpot = (props:JackpotProps) => {
   const [active, setActive] = useState<boolean>(false)
   const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
   
-  const iconSize = useResponsiveIconSize()
+  // const iconSize = useResponsiveIconSize()
+  const [containerWidth, playerSize, blockiesSize] = useResponsiveIconSize()
   const jackpotContext = useContext(JackpotContext)
   const web3 = useContext(Web3Context)
   
@@ -138,8 +139,8 @@ const Jackpot = (props:JackpotProps) => {
         {active
         ?
           <>
-            <RafflePlayerList players={rafflePlayers} playerIconSize={iconSize} />
-            <RafflePlayerList players={rafflePlayersCopy} playerIconSize={iconSize} />
+            <RafflePlayerList players={rafflePlayers} playerIconSize={blockiesSize} />
+            <RafflePlayerList players={rafflePlayersCopy} playerIconSize={blockiesSize} />
             <div className={styles.glassCtn}></div>
           </>
         :

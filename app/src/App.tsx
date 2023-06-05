@@ -16,6 +16,7 @@ import Deposit from './components/logical/Deposit'
 import JackpotRoundInfo from './components/logical/JackpotRoundInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
 import TutorialModal from './components/logical/modals/TutorialModal'
+import Jackpot from './components/logical/Jackpot'
 
 // modals
 import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
@@ -40,8 +41,7 @@ import JackpotContext from './contexts/JackpotContext'
 import formatTicketsToPlayers from './hooks/utils/formatTicketsToPlayers'
 import TransactionModal from './components/logical/modals/TransactionModal'
 import { TxHash, TxStatus } from './types/useTransactionTypes'
-import Lobby from './components/logical/cc_testing/lobby/Lobby'
-import Jackpot from './components/logical/cc_testing/jackpot/Jackpot'
+import Lobby from './components/logical/lobby/Lobby'
 import { Player } from './types/Player'
 import useTheme from './hooks/useTheme'
 import RoundState from './types/RoundState'
@@ -203,7 +203,7 @@ function App() {
             <MainContentCtn>
 
               <JackpotMainCtn>
-                <Jackpot winnerId={winnerId} animated={jackpotAnimated} />
+                <Jackpot/>
               </JackpotMainCtn>
 
               <JackpotBottomCtn>

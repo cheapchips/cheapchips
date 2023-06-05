@@ -13,7 +13,7 @@ const JackpotMainCtn = (props:WrapperProps) => {
     }
 
     return (
-        <div className={jackpotCtnStyles.ctn}>
+        <div className={jackpotCtnStyles.ctn} id="jackpot_container">
             {props.children}
         </div>
     )

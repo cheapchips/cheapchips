@@ -24,11 +24,9 @@ export default function useRound(){
         if(jackpotContext.players?.length! >= 3){
             console.log('jazda')
             if(jackpotContext.roundState === "closed"){ 
-                console.log('chuj')
                 return
             }
             jackpotContext.setRoundState("closed")
-            console.log('closed chuj')
         }
     }, [jackpotContext.players])
     

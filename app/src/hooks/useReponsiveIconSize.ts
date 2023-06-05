@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-export default function useResponsiveIconSize(watchElem:string = "jackpot_container"): number {
+export default function useResponsiveSizes(watchElem:string = "jackpot_container"):[number | undefined, number, number] {
 
     const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined)
 
@@ -15,7 +15,9 @@ export default function useResponsiveIconSize(watchElem:string = "jackpot_contai
 
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-    const iconSize = Math.ceil(containerWidth! / 10 / 3.75)
-    return iconSize
+
+    const blockContainerSize = Math.floor(containerWidth! / 10)
+    const blockSize = Math.floor(containerWidth! / 90)
+    return [containerWidth, blockContainerSize, blockSize]
     
 }

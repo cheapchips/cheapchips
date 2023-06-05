@@ -1,5 +1,5 @@
 import Blockies from 'react-blockies'
-import CheapChipsLogo from "../../../../assets/logo.png"
+import CheapChipsLogo from "../../../assets/logo.png"
 
 type Player = {
   readonly address: string

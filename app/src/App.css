@@ -1,6 +1,6 @@
 :root {
-  --duration: 1s;
-  --duration-end: 2s;
+  --duration: .45s;
+  --duration-end: .9s;
 }
 
 .dark {
