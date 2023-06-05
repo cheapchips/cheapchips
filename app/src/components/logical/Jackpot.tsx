@@ -4,11 +4,15 @@ import useResponsiveSizes from "../../hooks/useReponsiveIconSize"
 import JackpotContext from "../../contexts/JackpotContext"
 import { Player } from "../../types/Player"
 
-
-
 const Jackpot = () => {
     
     const styles = {
+        ctn: `
+            flex flex-row justify-center items-center w-full h-full
+            overflow-hidden
+            backdrop-blur-3xl
+            gap-2
+        `,
         playerBlock: `
             flex justify-center items-center
             border border-lightBorder dark:border-darkBorder
@@ -19,11 +23,48 @@ const Jackpot = () => {
             bg-lightBgActive dark:bg-darkBgActive
             animate-pulse
         `,
+        glassCtn: `
+            absolute
+            w-full h-full
+            opacity-50
+            backdrop-blur-3xl
+        `,
     }
 
     const jackpotContext = useContext(JackpotContext)  
     const [containerWidth, blockCtnSize, blockiesSize] = useResponsiveSizes()
     const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))
+    const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
+    const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
+
+    useEffect(() => {
+        console.log(jackpotContext.roundState)
+        if(jackpotContext.roundState === "closed") setAnimateJackpot(true)
+      }, [jackpotContext.roundState])
+
+    useEffect(() => () => {clearInterval(animationTimer)}, [])
+
+    useEffect(() => {
+        if(!animateJackpot) return
+
+        const animationTimer = setInterval(() => {
+            const playersShuffled = shuffleArray(jackpotContext.players!)
+            setDisplayPlayers(playersShuffled.slice(0, 7))
+        }, 1000)
+
+        setAnimationTimer(animationTimer)
+    }, [animateJackpot])
+
+    function shuffleArray(array: Player[]): Array<Player> {
+        // optimized fisher-yates
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            const temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
+        return array
+    }
 
     useEffect(() => {
         if(jackpotContext.players?.length === 0) return
@@ -60,9 +101,14 @@ const Jackpot = () => {
 
 
     return (
-        <div className="flex flex-row justify-center items-center overflow-hidden gap-2">
+        <>
+        <div className={styles.ctn}>
+            <>
             <JackpotBlocks />
+            <div className={styles.glassCtn}></div>
+            </>
         </div>
+        </>
 
 
 

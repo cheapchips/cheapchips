@@ -26,7 +26,7 @@ export default function useRound(){
             if(jackpotContext.roundState === "closed"){ 
                 return
             }
-            jackpotContext.setRoundState("closed")
+            // jackpotContext.setRoundState("closed")
         }
     }, [jackpotContext.players])
     
