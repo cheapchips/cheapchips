@@ -8,7 +8,7 @@ import { useState, useEffect } from "react"
 import useJackpot from "../../hooks/useJackpot"
 import useChipStable from "../../hooks/useChipStable"
 
-const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
+const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() => void}) => {
 
     const web3 = useContext(Web3Context)
     const [active, setActive] = useState<boolean>(false)
@@ -240,7 +240,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void}) => {
                             <span className={profileStyles.profileSecondaryContentValue}>{web3.address!}</span>
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                            <button onClick={() => {console.log("My details modal?")}} className={profileStyles.profileSecondaryContentDetailsBtn}>My details</button>
+                            <button onClick={() => props.onClickMyDetails()} className={profileStyles.profileSecondaryContentDetailsBtn}>My details</button>
                             <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
                         </div>
                     </>

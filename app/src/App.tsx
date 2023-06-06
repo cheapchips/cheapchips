@@ -23,6 +23,7 @@ import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTES
 import InstallMetamaskModal from './components/logical/modals/InstallMetamaskModal'
 import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
 import ArchivedRoundModal from './components/logical/modals/ArchivedRoundModal'
+import MyDetailsModal from './components/logical/modals/MyDetailsModal'
 
 // hooks
 import { useState, useEffect, useRef } from 'react'
@@ -56,8 +57,8 @@ function App() {
 
   // modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
-  const [withdrawVisible, toggleWithDrawVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
+  const [myDetailsVisible, toggleMyDetailsVisible] = useModal()
   const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
   // const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
   const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
@@ -152,6 +153,7 @@ function App() {
         {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
         {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
         {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
+        {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
         {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
         <MainWrapper>
@@ -229,7 +231,10 @@ function App() {
           </Panel>
 
           <Panel panelType='side'>
-              <ProfileHeader onClickBuyBalance={toggleBuyTokensVisible} />
+              <ProfileHeader
+                onClickBuyBalance={toggleBuyTokensVisible}
+                onClickMyDetails={toggleMyDetailsVisible}
+              />
               <JackpotArchives />
           </Panel>
 
