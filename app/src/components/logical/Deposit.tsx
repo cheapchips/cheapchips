@@ -11,80 +11,53 @@ const Deposit = () => {
     const styles = {
         ctn: `
             grid grid-flow-row content-start h-full
-            text-lightText
-            dark:text-darkText
-            xl:text-sm
-            lg:text-xxs
-            md:text-xxxs
-            sm:text-xxxxs
-            font-content
+            text-lightText dark:text-darkText font-content
+            xl:text-sm lg:text-xxs md:text-xxxs sm:text-xxxxs
         `,
         depositTitleCtn: `
             flex justify-start items-center
-            xl:p-2
-            lg:p-2
-            md:p-1
-            font-semibold
             border-b border:lightBorder dark:border-darkBorder
+            xl:p-2 lg:p-2 md:p-1
+            font-semibold
         `,
         depositTitleText: `
             flex flex-row gap-1 items-center
-            fill-lightText
-            dark:fill-darkText
-            2xl:p-1
-            xl:p-1
-            md:p-0
+            fill-lightText dark:fill-darkText
+            2xl:p-1 xl:p-1 md:p-0
             select-none
         `,
         depositTitleInactive: `
             w-1/3
-            2xl:h-7
-            xl:h-6
-            lg:h-5
-            md:h-4
-            bg-lightBgActive
-            dark:bg-darkBgActive
+            2xl:h-7 xl:h-6 lg:h-5 md:h-4
+            bg-lightBgActive dark:bg-darkBgActive
             rounded-md
             animate-pulse
         `,
         chipsSelectorCtn: `
-            xl:p-2
-            lg:p-1.5
-            md:p-1
+            xl:p-2 lg:p-1.5 md:p-1
             border-b border:lightBorder dark:border-darkBorder
         `,
         chipsSelectorContentCtn: `
-            grid grid-flow-col
-            justify-center items-center
-            content-start
-            rounded-md
+            grid grid-flow-col justify-center items-center
             bg-lightBgActive dark:bg-darkBgActive
             border border-lightBorder dark:border-darkBorder
+            rounded-md
             select-none
         `,
         chipsSelectorContentInactive: `
             w-full
-            2xl:h-20
-            xl:h-8
-            lg:h-6
-            md:h-2
-            border-none
-            bg-lightBgActive
-            dark:bg-darkBgActive
-            rounded-md
+            2xl:h-20 xl:h-8 lg:h-6 md:h-2
+            bg-lightBgActive dark:bg-darkBgActive
+            border-none rounded-md
             animate-pulse
         `,
         chipsImgAndIndicatorCtn: `
-            grid grid-flow-row
-            justify-items-center
+            grid grid-flow-row justify-items-center
             cursor-pointer
             px-1
         `,
         chipsImg: `
-            2xl:w-12 2xl:h-12
-            xl:w-7 xl:h-7
-            lg:w-6 lg:h-6
-            md:w-4 md:h-3.5
+            2xl:w-12 2xl:h-12 xl:w-7 xl:h-7 lg:w-6 lg:h-6 md:w-4 md:h-3.5
             object-contain
             -rotate-6
             transition ease-in-out
@@ -93,14 +66,11 @@ const Deposit = () => {
         chipsImgGreyedOut: `
             opacity-[19%]
             contrast-10
-            hover:opacity-[30%]
-            hover:animate-pulse
+            hover:opacity-[30%] hover:animate-pulse
         `,
         chipsImgBottomIndicator: `
             pt-1
-            2xl:w-2 2xl:h-1
-            lg:w-1 lg:h-1
-            md:w-1 md:h-[1%]
+            2xl:w-2 2xl:h-1 lg:w-1 lg:h-1 md:w-1 md:h-[1%]
             rounded-md
             bg-accentColor
         `,
@@ -120,11 +90,7 @@ const Deposit = () => {
             animate-pulse
         `,
         depositValuesInfoText: `
-            2xl:text-sm
-            xl:text-xs
-            lg:text-xxxs
-            md:text-xxxxs
-            sm:text-xxxxs
+            2xl:text-sm xl:text-xs lg:text-xxxs md:text-xxxxs sm:text-xxxxs
             select-none
         `,
         depositValuesInfoValues: `
@@ -137,51 +103,35 @@ const Deposit = () => {
         `,
         input: `
             w-full h-full
-            bg-lightBgActive
-            dark:bg-darkBgActive
-            border rounded-md
-            border-lightBorder
-            dark:border-darkBorder
-            px-2
+            bg-lightBgActive dark:bg-darkBgActive
+            border rounded-md border-lightBorder dark:border-darkBorder
             2xl:h-10 xl:h-8 lg:h-6 md:h-3
+            px-2
         `,
         inactiveInput: `
             w-full
-            2xl:h-10
-            xl:h-8
-            lg:h-6
-            md:h-5
-            bg-lightBgActive
-            dark:bg-darkBgActive
+            2xl:h-10 xl:h-8 lg:h-6 md:h-5
+            bg-lightBgActive dark:bg-darkBgActive
             rounded-md
             animate-pulse
         `,
         depositBtnCtn: `
             flex justify-center items-center h-full
-            lg:p-2
-            md:p-1
+            lg:p-2 md:p-1
         `,
         depositBtn: `
             w-2/3
-            text-darkText text-md
+            text-darkText text-md font-bold select-none
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-600 to-yellow-300
-            font-bold
             2xl:h-12 xl:h-8 lg:h-6 md:h-[120%]
+            transition hover:scale-105 hover:opacity-90 active:opacity-80
             rounded-md
-            transition
-            hover:scale-105 hover:opacity-90
-            active:opacity-80
-            select-none
             accent_color_button_glow
         `,
         depositBtnInactive: `
             w-2/3
-            2xl:h-12
-            xl:h-8
-            lg:h-6
-            md:h-4
-            bg-lightBgActive
-            dark:bg-darkBgActive
+            2xl:h-12 xl:h-8 lg:h-6 md:h-4
+            bg-lightBgActive dark:bg-darkBgActive
             rounded-md
             animate-pulse
         `,
@@ -200,22 +150,21 @@ const Deposit = () => {
         setActive(true)
     }, [web3.address, jackpotContext])
     
-    const handleDepositTx = (): void => {
+    const handleDepositTx = () => {
         if(depositAmount > jackpotContext.maxChipsDeposit! || depositAmount < jackpotContext.minChipsDeposit! || depositAmount === 0) return
         setTxVisible(true)
         writeJackpot.deposit(depositAmount)
     }
 
-    const handleDepositInput = (value: number): void => {
-        // if(value > jackpotContext.maxChipsDeposit! || value < jackpotContext.minChipsDeposit!) return
-        // if(Number.isNaN(value)) return
-        // setDepositAmount(value)
+    const handleDepositInput = (value: number) => {
+        if(value > jackpotContext.maxChipsDeposit!){ setDepositAmount(jackpotContext.maxChipsDeposit!); return }
+        if(value < jackpotContext.minChipsDeposit!){ setDepositAmount(jackpotContext.minChipsDeposit!); return }
+        else setDepositAmount(Math.round(value))
     }
 
-    const handleDepositPercentage = (percentageValue:number): void => {
+    const handleDepositPercentage = (percentageValue:number) => {
         if(percentageValue > 100 || percentageValue < 1) return
         const percVal = (percentageValue / 100) * jackpotContext.maxChipsDeposit!
-        console.log(percVal)
         setDepositAmount(percVal)
     }
 
@@ -278,7 +227,7 @@ const Deposit = () => {
                 <>
                     <span className={styles.depositValuesInfoText}>min: <span className={styles.depositValuesInfoValues}>1</span></span>
                     <span className={styles.depositValuesInfoText}>max: <span className={styles.depositValuesInfoValues}>5</span></span>
-                    <span className={styles.depositValuesInfoText}>selected: <span className={styles.depositValuesInfoValues}>{depositAmount}</span></span>
+                    <span className={styles.depositValuesInfoText}>selected: <span className={styles.depositValuesInfoValues}>{depositAmount.toString().substring(0, 4)}</span></span>
                 </>
                 :
                 <div className={styles.depositValuesInfoInactive}></div>
@@ -289,7 +238,7 @@ const Deposit = () => {
             <div className={styles.inputCtn}>
                 {active
                     ?
-                        <input className={styles.input} type="number" min="1" placeholder="Custom amount" onChange={() => {}} />
+                        <input className={styles.input} type="number" value={depositAmount} placeholder="Custom amount" onChange={(e) => setDepositAmount(+e.target.value)} onBlur={(e) => handleDepositInput(+e.target.value)}/>
                         :
                         <div className={styles.inactiveInput}></div>
                     }
