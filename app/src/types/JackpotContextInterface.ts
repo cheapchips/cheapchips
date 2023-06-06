@@ -16,4 +16,5 @@ export default interface JackpotContextInterface{
     incrementRoundId: () => void
     incrementPrizePool: (ticketAmount:number) => void
     setRoundState: (state: RoundState) => void
+    toggleArchivedJackpotModal: (roundId:number) => void
 }

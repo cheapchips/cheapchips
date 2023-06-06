@@ -22,16 +22,17 @@ import Jackpot from './components/logical/Jackpot'
 import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
 import InstallMetamaskModal from './components/logical/modals/InstallMetamaskModal'
 import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
+import ArchivedRoundModal from './components/logical/modals/ArchivedRoundModal'
 
 // hooks
-import { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import useConnectWallet from './hooks/useConnectWallet'
 import useLoadingScreen from './hooks/useLoadingScreen'
 import useModal from './hooks/useModal' 
 
 // contracts
 import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
-import { BigNumber, ethers } from 'ethers'
+import { ethers } from 'ethers'
 
 // context
 import Web3Context from './contexts/Web3Context'
@@ -45,21 +46,22 @@ import Lobby from './components/logical/lobby/Lobby'
 import { Player } from './types/Player'
 import useTheme from './hooks/useTheme'
 import RoundState from './types/RoundState'
-import HoverSpawnModal from './components/logical/modals/HoverSpawnModal'
 
 function App() {
 
   // hooks
   const [metamask, correctNetwork, connected, provider, signer, connect] = useConnectWallet()
   const loading = useLoadingScreen()
-  const [theme, toggleTheme] = useTheme()
+  const [,] = useTheme()
 
-  // test modals
+  // modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
+  const [withdrawVisible, toggleWithDrawVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
   const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
-  const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
+  // const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
   const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
+  const [archivedJackpotVisible, toggleArchivedJackpotVisible] = useModal()
   
   // web3 states
   const [chipStable, setChipStable] = useState<ChipStable>()
@@ -81,8 +83,8 @@ function App() {
   const [roundState, setRoundState] = useState<RoundState>("default")
 
   //test
-  const [jackpotAnimated, setJackpotAnimated] = useState<boolean>(false)
   const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+  const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
 
   useEffect(() => {
     console.log(players.length)
@@ -99,6 +101,11 @@ function App() {
 
   function incrementPrizePool(ticketAmount:number) {
     setPrizePool(prizePool => prizePool! + ticketAmount)
+  }
+
+  function toggleArchivedJackpotModal(roundId:number) {
+    setArchivedJackpotId(roundId)
+    toggleArchivedJackpotVisible()
   }
   
   useEffect(() => {
@@ -137,7 +144,7 @@ function App() {
   }
   return (
     <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash, errorMessage:txErrorMessage}, setTxStatus, setTxHash, setTxErrorMessage, setChipStableBalance, setLinkTokenBalance }}>
-      <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState}} >
+      <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState, toggleArchivedJackpotModal}} >
 
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
         {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
@@ -145,16 +152,14 @@ function App() {
         {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
         {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
         {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
-
-        {/* {hoverSpawn && <HoverSpawnModal parentElemId='test' placement='bottom' /> } */}
-
+        {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
         <MainWrapper>
 
-          <Navbar walletOnClick={connect} connected={connected} />
+          <Navbar walletOnClick={connect} buyOnClick={connected ? toggleBuyTokensVisible : () => {}} connected={connected} />
 
           {/* white testblock */}
-          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' onMouseEnter={() => {}} onMouseLeave={() => {}}> 
+          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' > 
 
             <button onClick={() => {
 

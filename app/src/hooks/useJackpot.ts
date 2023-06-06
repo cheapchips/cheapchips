@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
 import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
-import { BigNumber } from "ethers";
 import Web3Context from "../contexts/Web3Context";
 import useContractFunction from "./useContractFunction";
 
@@ -11,7 +10,7 @@ interface RoundData {
     numberOfPlayers: number,
     tickets: number[],
     endTime: Date,
-    randomNumber: BigNumber,
+    winnerId: number,
     status: number
 }
 
@@ -23,19 +22,26 @@ export default function useJackpot():[any, any]{
     const [performDepositTx] = useContractFunction(web3.jackpot?.deposit!)
     const [performDepositFeesTx] = useContractFunction(web3.jackpot?.depositFees!)
     const [performCloseRoundTx] = useContractFunction(web3.jackpot?.closeRound!)
-
-
+    const [performWithdrawTx] = useContractFunction(web3.jackpot?.withdrawPrize!)
 
     function depositFees(amount:number){
         performDepositFeesTx(etherToWei(amount))
     }
 
-    async function checkFeesBalance(){
-        return weiToEther(await web3.jackpot!.balanceFees())
-    }
-
     function deposit(amount: number){
         performDepositTx(amount)
+    }
+
+    function closeRound(){
+        performCloseRoundTx()
+    }
+
+    function withdrawPrize(roundId:number) {
+        performWithdrawTx(roundId)
+    }
+
+    async function checkFeesBalance(){
+        return weiToEther(await web3.jackpot!.balanceFees())
     }
 
     async function getCurrentRoundId(){
@@ -59,14 +65,15 @@ export default function useJackpot():[any, any]{
     async function getRoundData(roundId:number):Promise<RoundData | undefined>{
         const [numberOfPlayers, tickets,, endTime, randomNumber, status] = await web3.jackpot!.getRoundData(roundId)
         const formattedEndTime = new Date(endTime.toNumber() * 1000)
-
+        const formattedWinnerIndex = randomNumber.mod(tickets.length).toNumber()
+        const formattedWinnerId = tickets[formattedWinnerIndex]
 
         return {
             id: roundId,
             numberOfPlayers,
             tickets,
             endTime: formattedEndTime,
-            randomNumber,
+            winnerId: formattedWinnerId,
             status
         } 
     }
@@ -82,14 +89,8 @@ export default function useJackpot():[any, any]{
         return (await web3.jackpot!.getTotalFeeForLastRound()).toString()
     }
 
-
-    function closeRound(){
-        performCloseRoundTx()
-    }
-
-
     return [
-        {depositFees, deposit, closeRound}, 
+        {depositFees, deposit, closeRound, withdrawPrize}, 
         {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound, getPlayerIdInRound, getParticipationStatus, checkUpkeep}
     ]
     

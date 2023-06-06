@@ -5,7 +5,7 @@ import DropdownMenu from "./DropdownMenu"
 import SvgIcon from "../layout/SvgIcon"
 import useTheme from "../../hooks/useTheme"
 
-const Navbar = (props:{walletOnClick:() => Promise<void>, connected:boolean}) => {
+const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void, connected:boolean}) => {
 
     const [theme, toggleTheme] = useTheme()
 
@@ -78,22 +78,6 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, connected:boolean}) =>
         `,
     }
 
-    // main links (nav left side)
-    const navMainLinksData = [
-        {
-            text: "CHEAPCHIPS",
-            url: "#",
-        },
-        {
-            text: "PLAY",
-            url: "#",
-        },
-        {
-            text: "BUY TOKENS",
-            url: "#",
-        }
-    ]
-
     // theme switcher button
     function navThemeSwitch() {
         const lightIconData = {
@@ -135,9 +119,10 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, connected:boolean}) =>
         ]
     }
 
+    const navMainLinksData = [{title: "CHEAPCHIPS", onClick: () => {}},{title: "BUY TOKENS", onClick: props.buyOnClick}]
     const MainLinks = navMainLinksData.map((button, index) => 
-        <button key={index} className={styles.contentText + styles.contentButton} onClick={() => window.open(button.url, "_self")}>
-            <span>{button.text}</span>
+        <button key={index} className={styles.contentText + styles.contentButton} onClick={() => button.onClick()}>
+            <span>{button.title}</span>
         </button>
     )
 

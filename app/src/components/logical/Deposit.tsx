@@ -91,8 +91,10 @@ const Deposit = () => {
             hover:scale-90
         `,
         chipsImgGreyedOut: `
-            opacity-[23%]
-            contrast-20
+            opacity-[19%]
+            contrast-10
+            hover:opacity-[30%]
+            hover:animate-pulse
         `,
         chipsImgBottomIndicator: `
             pt-1
@@ -170,6 +172,7 @@ const Deposit = () => {
             hover:scale-105 hover:opacity-90
             active:opacity-80
             select-none
+            accent_color_button_glow
         `,
         depositBtnInactive: `
             w-2/3
@@ -297,7 +300,7 @@ const Deposit = () => {
                 {active
                     ?
                     <button onClick={() => handleDepositTx()} className={styles.depositBtn}>
-                            DEPOSIT
+                            <span className="text-[1.2em] text-darkText">DEPOSIT</span>
                         </button>
                     :
                     <div className={styles.depositBtnInactive}></div>

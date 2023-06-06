@@ -11,33 +11,45 @@
   animation: fade-in ease-out .25s;
 }
 
-.jackpot_anim {
-  animation: jackpot-anim var(--duration) linear infinite;
+.background_anim {
+  background-size: 400%;
+  -webkit-animation: bg 12s ease infinite;
+  -moz-animation: bg 12s ease infinite;
+  animation: bg 12s ease infinite;
 }
 
-.jackpot_anim_ending {
-  animation: jackpot-anim-ending var(--duration-end);
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
+.participate_withdrawn_glow {
+  -webkit-box-shadow:0 0 6px #fbbf24; 
+  -moz-box-shadow: 0 0 6px #fbbf24; 
+  box-shadow:0 0 6px #fbbf24;
 }
 
-@keyframes jackpot-anim {
-  from {
-    transform: translateX(0);
+.participate_win_glow {
+  -webkit-box-shadow:0 0 6px #34d399; 
+  -moz-box-shadow: 0 0 6px #34d399; 
+  box-shadow:0 0 6px #34d399;
+}
+
+.accent_color_button_glow {
+  -webkit-box-shadow:0 0 6px #f59e0b; 
+  -moz-box-shadow: 0 0 6px #f59e0b; 
+  box-shadow:0 0 6px #f59e0b;
+}
+
+.text_shadow {
+  text-shadow: .5px .5px .5px rgba(0,0,0,0.5);
+}
+
+@keyframes bg {
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  to {
-    transform: translateX(-100%);
+  50% {
+    background-position: 100% 50%;
   }
 }
 
-@keyframes jackpot-anim-ending {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
 
 @keyframes fade-in {
   from { opacity: 0; }

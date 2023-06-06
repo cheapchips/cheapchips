@@ -93,7 +93,7 @@ const BuyTokensModalTESTNET = (
             border border-green-500 dark:border-green-500
         `,
         insufficientAllowance: `
-            border border-orange-600 dark:border-orange-600
+            border border-amber-500 dark:border-amber-500
         `,
     }
 
@@ -120,7 +120,6 @@ const BuyTokensModalTESTNET = (
         const [allowance, setAllowance] = useState<number>()
         const [writeLinkToken, readLinkToken] = useLinkToken()
         const [writeJackpot, readJackpot] = useJackpot()
-        const [readyToDeposit, setReadyToDeposit] = useState<boolean>(false)
         
         const web3 = useContext(Web3Context)
 
@@ -165,7 +164,7 @@ const BuyTokensModalTESTNET = (
                 </div>
                 <span>Current allowance: {!allowance ? "..." : allowance} </span>
                 <span>Current deposit: {!deposit ? "..." : (deposit.toString()).substring(0, 5)}</span>
-                <button onClick={() => submitDeposit(val)} className={styles.button + ((readyToDeposit || allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
+                <button onClick={() => submitDeposit(val)} className={styles.button + ((allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
                 <span className="w-1/2 text-center">{(val! > +web3.linkTokenBalance!) ? "Not enough balance" : (!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
             </>
         )

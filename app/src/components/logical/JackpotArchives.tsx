@@ -10,16 +10,13 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 
     const styles = {
         ctn: `
-            grid grid-flow-row grid-flow-rows-[fit,fit]
-            h-full
-            md:text-xxxs
-            lg:text-xxs
-            xl:text-sm
+            grid grid-flow-row grid-flow-rows-[fit,fit] h-full
+            xl:text-sm lg:text-xxs md:text-xxxs
             font-content
             overflow-y-auto
         `,
         archivesCtn: `
-            flex flex-col-reverse justify-end gap-2 pr-2 pt-2
+            flex flex-col-reverse justify-end gap-2 px-2 pt-2
         `,
         titleCtn: `
             flex h-fit items-center
@@ -44,7 +41,6 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
             overflow-y-auto
             flex flex-col
             h-auto w-content
-            pl-2
             gap-2
         `,
         inactiveArchive: `
@@ -69,14 +65,12 @@ const ArchivedRoundList = ({archivedRounds}:{archivedRounds:ArchivedJackpot[]}) 
             endTime={roundData.endTime}
             roundId={roundData.roundId}
             key={index}
-            onClickDetailsBtn={() => {}}
         />
     ))
     return <div className={styles.archivesCtn} ref={archivesRef}>{archivesList}</div>
 }
 
 const JackpotArchives = () => {
-
 
         const web3 = useContext(Web3Context)
         const jackpotContext = useContext(JackpotContext)
@@ -86,8 +80,6 @@ const JackpotArchives = () => {
         const [isArchivesFetched, setIsArchivesFetched] = useState<boolean>(false)
         const [previousRoundId, setPreviousRoundId] = useState<number>()
 
-      
-        
         useEffect(() => {
             if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
             fetchArchivedRounds()
@@ -106,7 +98,7 @@ const JackpotArchives = () => {
                     participationStatus: round.participantStatus as ParticipationStatus,
                     participantId: participantId as number,
                     endTime: round.roundData.endTime.toLocaleDateString('en-US'),
-                    roundId: round.roundData.id as number
+                    roundId: round.roundData.id as number,
                 }
                 setArchivedRounds(prev => [newRoundToArchive, ...prev])
                 setPreviousRoundId(roundId => roundId! + 1)
@@ -120,8 +112,7 @@ const JackpotArchives = () => {
             return {roundData, participantStatus, participantId}
         }
         
-        const fetchArchivedRounds = async () => {
-            
+        async function fetchArchivedRounds () {
             const currentRoundId = jackpotContext.roundId
             if(!currentRoundId) return
             let archivedRounds = []

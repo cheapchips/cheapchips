@@ -17,6 +17,7 @@ const JackpotContext = createContext<JackpotContextInterface>({
     addPlayer: (newPlayer:Player) => {},
     incrementRoundId: () => {},
     incrementPrizePool: (ticketAmount:number) => {},
+    toggleArchivedJackpotModal: (roundId:number) => {}
 })
 
 export default JackpotContext

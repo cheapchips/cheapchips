@@ -12,6 +12,7 @@ const WalletButton = (props:ButtonProps) => {
             flex content-center
             transition ease-in-out
             hover:scale-110
+            accent_color_button_glow
         `,
         buttonInactive: `
             flex justify-center items-center

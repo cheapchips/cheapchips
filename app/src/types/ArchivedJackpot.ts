@@ -6,7 +6,6 @@ type ArchivedJackpot = {
     prizePool: number
     endTime: string
     roundId: number
-    onClickDetailsBtn?: (roundId:number) => void
 }
 
 export default ArchivedJackpot
