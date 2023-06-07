@@ -49,7 +49,9 @@ export default function useJackpot():[any, any]{
     }
 
     async function getPlayerIdInRound(roundId:number){
-        return await web3.jackpot!.getPlayerIdInRound(roundId)
+        const {id, exists} = await web3.jackpot!.getPlayerIdInRound(roundId)
+        if(exists) return id;
+        return undefined;
     }
 
     async function getParticipationStatus(roundId:number) {
@@ -77,6 +79,11 @@ export default function useJackpot():[any, any]{
             status
         } 
     }
+
+    async function getRoundDataRange(startId:number, stopId: number){
+        const rounds = await web3.jackpot!.getRoundDataRange(startId, stopId)
+        return rounds
+    }
     
 
     // debug
@@ -91,7 +98,7 @@ export default function useJackpot():[any, any]{
 
     return [
         {depositFees, deposit, closeRound, withdrawPrize}, 
-        {checkFeesBalance, getCurrentRoundId, getRoundData, getTotalFeeForLastRound, getPlayerIdInRound, getParticipationStatus, checkUpkeep}
+        {checkFeesBalance, getCurrentRoundId, getRoundData, getRoundDataRange, getTotalFeeForLastRound, getPlayerIdInRound, getParticipationStatus, checkUpkeep}
     ]
     
 }

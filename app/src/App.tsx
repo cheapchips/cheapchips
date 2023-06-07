@@ -109,8 +109,8 @@ function App() {
     if(connected && provider && signer && correctNetwork){
       (async() => {
         
-        const chip = ChipStable__factory.connect("0xBaC7365170e65F56A94E80739940ef514E4E19Ce", signer)
-        const jackpot = ChipsJackpot__factory.connect("0x4FD7595a346081738f6E959f3E037A3695370804", signer)
+        const chip = ChipStable__factory.connect("0xC3013DF5d62c3D29Ed302BA2D76dC47e06BD254a", signer)
+        const jackpot = ChipsJackpot__factory.connect("0xB9e0E83E8664dB7FCd9a1a120B047d40e2656c54", signer)
         const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
         const address = await signer.getAddress()
         
@@ -196,7 +196,7 @@ function App() {
           }}>End jackpot</button>
 
           <button onClick={() => {
-            incrementRoundId() 
+            incrementRoundId()
           }}>Add archive</button>
 
             <button onClick={() => toggleTutorialVisible()}>

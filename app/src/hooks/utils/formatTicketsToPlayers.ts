@@ -1,6 +1,6 @@
 import { Player } from "../../types/Player";
 
-export default function formatTicketsToPlayers(tickets:number[], localPlayerId:number, localAddress:string): Player[] {
+export default function formatTicketsToPlayers(tickets:number[], localPlayerId:[number, boolean], localAddress:string): Player[] {
     
     const players:Player[] = []
     const playerTickets: {[key: number]: number} = {}
@@ -8,9 +8,11 @@ export default function formatTicketsToPlayers(tickets:number[], localPlayerId:n
       playerTickets[id] = playerTickets[id] ? playerTickets[id] + 1 : 1;
     }
 
+    
+
     Object.values(playerTickets).map((ticket, index) => {
       players.push({
-        address: Object.keys(playerTickets)[index] === localPlayerId.toString() ? localAddress : "00000llffffff" + index.toString(),
+        address: Object.keys(playerTickets)[index] === localPlayerId[0].toString() && localPlayerId[1] ? localAddress : ((Math.random() + 1).toString(36).substring(7) + index.toString()), 
         ticketAmount: ticket,
         id: index
       })

@@ -54,10 +54,6 @@ export default function useRound(){
             
             jackpotContext.winnerId!.current = winnerId
             jackpotContext.setRoundState("ended")
-
-
-            // clean players
-            // jackpotContext.setRoundState("default")
             console.log('winner id: ', winnerId)
           })
     }

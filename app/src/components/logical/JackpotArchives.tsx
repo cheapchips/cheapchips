@@ -7,17 +7,20 @@ import ArchivedJackpot from "../../types/ArchivedJackpot"
 import ParticipationStatus from "../../types/ParticipationStatus"
 import { useEffect, useContext, useState } from "react"
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types"
 
     const styles = {
         ctn: `
-            grid grid-flow-row grid-flow-rows-[fit,fit] h-full
+            grid grid-flow-row h-full
+            auto-rows-max
             xl:text-sm lg:text-xxs md:text-xxxs
             font-content
-            overflow-y-auto
         `,
         archivesCtn: `
-            flex flex-col-reverse justify-end gap-2 px-2 pt-2
+            flex flex-col-reverse grow h-content
+            border border-red-500
         `,
+        // flex flex-col-reverse justify-end gap-2 px-2 pt-2 overflow-y-auto grow
         titleCtn: `
             flex h-fit items-center
             fill-lightText dark:fill-darkText
@@ -38,11 +41,10 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
             animate-pulse
         `,
         jackpotCtn: `
-            overflow-y-auto
-            flex flex-col
-            h-auto w-content
-            gap-2
+            border border-emerald-400
         `,
+        // flex flex-col justify-end grow
+        // gap-2
         inactiveArchive: `
             bg-lightBgActive
             dark:bg-darkBgActive
@@ -87,9 +89,25 @@ const JackpotArchives = () => {
             setIsArchivesFetched(true)
             setPreviousRoundId(jackpotContext.roundId)
         },[jackpotContext])
+
+        // useEffect(() => {
+        //     (async () => {
+        //         const round = await getArchivedRoundData(0)
+        //         const participantId = await readJackpot.getPlayerIdInRound(previousRoundId)
+        //         const newRoundToArchive:ArchivedJackpot = {
+        //             prizePool: round.roundData.tickets.length as number,
+        //             participationStatus: round.participantStatus as ParticipationStatus,
+        //             participantId: participantId as number,
+        //             endTime: round.roundData.endTime.toLocaleDateString('en-US'),
+        //             roundId: round.roundData.id as number,
+        //         }
+        //         setArchivedRounds(prev => [newRoundToArchive, ...prev])
+        //     })()
+        // }, [jackpotContext.roundId])
         
         useEffect(() => {
             (async() => {
+                console.log(previousRoundId, jackpotContext.roundId)
                 if(previousRoundId === jackpotContext.roundId || !previousRoundId) return
                 const round = await getArchivedRoundData(+previousRoundId)
                 const participantId = await readJackpot.getPlayerIdInRound(previousRoundId)
@@ -113,19 +131,18 @@ const JackpotArchives = () => {
         }
         
         async function fetchArchivedRounds () {
-            const currentRoundId = jackpotContext.roundId
-            if(!currentRoundId) return
-            let archivedRounds = []
-            for (let i = +currentRoundId - 1; i >= 0; i--) {
-                archivedRounds.push(getArchivedRoundData(i))
-            }
 
-            archivedRounds = (await Promise.all(archivedRounds)).map<ArchivedJackpot>((round) => ({
-                prizePool: round.roundData.tickets.length as number,
-                participationStatus: round.participantStatus as ParticipationStatus,
-                participantId: round.participantId as number,
-                endTime: round.roundData.endTime.toLocaleDateString('en-US') ,
-                roundId: round.roundData.id as number
+            const rounds = await readJackpot.getRoundDataRange(0, jackpotContext.roundId! - 1) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
+            console.log(rounds)
+
+            const participationStatus:ParticipationStatus[] = ["none", "win", "lose", "withdrawn"]
+
+            const archivedRounds = rounds.map<ArchivedJackpot>((round) => ({
+                prizePool: round.prizePool.toNumber(),
+                participationStatus: participationStatus[round.playerParticipationStatus],
+                participantId: round.playerId,
+                endTime: round.endTime.toString(),
+                roundId: round.id.toNumber()
             }))
             setArchivedRounds(archivedRounds)
         }
@@ -153,7 +170,7 @@ const JackpotArchives = () => {
             }
             </div>
 
-            <div className={styles.jackpotCtn}>
+            <div className={styles.archivesCtn}>
                 {active
                 ?
                     <ArchivedRoundList archivedRounds={archivedRounds}/> 
