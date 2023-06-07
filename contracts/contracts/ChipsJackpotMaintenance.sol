@@ -26,6 +26,8 @@ contract ChipsJackpotMaintenance {
 
     mapping(address => uint256) playerFees; // name to think about
 
+
+
     address private owner;
 
     constructor(address _coordinatorAddress, address _keeperAddress, address _linkTokenAddress, uint64 _subscriptionId)
@@ -42,12 +44,6 @@ contract ChipsJackpotMaintenance {
         owner = msg.sender;
 
     }
-
-    modifier onlyOwner{
-        require(msg.sender==owner,"Not the owner");
-        _;
-    }
-
 
     function getUpkeepBalance() private view returns(uint96) {
         return AutomationRegistry.getUpkeep(UPKEEP_ID).balance;
@@ -111,7 +107,8 @@ contract ChipsJackpotMaintenance {
         if(upkeepFee != 0) AutomationRegistry.addFunds(UPKEEP_ID, upkeepFee);
     }
 
-    function setUpkeepId(uint256 _id) external onlyOwner {
+    function setUpkeepId(uint256 _id) external {
+        require(msg.sender==owner,"Not the owner");
         UPKEEP_ID = _id;
     }
 
