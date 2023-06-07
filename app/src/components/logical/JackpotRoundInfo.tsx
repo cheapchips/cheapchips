@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import SvgIcon from "../layout/SvgIcon"
 import JackpotContext from "../../contexts/JackpotContext"
 import Web3Context from "../../contexts/Web3Context"
+import useJackpot from "../../hooks/useJackpot"
 
 const JackpotRoundInfo = () => {
 
@@ -106,34 +107,50 @@ const JackpotRoundInfo = () => {
     }
 
     const web3 = useContext(Web3Context)
+    const [,readJackpot] = useJackpot()
     const jackpotContext = useContext(JackpotContext)
     const [active, setActive] = useState<boolean>(false)
     const [timer, setTimer] = useState<NodeJS.Timer>()
+    const [depositTimer, setDepositTimer] = useState<number>(60)
 
-    const [depositTimer, setDepositTimer] = useState<number>(10)
+    useEffect(() => {
+        (async() => {
+            if(jackpotContext.roundState == "closed"){
+                setDepositTimer(0)
+            }else {
+                setDepositTimer(60)
+                clearInterval(timer)
+            }
+        })()
+    }, [jackpotContext.roundState])
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
         setActive(true)
-        setDepositTimer(10)
-        
-        if(jackpotContext.players!.length === 3){
+        if(jackpotContext.players!.length >= 3){
             console.log('Enough players joined. starting timer')
-            // countdownEndTime()
+            countdownEndTime()
         }
     }, [web3, jackpotContext])
 
-    // useEffect(() => {
-    //     if(depositTimer === 0) clearInterval(timer)
-    // }, [depositTimer])
+    useEffect(() => () => { clearInterval(timer)}, [])
+    async function countdownEndTime() {
+            
+        if(jackpotContext.roundState === "ended") return
+        const endTime = (await readJackpot.getRoundData(jackpotContext.roundId)).endTime.getTime()
 
-    // function countdownEndTime() {
-    //     const timer = setInterval(() => {
-    //         setDepositTimer(prev => prev - 1)
-    //     }, 1000)
 
-    //     setTimer(timer)
-    // }
+        const _timer = setInterval(() => {
+            const timeLeft = Math.floor((endTime - Date.now())/ 1000)
+            if(timeLeft <= 0) {
+                setDepositTimer(0)
+                return
+            }
+            setDepositTimer(timeLeft)
+        }, 1000)
+
+        setTimer(_timer)
+    }
 
     return (
         <div className={styles.mainCtn}>
@@ -181,7 +198,7 @@ const JackpotRoundInfo = () => {
                             <div style={{width: `${(jackpotContext.prizePool! * 100) / (jackpotContext.maxChipsDeposit! * jackpotContext.maxPlayers!)}%`}} className={styles.poolBar + styles.poolBarPrize}></div>
                         </div>
                         <div className={styles.poolBarBorder}>
-                            <div style={{width: `${(depositTimer! / jackpotContext.endTime!) * 100}%`}}  className={styles.poolBar + styles.poolBarTimer}></div>
+                            <div style={{width: `${(depositTimer! / jackpotContext.endTime!) * 100}%`}} className={styles.poolBar + styles.poolBarTimer}></div>
                         </div>
                     </>
                 :

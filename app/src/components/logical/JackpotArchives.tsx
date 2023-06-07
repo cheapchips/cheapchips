@@ -11,14 +11,9 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
 
     const styles = {
         ctn: `
-            grid grid-flow-row h-full
-            auto-rows-max
+            grid grid-flow-row auto-rows-min
             xl:text-sm lg:text-xxs md:text-xxxs
             font-content
-        `,
-        archivesCtn: `
-            flex flex-col-reverse grow h-content
-            border border-red-500
         `,
         // flex flex-col-reverse justify-end gap-2 px-2 pt-2 overflow-y-auto grow
         titleCtn: `
@@ -26,6 +21,13 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
             fill-lightText dark:fill-darkText
             xl:p-2 lg:p-1
             border-b border-lightBorder dark:border-darkBorder
+        `,
+        archivesCtn: `
+            flex flex-col justify-start gap-2 p-1
+        `,
+        archivesCtnScrollable: `
+            flex flex-col gap-2
+            overflow-y-auto
         `,
         titleText: `
             p-1
@@ -40,11 +42,6 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
             rounded-md
             animate-pulse
         `,
-        jackpotCtn: `
-            border border-emerald-400
-        `,
-        // flex flex-col justify-end grow
-        // gap-2
         inactiveArchive: `
             bg-lightBgActive
             dark:bg-darkBgActive
@@ -133,6 +130,7 @@ const JackpotArchives = () => {
         async function fetchArchivedRounds () {
 
             const rounds = await readJackpot.getRoundDataRange(0, jackpotContext.roundId! - 1) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
+            // const rounds = await readJackpot.getRoundDataRange(0, 2) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
             console.log(rounds)
 
             const participationStatus:ParticipationStatus[] = ["none", "win", "lose", "withdrawn"]
@@ -141,7 +139,7 @@ const JackpotArchives = () => {
                 prizePool: round.prizePool.toNumber(),
                 participationStatus: participationStatus[round.playerParticipationStatus],
                 participantId: round.playerId,
-                endTime: round.endTime.toString(),
+                endTime: new Date(round.endTime.toNumber() * 1000).toLocaleDateString("en-US"),
                 roundId: round.id.toNumber()
             }))
             setArchivedRounds(archivedRounds)
@@ -173,7 +171,9 @@ const JackpotArchives = () => {
             <div className={styles.archivesCtn}>
                 {active
                 ?
-                    <ArchivedRoundList archivedRounds={archivedRounds}/> 
+                    <div className={styles.archivesCtnScrollable}>
+                        <ArchivedRoundList archivedRounds={archivedRounds}/> 
+                    </div>
                 :
                     <InactiveArchivedRoundList />
                 }

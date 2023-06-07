@@ -7,6 +7,8 @@ import JackpotContext from "../../contexts/JackpotContext"
 import TransactionModal from "./modals/TransactionModal"
 
 const Deposit = () => {
+
+    const [depositEnabled, setDepositEnabled] = useState<boolean>(true)
     
     const styles = {
         ctn: `
@@ -124,9 +126,9 @@ const Deposit = () => {
             text-darkText text-md font-bold select-none
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-600 to-yellow-300
             2xl:h-12 xl:h-8 lg:h-6 md:h-[120%]
-            transition hover:scale-105 hover:opacity-90 active:opacity-80
             rounded-md
             accent_color_button_glow
+            ${!depositEnabled ? "opacity-20 contrast-75" : "transition hover:scale-105 hover:opacity-90 active:opacity-80"}
         `,
         depositBtnInactive: `
             w-2/3
@@ -140,18 +142,22 @@ const Deposit = () => {
     const web3 = useContext(Web3Context)
     const jackpotContext = useContext(JackpotContext)
     const [writeJackpot] = useJackpot()
-    
     const [txVisible, setTxVisible] = useState<boolean>(false)
     const [depositAmount, setDepositAmount] = useState<number>(jackpotContext.defaultChipsDeposit!)
     const [active, setActive] = useState<boolean>(false)
-
-    const [fade, setFade] = useState<boolean>(false)
-
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.maxChipsDeposit || !jackpotContext.endTime) return
         setActive(true)
     }, [web3.address, jackpotContext])
+
+    useEffect(() => {
+        if(jackpotContext.roundState === "default"){
+            setDepositEnabled(true)
+            return
+        }
+        setDepositEnabled(false)
+    }, [jackpotContext.roundState])
     
     const handleDepositTx = () => {
         if(depositAmount > jackpotContext.maxChipsDeposit! || depositAmount < jackpotContext.minChipsDeposit! || depositAmount === 0) return
@@ -172,7 +178,7 @@ const Deposit = () => {
     }
 
     const chipsPercentages = [20, 40, 60, 80, 100]
-    const DepositChips = chipsPercentages.map((percentage, index) =>
+    const DepositChips = chipsPercentages.map((percentage, index) => (
         <div key={index} onClick={() => handleDepositPercentage(percentage)}
         className={(depositAmount >= ((percentage / 100) * jackpotContext.maxChipsDeposit!))
         ? 
@@ -183,7 +189,7 @@ const Deposit = () => {
             <img draggable={false} src={logo} alt="ChipsToken" className={styles.chipsImg} />
             <span className={styles.chipsImgBottomIndicator}></span>
             <span className={styles.chipsImgPercentageText}>{percentage + "%"}</span>
-        </div>
+        </div>)
     )
     
     return (
@@ -192,7 +198,7 @@ const Deposit = () => {
         {/* Tx modal */}
         {txVisible &&
             <div className="absolute top-0 left-0 w-screen h-screen">
-                <TransactionModal txTitle="Deposit Chips" onClickClose={() => {setTxVisible(false)}} visible={txVisible} />
+                <TransactionModal txTitle="Deposit Chips" onClickClose={() => {setTxVisible(false)}} />
             </div>
         }
         
@@ -251,7 +257,7 @@ const Deposit = () => {
             <div className={styles.depositBtnCtn}>
                 {active
                     ?
-                    <button onClick={() => handleDepositTx()} className={styles.depositBtn}>
+                    <button onClick={() => handleDepositTx()} disabled={!depositEnabled} className={styles.depositBtn}>
                             <span className="text-[1.2em] text-darkText">DEPOSIT</span>
                         </button>
                     :

@@ -13,18 +13,15 @@ export default function useRound(){
         if(!web3.jackpot) return
         web3.jackpot!.removeAllListeners("Deposit")
         web3.jackpot!.removeAllListeners("RoundEnded")
+        web3.jackpot!.removeAllListeners("Closed")
+        web3.jackpot!.removeAllListeners("Withdrawal")
+        // ?
 
-
+        listenForChipsWithdrawal()
         listenForChipsDeposit()
         listenForRandomNumber()
-    }, [web3.jackpot])
-
-    useEffect(()=> {
-        if(jackpotContext.players?.length! >= 3){
-            if(jackpotContext.roundState === "closed") return
-            jackpotContext.setRoundState("closed")
-        }
-    }, [jackpotContext.players])
+        listenForClose()
+    }, [jackpotContext.roundId])
     
     function listenForChipsDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {
@@ -39,11 +36,23 @@ export default function useRound(){
         })
     }
 
-    // function listenForChipsWithdrawal() {
-    //     web3.jackpot!.on("Withdrawal", () => {
-            
-    //     })
-    // }
+    function listenForChipsWithdrawal() {
+        web3.jackpot!.on("Withdrawal", (to:string, amount:BigNumber) => {
+            if(web3.address === to){
+                const newBalance = Number(web3.chipStableBalance) + amount.toNumber()
+                web3.setChipStableBalance(newBalance.toString())
+            }
+        })
+    }
+
+    function listenForClose(){
+        web3.jackpot!.on("Closed", (roundId:BigNumber) => {
+            if(roundId.toNumber() == jackpotContext.roundId){
+                console.log("Round closed!")
+                jackpotContext.setRoundState("closed")
+            }
+        })
+    }
 
     function listenForRandomNumber(){
         web3.jackpot!.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {

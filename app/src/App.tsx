@@ -77,7 +77,7 @@ function App() {
   const [roundId, setRoundId] = useState<number>()
   const [players, setPlayers] = useState<Player[]>([])
   const [prizePool, setPrizePool] = useState<number>()
-  const [endTime, setEndTime] = useState<number>(10)
+  const [endTime, setEndTime] = useState<number>(60)
   const [roundState, setRoundState] = useState<RoundState>("default")
 
   //test
@@ -126,11 +126,15 @@ function App() {
         const roundData = await jackpot.getRoundData(roundId)
         const localPlayerId = await jackpot.getPlayerIdInRound(roundId)
         const players = formatTicketsToPlayers(roundData[1], localPlayerId, address)
-
+        
         // jackpot context
         setPlayers(players)
         setRoundId(roundId.toNumber())
         setPrizePool(roundData[1].length)
+
+        const roundStates:RoundState[] = ["default", "closed", "ended"]
+        setRoundState(roundStates[roundData[5]])
+
 
       })()
     }
