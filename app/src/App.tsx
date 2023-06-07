@@ -135,6 +135,15 @@ function App() {
       })()
     }
   }, [connected, correctNetwork])
+
+  useEffect(() => {
+    if(roundState === "ended"){
+      console.log('reset ROUND')
+      setPlayers([])
+      setPrizePool(0)
+      setRoundState("default")
+    }
+  }, [roundId])
   
   if(loading){
     return <LoadingScreen />
@@ -192,6 +201,10 @@ function App() {
 
             <button onClick={() => toggleTutorialVisible()}>
             <span className='font-content'>Tutorial modal</span>
+          </button>
+
+            <button onClick={() => setRoundId(roundId => roundId! + 1)}>
+            <span className='font-content'>Increment roundId</span>
           </button>
 
           <button onClick={() => {

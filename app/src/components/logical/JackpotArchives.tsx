@@ -127,7 +127,7 @@ const JackpotArchives = () => {
                 endTime: round.roundData.endTime.toLocaleDateString('en-US') ,
                 roundId: round.roundData.id as number
             }))
-            setArchivedRounds(archivedRounds) 
+            setArchivedRounds(archivedRounds)
         }
 
         const InactiveArchivedRoundList = () => {

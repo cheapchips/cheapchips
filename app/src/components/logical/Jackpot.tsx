@@ -33,10 +33,26 @@ const styles = {
         opacity-50
         backdrop-blur-3xl
     `,
+
+    winnerBlockBgCtn: `
+        absolute flex justify-center items-center w-full h-full
+    `,
+        
+    winnerBlockCtn: `
+        w-1/3 h-2/3
+        flex justify-center items-center flex-col gap-4
+        border border-lightBorder dark:border-darkBorder
+        bg-lightBg dark:bg-darkBg
+        drop-shadow-2xl rounded-lg
+        transition-all duration-1000
+    `,
+    winnerBlockText: `
+        drop-shadow-none
+        font-content
+    `,
 }
 
-
- const JackpotBlocks = ({displayPlayers, setDisplayPlayers}:JackpotBlocksInterface) => {
+const JackpotBlocks = ({displayPlayers, setDisplayPlayers}:JackpotBlocksInterface) => {
 
     const jackpotContext = useContext(JackpotContext)
 
@@ -73,12 +89,38 @@ const TestBlock = (props:{blockCtnRatio:number, seed:string, active:boolean}) =>
     )
 }
 
+const WinnerBlock = (props:{winner:Player | undefined}) => {
+
+    const [fade, setFade] = useState<boolean>(false)
+
+    useEffect(() => {
+        if(!props.winner) return
+        setFade(true)
+    }, [props.winner])
+
+    const [,,blockiesSize] = useResponsiveSizes()
+
+    return (
+        props.winner !== undefined
+        ?
+        <div className={styles.winnerBlockBgCtn}>
+            <div className={styles.winnerBlockCtn + (fade ? "opacity-100" : "opacity-0")}>
+                <Blockies seed={props.winner.address} size={Math.round(blockiesSize * 1.5)} scale={8} className="rounded-lg" />
+                <span className={styles.winnerBlockText}>Winner!</span>
+            </div>
+        </div>
+        :
+        <></>
+    )
+}
+
 const Jackpot = () => {
 
     const jackpotContext = useContext(JackpotContext)  
     const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
     const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
     const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))
+    const [winner, setWinner] = useState<Player | undefined>()
 
     useEffect(() => {
         console.log(jackpotContext.roundState)
@@ -97,7 +139,16 @@ const Jackpot = () => {
         const winnerArray = new Array(7).fill(null, 0, 7)
         console.log(winner)
         winnerArray[3] = winner!
+        
+        // handle round END
         setDisplayPlayers(winnerArray)
+        setWinner(winner)
+        setTimeout(() => {
+            setWinner(undefined)
+            setDisplayPlayers(new Array(7).fill(null, 0, 7))
+            setAnimateJackpot(false)
+            jackpotContext.incrementRoundId()
+        }, 5000)
     }
 
      useEffect(() => {
@@ -138,6 +189,7 @@ const Jackpot = () => {
     return (
         <div className={styles.ctn}>
             <JackpotBlocks displayPlayers={displayPlayers} setDisplayPlayers={setDisplayPlayers}/>
+            <WinnerBlock winner={winner}/>
             <div className={styles.glassCtn}></div>
         </div>
 
