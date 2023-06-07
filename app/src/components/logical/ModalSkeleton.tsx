@@ -1,15 +1,14 @@
+import { useEffect, useState } from "react"
 import ModalSkeletonProps from "../../proptypes/ModalSkeletonProps"
 import SvgIcon from "../layout/SvgIcon"
-import { useEffect, useState } from "react"
 
 const ModalSkeleton = (props:ModalSkeletonProps) => {
 
-    const [spawned, setSpawned] = useState<boolean>(false)
-
-    // useEffect(() => {
-    //     console.log('modal mount')
-    //     setSpawned(true)
-    // }, [props.onSpawn])
+    const [fade, setFade] = useState<boolean>(false)
+    useEffect(() => {
+        if(!props.title) return
+        setFade(true)
+    }, [props.title])
 
     const modalStyles = {
         fullscreenBg: `
@@ -20,7 +19,6 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             font-content select-none
             xl:text-sm lg:text-xxs md:text-xxxs sm:text-xxxxs
             ${props.customBg ? props.customBg : ""}
-            ${!props.fadeAnimationDisabled && spawned ? "fadein_anim" : ""}
         `,
         ctn: `
             absolute
@@ -48,6 +46,8 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             `
             : ""
             }
+            transition-all duration-50
+            ${fade ? "opacity-100" : "opacity-0"}
         `,
         titleCtn: `
             flex justify-between items-center w-full
@@ -55,9 +55,9 @@ const ModalSkeleton = (props:ModalSkeletonProps) => {
             border-b border-lightBorder dark:border-darkBorder
             p-2
             ${props.size === "Big" ? `
-                xl:h-11 lg:h-10 md:h-8 sm:h-6`
+            xl:h-11 lg:h-10 md:h-8 sm:h-6`
             : props.size === "Medium" || props.size === "Small" || props.size === "Tx" ? `
-                xl:h-10 lg:h-8 md:h-6 sm:h-4`
+            xl:h-10 lg:h-8 md:h-6 sm:h-4`
             :
             ""}
         `,

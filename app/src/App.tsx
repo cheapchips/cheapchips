@@ -41,7 +41,6 @@ import JackpotContext from './contexts/JackpotContext'
 
 // local testing
 import formatTicketsToPlayers from './hooks/utils/formatTicketsToPlayers'
-import TransactionModal from './components/logical/modals/TransactionModal'
 import { TxHash, TxStatus } from './types/useTransactionTypes'
 import Lobby from './components/logical/lobby/Lobby'
 import { Player } from './types/Player'
@@ -59,9 +58,7 @@ function App() {
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
   const [tutorialVisible, toggleTutorialVisible] = useModal()
   const [myDetailsVisible, toggleMyDetailsVisible] = useModal()
-  const [installMetamaskVisible, toggleInstallMetamaskvisible] = useModal()
-  // const [switchNetworkVisible, toggleSwitchNetworkVisible] = useModal()
-  const [transactionModalVisible, toggleTransactionModalVisible] = useModal()
+  const [,toggleInstallMetamaskvisible] = useModal()
   const [archivedJackpotVisible, toggleArchivedJackpotVisible] = useModal()
   
   // web3 states
@@ -88,7 +85,6 @@ function App() {
   const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
 
   useEffect(() => {
-    console.log(players.length)
     console.log(players)
   }, [players])
 
@@ -150,15 +146,14 @@ function App() {
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
         {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
 
-        {tutorialVisible && <TutorialModal pages={3} title='Tutorial' onClickClose={toggleTutorialVisible} />}
-        {buyTokensVisible && <BuyTokensModalTESTNET title='Buy tokens (TESTNET)' onClickClose={toggleBuyTokensVisible} />}
-        {transactionModalVisible && <TransactionModal txTitle='Test tx modalll' onClickClose={toggleTransactionModalVisible} />}
+        {tutorialVisible && <TutorialModal pages={3} onClickClose={toggleTutorialVisible} />}
+        {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
         {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
-        {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
+        {(archivedJackpotVisible && archivedJackpotId) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
         <MainWrapper>
 
-          <Navbar walletOnClick={connect} buyOnClick={connected ? toggleBuyTokensVisible : () => {}} connected={connected} />
+          <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} connected={connected} />
 
           {/* white testblock */}
           <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' > 
@@ -172,6 +167,7 @@ function App() {
               ticketAmount: rand_ticket,
               id: players.length,
             }
+            if(players.length >= 3) return
             setPlayers(players=>[...players, newPlayer])
             setPlayersDeposit(playersDeposit + rand_ticket)
           }}>  

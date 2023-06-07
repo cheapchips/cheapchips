@@ -7,57 +7,57 @@ const LobbyHeader = () => {
     
     const styles = {
         ctn: `
-            flex flex-col
-            md:text-xxxs
-            lg:text-xxs
-            xl:text-sm
-            font-content
+        flex flex-col
+        md:text-xxxs
+        lg:text-xxs
+        xl:text-sm
+        font-content
         `,
         titleCtn: `
-            w-full grid grid-cols-2
+        w-full grid grid-cols-2
             border-b border-lightBorder dark:border-darkBorder
             xl:p-2
             lg:p-2
             md:p-1
-        `,
-        playerInfoCtn: `
+            `,
+            playerInfoCtn: `
             grid grid-rows-2 gap-2
             p-2
             border-b
             border-lightBorder
             dark:border-darkBorder
-        `,
-        playerInfoBarCtn: `
+            `,
+            playerInfoBarCtn: `
             w-full h-full
-        `,
-        playerInfoBarBorder: `
+            `,
+            playerInfoBarBorder: `
             bg-lightBgActive
             dark:bg-darkBgActive
             rounded-md
             border
             border-lightBorder dark:border-darkBorder
             h-full
-        `,
-        playerInfoBarBorderInactive: `
+            `,
+            playerInfoBarBorderInactive: `
             border-lightBgActive dark:border-darkBgActive animate-pulse
             h-full
-        `,
-        playerInfoBar:`
+            `,
+            playerInfoBar:`
             h-full
             rounded-md
             bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-orange-500 to-yellow-300
             shadow-sm
-        `,
-        playerInfoBarInactive: `
+            `,
+            playerInfoBarInactive: `
             rounded-md
             h-full
             bg-lightBgActive dark:bg-darkBgActive
-        `,
-        lineCtn: `
+            `,
+            lineCtn: `
             flex
             p-1
-        `,
-        textTitle:`
+            `,
+            textTitle:`
             flex justify-start items-center gap-1
             fill-lightText
             dark:fill-darkText
@@ -67,45 +67,45 @@ const LobbyHeader = () => {
             2xl:p-1
             xl:p-1
             md:p-0
-        `,
-        textTitleInactive: `
+            `,
+            textTitleInactive: `
             w-1/2 h-7
             animate-pulse
             rounded-md
             p-1
-        `,
-        textTitleIdInactive: `
+            `,
+            textTitleIdInactive: `
             justify-self-end
-        `,
-        textLobbyId:`
+            `,
+            textLobbyId:`
             flex justify-end
             font-normal select-none
             p-1
-        `,
-        text: `
+            `,
+            text: `
             font-normal select-none
             text-lightText
             dark:text-darkText
-        `,
-        textInactive: `
+            `,
+            textInactive: `
             rounded-md
             w-1/3 h-6
             animate-pulse
-        `,
-        inactiveBg: `
+            `,
+            inactiveBg: `
             bg-lightBgActive
             dark:bg-darkBgActive
-        `,
-    }
-
-    const jackpotContext = useContext(JackpotContext)
-    const web3 = useContext(Web3Context)
-    const [active, setActive] = useState<boolean>(false)
-    
-    useEffect(() => {
-        if(!web3.address || !jackpotContext.endTime || !jackpotContext.players) return
-        setActive(true)
-    }, [jackpotContext, web3])
+            `,
+        }
+        
+        const jackpotContext = useContext(JackpotContext)
+        const web3 = useContext(Web3Context)
+        const [active, setActive] = useState<boolean>(false)
+        
+        useEffect(() => {
+            if(!web3.address || !jackpotContext.endTime || !jackpotContext.players) return
+            setActive(true)
+        }, [jackpotContext, web3])
 
     return (
 

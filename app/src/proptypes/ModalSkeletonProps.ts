@@ -6,5 +6,4 @@ export default interface ModalSkeletonProps extends WrapperProps {
     customBg?: string
     onClickClose: () => void
     closeBtnDisabled?: boolean
-    fadeAnimationDisabled?: boolean
 }

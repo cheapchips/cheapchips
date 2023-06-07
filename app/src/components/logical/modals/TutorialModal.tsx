@@ -5,7 +5,6 @@ import ModalSkeleton from "../ModalSkeleton"
 const TutorialModal = (
     props: {
         pages: number
-        title: string,
         onClickClose: () => void,
     }
 ) => {
@@ -109,7 +108,7 @@ const TutorialModal = (
     }
 
     return (
-        <ModalSkeleton title={props.title} size={'Big'} onClickClose={props.onClickClose} >
+        <ModalSkeleton title="Tutorial" size={'Big'} onClickClose={props.onClickClose}>
             
             <div className={tutorialStyles.ctn}>
                 {currentPage === 0

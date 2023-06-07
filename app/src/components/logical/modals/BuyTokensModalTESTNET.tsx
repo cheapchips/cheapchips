@@ -10,10 +10,7 @@ import chainlink_logo from "../../../assets/chainlink_logo.png"
 import cheapchips_logo from "../../../assets/logo.png"
 
 const BuyTokensModalTESTNET = (
-    props: {
-        title: string,
-        onClickClose: () => void,
-    }) => {
+    props: {onClickClose: () => void}) => {
 
     const styles = {
         // wrappers, layout only
@@ -189,7 +186,7 @@ const BuyTokensModalTESTNET = (
 
     return (
         <>
-        <ModalSkeleton {...props} size="Big" >
+        <ModalSkeleton title="Buy tokens (TESTNET)" size="Big" {...props} >
             <div className={styles.wrapper}>
 
                 <VerticalContentPanel title="Get chips and LINK">
@@ -202,12 +199,13 @@ const BuyTokensModalTESTNET = (
 
             </div>
         </ModalSkeleton>
-        {
-            txModalVisible ?
-            <TransactionModal txTitle="Transaction" onClickClose={() => {setTxModalVisible(false)}}/>
+        
+        {txModalVisible ?
+                <TransactionModal txTitle="Transaction" onClickClose={() => {setTxModalVisible(false)}} />
             :
             <></>
         }
+        
         </>
     )
 

@@ -145,6 +145,9 @@ const Deposit = () => {
     const [depositAmount, setDepositAmount] = useState<number>(jackpotContext.defaultChipsDeposit!)
     const [active, setActive] = useState<boolean>(false)
 
+    const [fade, setFade] = useState<boolean>(false)
+
+
     useEffect(() => {
         if(!web3.address || !jackpotContext.maxChipsDeposit || !jackpotContext.endTime) return
         setActive(true)
@@ -189,7 +192,7 @@ const Deposit = () => {
         {/* Tx modal */}
         {txVisible &&
             <div className="absolute top-0 left-0 w-screen h-screen">
-                <TransactionModal txTitle="Deposit Chips" onClickClose={() => {setTxVisible(false)}}/>
+                <TransactionModal txTitle="Deposit Chips" onClickClose={() => {setTxVisible(false)}} visible={txVisible} />
             </div>
         }
         

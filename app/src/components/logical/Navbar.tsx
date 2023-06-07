@@ -119,7 +119,7 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void
         ]
     }
 
-    const navMainLinksData = [{title: "CHEAPCHIPS", onClick: () => {}},{title: "BUY TOKENS", onClick: props.buyOnClick}]
+    const navMainLinksData = [{title: "CHEAPCHIPS", onClick: () => {}},{title: "BUY TOKENS", onClick: () => {props.connected ? props.buyOnClick() : {}}}]
     const MainLinks = navMainLinksData.map((button, index) => 
         <button key={index} className={styles.contentText + styles.contentButton} onClick={() => button.onClick()}>
             <span>{button.title}</span>

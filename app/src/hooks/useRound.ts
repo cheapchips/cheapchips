@@ -39,20 +39,23 @@ export default function useRound(){
         })
     }
 
-    function listenForChipsWithdrawal() {
-        web3.jackpot!.on("Withdrawal", () => {
+    // function listenForChipsWithdrawal() {
+    //     web3.jackpot!.on("Withdrawal", () => {
             
-        })
-    }
+    //     })
+    // }
 
     function listenForRandomNumber(){
         web3.jackpot!.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {
+
             const { tickets } = await readJackpot.getRoundData(roundId)
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
+            
             jackpotContext.winnerId!.current = winnerId
             jackpotContext.setRoundState("ended")
-            // jackpotContext.incrementRoundId()
+            jackpotContext.incrementRoundId()
+            // clean players
             // jackpotContext.setRoundState("default")
             console.log('winner id: ', winnerId)
           })
