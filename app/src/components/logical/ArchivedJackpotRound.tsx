@@ -9,9 +9,9 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
 
     const styles = {
         ctn: `
+            2xl:h-20 xl:h-14 lg:h-10 md:h-10
             grid grid-flow-row grid-rows-3
             bg-lightBgActive dark:bg-darkBgActive
-            2xl:h-20 xl:h-14 lg:h-10 md:h-10
             2xl:p-2 xl:p-1 md:p-1
             2xl:text-sm xl:text-xs lg:text-xxxs md:text-xxxxxs
             border border-lightBorder dark:border-darkBorder

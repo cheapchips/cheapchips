@@ -10,24 +10,24 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types"
 
     const styles = {
-        ctn: `
-            grid grid-flow-row auto-rows-min
-            xl:text-sm lg:text-xxs md:text-xxxs
-            font-content
+        mainCtn: `
+            flex flex-col
+            overflow-y-auto
         `,
-        // flex flex-col-reverse justify-end gap-2 px-2 pt-2 overflow-y-auto grow
+        archivesMainCtn: `
+            overflow-y-auto    
+        `,
+        archivesCtn: `
+            p-2
+        `,
+        archivesListCtn: `
+            flex flex-col-reverse gap-2
+        `,
         titleCtn: `
             flex h-fit items-center
             fill-lightText dark:fill-darkText
             xl:p-2 lg:p-1
             border-b border-lightBorder dark:border-darkBorder
-        `,
-        archivesCtn: `
-            flex flex-col justify-start gap-2 p-1
-        `,
-        archivesCtnScrollable: `
-            flex flex-col gap-2
-            overflow-y-auto
         `,
         titleText: `
             p-1
@@ -51,6 +51,7 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
             2xl:text-sm xl:text-xs lg:text-xxxs md:text-xxxxxs
             animate-pulse
         `,
+        
     }
 
 
@@ -66,7 +67,7 @@ const ArchivedRoundList = ({archivedRounds}:{archivedRounds:ArchivedJackpot[]}) 
             key={index}
         />
     ))
-    return <div className={styles.archivesCtn} ref={archivesRef}>{archivesList}</div>
+    return <div className={styles.archivesListCtn} ref={archivesRef}>{archivesList}</div>
 }
 
 const JackpotArchives = () => {
@@ -87,6 +88,7 @@ const JackpotArchives = () => {
             setPreviousRoundId(jackpotContext.roundId)
         },[jackpotContext])
 
+        // debug
         // useEffect(() => {
         //     (async () => {
         //         const round = await getArchivedRoundData(0)
@@ -135,7 +137,7 @@ const JackpotArchives = () => {
 
             const participationStatus:ParticipationStatus[] = ["none", "win", "lose", "withdrawn"]
 
-            const archivedRounds = rounds.map<ArchivedJackpot>((round) => ({
+            const archivedRounds = rounds.slice(0).reverse().map<ArchivedJackpot>((round) => ({
                 prizePool: round.prizePool.toNumber(),
                 participationStatus: participationStatus[round.playerParticipationStatus],
                 participantId: round.playerId,
@@ -154,31 +156,29 @@ const JackpotArchives = () => {
         }
 
     return (
-        <div className={styles.ctn}>
-
+        <div className={styles.mainCtn}>
             <div className={styles.titleCtn}>
                 {active
-                ?
-                    <>
-                        <SvgIcon style="w-5 h-5" viewBox="0 0 122.88 108.12" pathD="M28.45,55.88c0,.11,0,.22,0,.32l4.44-4.46a6.68,6.68,0,1,1,9.48,9.42L27.14,76.51a6.69,6.69,0,0,1-9.32.15L2.28,63A6.68,6.68,0,0,1,11.08,53l4,3.54v0a54.33,54.33,0,0,1,8-31,52.56,52.56,0,0,1,24-20.73,60.17,60.17,0,0,1,11-3.51,52.58,52.58,0,0,1,60.1,31.09,58.07,58.07,0,0,1,3.47,11,52.47,52.47,0,0,1-1.31,26.95A53.16,53.16,0,0,1,105.8,93a57.11,57.11,0,0,1-22.56,13.1,48.52,48.52,0,0,1-40.51-5.89A6.68,6.68,0,0,1,50,89a35.12,35.12,0,0,0,5.53,3,34.21,34.21,0,0,0,5.7,1.86,35.43,35.43,0,0,0,18.23-.54A43.77,43.77,0,0,0,96.74,83.19a39.7,39.7,0,0,0,10.93-17.06,39,39,0,0,0,1-20.08,46.38,46.38,0,0,0-2.68-8.5,39.19,39.19,0,0,0-45-23.22,45,45,0,0,0-8.52,2.72A39,39,0,0,0,34.5,32.49a40.94,40.94,0,0,0-6.05,23.39ZM60.83,34a6.11,6.11,0,0,1,12.22,0V53l14.89,8.27A6.09,6.09,0,1,1,82,71.93L64.43,62.16a6.11,6.11,0,0,1-3.6-5.57V34Z" />
-                        <span className={styles.titleText}>Game history</span>
-                    </>
-                :
+                    ?
+                        <>
+                            <SvgIcon style="w-5 h-5" viewBox="0 0 122.88 108.12" pathD="M28.45,55.88c0,.11,0,.22,0,.32l4.44-4.46a6.68,6.68,0,1,1,9.48,9.42L27.14,76.51a6.69,6.69,0,0,1-9.32.15L2.28,63A6.68,6.68,0,0,1,11.08,53l4,3.54v0a54.33,54.33,0,0,1,8-31,52.56,52.56,0,0,1,24-20.73,60.17,60.17,0,0,1,11-3.51,52.58,52.58,0,0,1,60.1,31.09,58.07,58.07,0,0,1,3.47,11,52.47,52.47,0,0,1-1.31,26.95A53.16,53.16,0,0,1,105.8,93a57.11,57.11,0,0,1-22.56,13.1,48.52,48.52,0,0,1-40.51-5.89A6.68,6.68,0,0,1,50,89a35.12,35.12,0,0,0,5.53,3,34.21,34.21,0,0,0,5.7,1.86,35.43,35.43,0,0,0,18.23-.54A43.77,43.77,0,0,0,96.74,83.19a39.7,39.7,0,0,0,10.93-17.06,39,39,0,0,0,1-20.08,46.38,46.38,0,0,0-2.68-8.5,39.19,39.19,0,0,0-45-23.22,45,45,0,0,0-8.52,2.72A39,39,0,0,0,34.5,32.49a40.94,40.94,0,0,0-6.05,23.39ZM60.83,34a6.11,6.11,0,0,1,12.22,0V53l14.89,8.27A6.09,6.09,0,1,1,82,71.93L64.43,62.16a6.11,6.11,0,0,1-3.6-5.57V34Z" />
+                            <span className={styles.titleText}>Game history</span>
+                        </>
+                    :
                     <span className={styles.titleTextInactive}></span>
-            }
-            </div>
-
-            <div className={styles.archivesCtn}>
-                {active
-                ?
-                    <div className={styles.archivesCtnScrollable}>
-                        <ArchivedRoundList archivedRounds={archivedRounds}/> 
-                    </div>
-                :
+                }
+        </div>
+        
+            <div className={styles.archivesMainCtn}>
+                <div className={styles.archivesCtn}>
+                    {active
+                    ?
+                    <ArchivedRoundList archivedRounds={archivedRounds}/> 
+                    :
                     <InactiveArchivedRoundList />
                 }
+                </div>
             </div>
-
         </div>
     )
 }

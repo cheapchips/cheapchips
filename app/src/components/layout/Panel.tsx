@@ -13,9 +13,11 @@ const Panel = (props:PanelProps) => {
             flex justify-center items-center content-center
             ` : ""}
             ${props.panelType === "side" ? `
-                grid grid-flow-row grid-rows-[auto,1fr]
-            ` : ""}
-            ${props.additionalClasses ? props.additionalClasses : ""}`
+                grid grid-flow-row
+                grid-rows-[auto,1fr]
+                ` : ""}
+                ${props.additionalClasses ? props.additionalClasses : ""}`
+                // auto-rows-max
     }
     
     return (
