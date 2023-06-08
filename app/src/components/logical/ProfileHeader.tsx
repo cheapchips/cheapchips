@@ -16,15 +16,13 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
     const [chipStableBalance, setChipStableBalance] = useState<number>()
     const [,readJackpot] = useJackpot()
     const [,readChipStable] = useChipStable()
-
-    useEffect(() => {
-        if(!feeBalance) return
-        getFeesBalance()
-    }, [feeBalance])
     
     useEffect(() => {
-        if(!web3.address || !web3.chipStableBalance || !web3.linkTokenBalance || !web3.jackpot || !web3.chipStable) return
-        setActive(true)
+        if(!web3.address || !web3.jackpot || !web3.chipStable || !web3.linkToken) return
+        if(!active){
+            setActive(true)
+        }
+        console.log("new chips or fees!")
         getFeesBalance()
         getChipsStableBalance()
     }, [web3.chipStableBalance, web3.linkTokenBalance])

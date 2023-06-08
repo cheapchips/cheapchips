@@ -1,7 +1,8 @@
 import ModalSkeleton from "../ModalSkeleton";
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import useJackpot from "../../../hooks/useJackpot";
 import TransactionModal from "./TransactionModal";
+import Web3Context from "../../../contexts/Web3Context";
 
 const styles = {
     ctn: `
@@ -30,12 +31,15 @@ const styles = {
     withdrawBtn: `
         w-2/3 self-center
         px-4 py-2 my-2
-        border border-lightBorder dark:border-darkBorder
         rounded-md
         hover:opacity-80
         active:opacity-60
         participate_withdrawn_glow
         text-accentColor
+        border
+        border-accentColor
+        dark:border-accentColor
+        participate_withdrawn_glow
         font-semibold
         animate-pulse
     `,
@@ -100,6 +104,7 @@ const RoundData = (props:{roundData:FullRoundData, onClickWithdraw: () => void})
 const ArchivedRoundModal = (props:{roundId:number, onClickClose:() => void, onClickWithdraw: () => void}) => {
     
     const title = `Details of round ${props.roundId}`
+    const web3 = useContext(Web3Context)
     const [writeJackpot,readJackpot] = useJackpot()
     const [ready, setReady] = useState<boolean>(false)
     const [txModalVisible, setTxModalVisible] = useState<boolean>(false)
@@ -115,6 +120,10 @@ const ArchivedRoundModal = (props:{roundId:number, onClickClose:() => void, onCl
       setReady(true)
     }, [fullRoundData])
 
+    useEffect(() => {
+        setFullRoundData(undefined)
+        fetchRoundData()
+    }, [web3.chipStableBalance])
 
     async function fetchRoundData() {
 

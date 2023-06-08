@@ -19,9 +19,9 @@
 }
 
 .participate_withdrawn_glow {
-  -webkit-box-shadow:0 0 6px #fbbf24; 
-  -moz-box-shadow: 0 0 6px #fbbf24; 
-  box-shadow:0 0 6px #fbbf24;
+  -webkit-box-shadow:0 0 6px #ffe601; 
+  -moz-box-shadow: 0 0 6px #ffe601; 
+  box-shadow:0 0 6px #ffe601;
 }
 
 .participate_win_glow {

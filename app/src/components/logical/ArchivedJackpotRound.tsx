@@ -14,7 +14,7 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
             bg-lightBgActive dark:bg-darkBgActive
             2xl:p-2 xl:p-1 md:p-1
             2xl:text-sm xl:text-xs lg:text-xxxs md:text-xxxxxs
-            border border-lightBorder dark:border-darkBorder
+            
             rounded-md
         `,
         modalCtn: `
@@ -50,15 +50,18 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
             hover:scale-[110%] hover:-translate-x-1 hover:-translate-y-0.5
         `,
         participateWithdrawn: `
+            border
             border-accentColor
             dark:border-accentColor
             participate_withdrawn_glow
         `,
         participateLose: `
+            border
             border-red-600
             dark:border-red-600
         `,
         participateWin: `
+            border
             border-emerald-400
             dark:border-emerald-400
             participate_win_glow
@@ -82,7 +85,7 @@ const ArchivedJackpotRound = (props:ArchivedJackpot) => {
             ? styles.participateWin
             : (props.participationStatus === "lose"
             ? styles.participateLose
-            : "")))}
+            : "border border-lightBorder dark:border-darkBorder")))}
             >
             
             <span className={styles.jackpotGameTextTitle}>

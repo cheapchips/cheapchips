@@ -121,12 +121,14 @@ const BuyTokensModalTESTNET = (
         const web3 = useContext(Web3Context)
 
         useEffect(() => {
+            if(!web3.address || !web3.chipStable || !web3.linkToken) return
             update()
-        }, [readJackpot])
+        }, [web3.chipStableBalance, web3.linkTokenBalance])
 
         const update = async () => {
             await getCurrentAllowance()
             await getCurrentDeposit()
+            await getCurrentLinkBalance()
         }
         
         const getCurrentAllowance = async ():Promise<void> => {
@@ -137,6 +139,11 @@ const BuyTokensModalTESTNET = (
         const getCurrentDeposit = async ():Promise<void> => {
             const deposit = await readJackpot.checkFeesBalance()
             !deposit ? setDeposit(0) : setDeposit(deposit)
+        }
+
+        const getCurrentLinkBalance = async ():Promise<void> => {
+            const balance = await readLinkToken.checkBalance()
+            !balance ? web3.setLinkTokenBalance("0") : web3.setLinkTokenBalance(balance)
         }
 
         const submitDeposit = async (value:number | undefined) => {

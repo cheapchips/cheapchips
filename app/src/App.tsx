@@ -162,7 +162,7 @@ function App() {
         {tutorialVisible && <TutorialModal pages={3} onClickClose={toggleTutorialVisible} />}
         {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
         {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
-        {(archivedJackpotVisible && archivedJackpotId) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
+        {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
         <MainWrapper>
 

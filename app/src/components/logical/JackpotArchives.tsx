@@ -15,13 +15,14 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
             overflow-y-auto
         `,
         archivesMainCtn: `
-            overflow-y-auto    
+            overflow-y-auto
         `,
         archivesCtn: `
-            p-2
+            flex flex-col p-2 gap-2
         `,
         archivesListCtn: `
             flex flex-col-reverse gap-2
+            font-content
         `,
         titleCtn: `
             flex h-fit items-center
@@ -88,6 +89,13 @@ const JackpotArchives = () => {
             setPreviousRoundId(jackpotContext.roundId)
         },[jackpotContext])
 
+        useEffect(() => {
+            if(!isArchivesFetched) return
+            console.log(123)
+            setArchivedRounds([])
+            fetchArchivedRounds()
+        }, [web3.chipStableBalance]) 
+
         // debug
         // useEffect(() => {
         //     (async () => {
@@ -133,7 +141,7 @@ const JackpotArchives = () => {
 
             const rounds = await readJackpot.getRoundDataRange(0, jackpotContext.roundId! - 1) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
             // const rounds = await readJackpot.getRoundDataRange(0, 2) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
-            console.log(rounds)
+            // console.log(rounds)
 
             const participationStatus:ParticipationStatus[] = ["none", "win", "lose", "withdrawn"]
 
@@ -148,7 +156,7 @@ const JackpotArchives = () => {
         }
 
         const InactiveArchivedRoundList = () => {
-            const inactiveOpacities = [100, 85, 70, 55, 40, 25, 10]
+            const inactiveOpacities = [100, 80, 60, 40, 20]
             const inactiveArchives = inactiveOpacities.map((opacity, index) => (
                 <div className={styles.inactiveArchive} style={{opacity: `${opacity}%`}} key={index}></div>
             ))
