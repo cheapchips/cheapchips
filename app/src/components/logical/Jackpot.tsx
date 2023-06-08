@@ -1,9 +1,11 @@
-import {useState, useEffect, useContext, useRef } from "react"
+import {useState, useEffect, useContext } from "react"
 import Blockies from "react-blockies"
 import useResponsiveSizes from "../../hooks/useReponsiveIconSize"
 import JackpotContext from "../../contexts/JackpotContext"
+import JackpotConfetti from "./JackpotConfetti"
 import { Player } from "../../types/Player"
 import _ from "lodash"
+import useJackpot from "../../hooks/useJackpot"
 
 interface JackpotBlocksInterface{
     displayPlayers:(Player | null)[]
@@ -91,26 +93,38 @@ const TestBlock = (props:{blockCtnRatio:number, seed:string, active:boolean}) =>
 
 const WinnerBlock = (props:{winner:Player | undefined}) => {
 
+    const [,,blockiesSize] = useResponsiveSizes()
+    const [,readJackpot] = useJackpot()
     const [fade, setFade] = useState<boolean>(false)
+    const jackpotContext = useContext(JackpotContext)
+    const [status, setStatus] = useState<string>()
 
     useEffect(() => {
-        if(!props.winner) return
-        setFade(true)
+        (async() => {
+            if(!props.winner) return
+            const participationStatus = await readJackpot.getParticipationStatus(jackpotContext.roundId!)
+            setStatus(participationStatus === "win" ? "won" : participationStatus === "lose" ? "lost" : "did not participate")
+            setFade(true)
+        })()
     }, [props.winner])
 
-    const [,,blockiesSize] = useResponsiveSizes()
 
     return (
         props.winner !== undefined
         ?
-        <div className={styles.winnerBlockBgCtn}>
-            <div className={styles.winnerBlockCtn + (fade ? "opacity-100" : "opacity-0")}>
-                <Blockies seed={props.winner.address} size={Math.round(blockiesSize * 1.5)} scale={8} className="rounded-lg" />
-                <span className={styles.winnerBlockText}>Winner!</span>
+            <div className={styles.winnerBlockBgCtn}>
+                <div className={styles.winnerBlockCtn + (fade ? "opacity-100" : "opacity-0")}>
+                    <Blockies seed={props.winner.address} size={Math.round(blockiesSize * 1.75)} scale={8} className="rounded-lg p-2 border border-lightBorder dark:border-darkBorder" />
+                    <span className={styles.winnerBlockText}>You
+                        <span className={status === "won" ? "text-green-400 font-semibold" : status === "lost" ? "text-red-500 font-semibold" : "font-semibold"}> {status} </span>!
+                    </span>
+                    <span className={styles.winnerBlockText}>Pool:
+                        <span className="text-accentColor font-semibold"> {jackpotContext.prizePool} CHIPS</span>
+                    </span>
+                </div>
             </div>
-        </div>
         :
-        <></>
+            <></>
     )
 }
 
@@ -121,6 +135,7 @@ const Jackpot = () => {
     const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
     const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))
     const [winner, setWinner] = useState<Player | undefined>()
+    const [confettiVisible, setConfettiVisible] = useState<boolean>(false)
 
     useEffect(() => {
         console.log(jackpotContext.roundState)
@@ -143,12 +158,14 @@ const Jackpot = () => {
         // handle round END
         setDisplayPlayers(winnerArray)
         setWinner(winner)
+        setConfettiVisible(true)
         setTimeout(() => {
             setWinner(undefined)
             setDisplayPlayers(new Array(7).fill(null, 0, 7))
             setAnimateJackpot(false)
             jackpotContext.incrementRoundId()
-        }, 5000)
+            setConfettiVisible(false)
+        }, 10000)
     }
 
      useEffect(() => {
@@ -189,8 +206,15 @@ const Jackpot = () => {
     return (
         <div className={styles.ctn}>
             <JackpotBlocks displayPlayers={displayPlayers} setDisplayPlayers={setDisplayPlayers}/>
-            <WinnerBlock winner={winner}/>
+            {
+                confettiVisible 
+                ?
+                <JackpotConfetti visible={confettiVisible} />
+                :
+                <></>
+            }
             <div className={styles.glassCtn}></div>
+            <WinnerBlock winner={winner}/>
         </div>
 
     )

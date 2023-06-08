@@ -188,7 +188,6 @@ function App() {
           </button>
 
           <button onClick={() => {
-            // setJackpotAnimated(true)
               setRoundState("closed")
             }}>
             <span className="font-content">Start jackpot</span>
