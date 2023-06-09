@@ -1,8 +1,9 @@
 # **CheapChips**
 A fully automated and decentralized online lottery game using Chainlink services [Chainlink VRF V2](https://docs.chain.link/vrf/v2/introduction) & [Chainlink Automation](https://automation.chain.link/).
 
-<!-- Demo link: -->
-<!-- You can give this a try. -->
+Live demo: [https://cheapchips.github.io/cheapchips/](https://cheapchips.github.io/cheapchips/)
+
+Video demo: [https://www.youtube.com/watch?v=gUjX2T1NdAA](https://www.youtube.com/watch?v=gUjX2T1NdAA)
 
 ## Table of Contents
 1. [What is CheapChips about?](#about)
