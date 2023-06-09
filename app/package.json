@@ -1,4 +1,5 @@
 {
+  "homepage": "https://cheapchips.github.io/cheapchips",
   "name": "cheapchips-dapp",
   "private": true,
   "version": "0.1.0",
@@ -6,18 +7,20 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.6",
+    "@types/aria-query": "^5.0.1",
     "@types/lodash": "^4.14.195",
     "@types/react-blockies": "^1.4.1",
     "autoprefixer": "^10.4.14",
-    "cc_lobby": "^1.0.1",
-    "cc_raffle": "^1.0.0",
     "ethers": "5.4.7",
+    "gh-pages": "^5.0.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.23",
     "react": "^18.2.0",

@@ -30,7 +30,6 @@ export default function useContract(
                 break;
             case "ChipsJackpot":
                 ctrct = ChipsJackpot__factory.connect("0xf082812C3De7a8d5014f1F748bb75046F6143A53", provider)
-            console.log(ctrct)
             setContract(ctrct)
         }
     }

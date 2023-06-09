@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react"
-import SvgIcon from "../layout/SvgIcon"
+import { useEffect } from "react"
 import chipsLogo from "../../assets/logo.png"
 
 const BuyChipStable = () => {

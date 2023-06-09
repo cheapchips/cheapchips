@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"
-import ModalSkeletonProps from "../../../proptypes/ModalSkeletonProps"
 import ModalSkeleton from "../ModalSkeleton"
 import BuyChipStable from "../BuyChipStable"
 

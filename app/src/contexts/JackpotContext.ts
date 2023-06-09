@@ -1,6 +1,5 @@
 import { createContext } from "react"
 import JackpotContextInterface from "../types/JackpotContextInterface"
-import { Player } from "../types/Player"
 
 const JackpotContext = createContext<JackpotContextInterface>({
     roundId: undefined,
@@ -14,10 +13,10 @@ const JackpotContext = createContext<JackpotContextInterface>({
     endTime: undefined,
     winnerId: undefined,
     setRoundState: () => {},
-    addPlayer: (newPlayer:Player) => {},
+    addPlayer: () => {},
     incrementRoundId: () => {},
-    incrementPrizePool: (ticketAmount:number) => {},
-    toggleArchivedJackpotModal: (roundId:number) => {}
+    incrementPrizePool: () => {},
+    toggleArchivedJackpotModal: () => {}
 })
 
 export default JackpotContext

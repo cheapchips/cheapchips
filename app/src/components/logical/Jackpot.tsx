@@ -84,7 +84,7 @@ const JackpotBlocks = ({displayPlayers, setDisplayPlayers}:JackpotBlocksInterfac
 }
 
 const TestBlock = (props:{blockCtnRatio:number, seed:string, active:boolean}) => {
-    const [containerWidth, blockCtnSize, blockiesSize] = useResponsiveSizes()
+    const [,blockCtnSize, blockiesSize] = useResponsiveSizes()
     return (
         <div className={props.active ? styles.playerBlock : styles.playerBlock + styles.playerBlockInactive} style={{width: `${blockCtnSize * props.blockCtnRatio}px`, height: `${blockCtnSize * props.blockCtnRatio}px`}}>
             <Blockies seed={props.seed} size={Math.round(blockiesSize * props.blockCtnRatio)} scale={8} className={props.active ? "rounded-lg" : "hidden"}/>
@@ -139,10 +139,10 @@ const Jackpot = () => {
     const [confettiVisible, setConfettiVisible] = useState<boolean>(false)
 
     useEffect(() => {
-        console.log(jackpotContext.roundState)
+        // console.log(jackpotContext.roundState)
         if(jackpotContext.roundState === "closed") setAnimateJackpot(true)
         if(jackpotContext.roundState === "ended") {
-            console.log(jackpotContext.winnerId!.current)
+            // console.log(jackpotContext.winnerId!.current)
             clearInterval(animationTimer)
             handleWinner()
         }
@@ -153,7 +153,7 @@ const Jackpot = () => {
     function handleWinner(){
         const winner = jackpotContext.players!.find(player => player.id === jackpotContext.winnerId?.current)
         const winnerArray = new Array(7).fill(null, 0, 7)
-        console.log(winner)
+        // console.log(winner)
         winnerArray[3] = winner!
         
         // handle round END

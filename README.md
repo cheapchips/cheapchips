@@ -19,7 +19,7 @@ A fully automated and decentralized online lottery game using Chainlink services
 
 Consider a "classic", centralized online game of chance, e.g. Roulette, Poker, Blackjack etc. In order to play and win, you have to trust third parties who are in control of the game system. A "random" game result coming from a centralized party should not be enough for users, because it is not externally verifiable. A centralized party could manipulate the win chances for a specific player for many undisclosed reasons, like business strategies. A problem of trust arises, and to fix that, we would need a fully decentralized and independent game system. That system would have to provide reliable, truly random, verifiable game results each consecutive time. That system should also not be controlled by anyone, making it fully autonomous and independent. We managed to build a system exactly like this - CheapChips.
 
-Check out our [whitepaper]() to fully understand all the mechanisms CheapChips is using to function.
+Check out our [whitepaper](/docs/whitepaper/whitepaper.pdf) to fully understand all the mechanisms CheapChips is using to function.
 
 <a id="work"></a>
 ## How does this work?

@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import Web3ContextInterface from "../types/Web3ContextInterface";
-import { TxHash, TxStatus } from "../types/useTransactionTypes";
 
 const Web3Context = createContext<Web3ContextInterface>({
     address: undefined,
@@ -16,10 +15,10 @@ const Web3Context = createContext<Web3ContextInterface>({
         hash: undefined,
         errorMessage: undefined
     },
-    setTxStatus: (status:TxStatus) => {},
-    setTxHash: (hash:TxHash) => {},
-    setTxErrorMessage: (err:string) => {},
-    setChipStableBalance: (newBalance:string) => {},
-    setLinkTokenBalance: (newBalance:string) => {},
+    setTxStatus: () => {},
+    setTxHash: () => {},
+    setTxErrorMessage: () => {},
+    setChipStableBalance: () => {},
+    setLinkTokenBalance: () => {},
 })
 export default Web3Context

@@ -1,6 +1,6 @@
-import { Contract, ContractFunction, ContractTransaction, Overrides, Signer, ethers } from "ethers"
-import { useEffect, useState, useContext } from "react"
-import { TxStatus, PerformType, TxHash } from "../types/useTransactionTypes"
+import { ContractFunction, ContractTransaction } from "ethers"
+import { useContext } from "react"
+import { PerformType} from "../types/useTransactionTypes"
 import Web3Context from "../contexts/Web3Context"
 
 // const [perform, TxStatus, txHash] = useTrasaction(jackpot.deposit)
@@ -19,6 +19,7 @@ export default function useContractFunction<T extends ContractFunction>(transact
             setTxStatus("submitted")
             const receipt = await tx.wait()
             console.log(receipt)
+
             setTxStatus("done")
             // console.log(tx)
             

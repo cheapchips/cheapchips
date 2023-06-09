@@ -53,7 +53,7 @@ const Lobby = () => {
     const [active, setActive] = useState<boolean>(false)
 
     useEffect(() => {
-        console.log("UPDATE PLAYERS")
+        // console.log("UPDATE PLAYERS")
         if(jackpotContext.players!.length <= 0){
             setActive(false)
             return

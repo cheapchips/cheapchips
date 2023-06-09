@@ -149,7 +149,7 @@ const BuyTokensModalTESTNET = (
 
         const getCurrentLinkBalance = async ():Promise<void> => {
             const balance = await readLinkToken.checkBalance()
-            console.log('link balance', balance)
+            // console.log('link balance', balance)
             !balance ? web3.setLinkTokenBalance("0") : web3.setLinkTokenBalance(balance)
         }
 

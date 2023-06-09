@@ -57,7 +57,7 @@ const TransactionModal = (props:{txTitle:string, onClickClose:() => void}) => {
     
     const web3 = useContext(Web3Context)
     const [closeBtnVisible, setCloseBtnVisible] = useState<boolean>(false)
-    const [visible, setVisible] = useState<boolean>(true)
+    const [visible,] = useState<boolean>(true)
         
     useEffect(() => {
         if(web3.tx.status === "nonexist") return

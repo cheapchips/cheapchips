@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
 import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
 import Web3Context from "../contexts/Web3Context";
 import useContractFunction from "./useContractFunction";

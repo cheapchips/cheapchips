@@ -13,7 +13,8 @@ declare global {
  * 2. Connect wallet to blockchain (every time, after connection button fades away [auto])
  */
 
-export default function useConnectWallet(network?: string): [boolean, boolean, boolean, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
+// network?:string
+export default function useConnectWallet(): [boolean, boolean, boolean, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
     
     const [metamask, setMetamask] = useState<boolean>(true)
     const [connected, setConnected] = useState<boolean>(false)
@@ -28,9 +29,9 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
         else setMetamask(true)
     }, [])
 
-    useEffect(() => {
-        console.log(connected)
-    }, [connected])
+    // useEffect(() => {
+    //     console.log(connected)
+    // }, [connected])
 
     useEffect(() => {
         if(provider && signer) {
@@ -45,7 +46,6 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
     const connectWallet = async () => {
         if(!provider) return
         const accounts:string[] = await provider.send("eth_requestAccounts", []);
-        console.log(accounts)
         accounts.length > 0 ? setConnected(true) : setConnected(false)
     }
     
@@ -69,7 +69,8 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
                 window.location.reload()
             })
 
-            window.ethereum.on("chainChanged", (chainId:any) => {
+            // chainId:any
+            window.ethereum.on("chainChanged", () => {
                 window.location.reload()
             })
         }        
@@ -78,7 +79,6 @@ export default function useConnectWallet(network?: string): [boolean, boolean, b
     }
 
     const connect = async() => {
-        console.log('connect')
         await setupProviderAndSigner()
     }
 

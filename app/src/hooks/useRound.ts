@@ -58,7 +58,6 @@ export default function useRound(){
     function listenForClose(){
         web3.jackpot!.on("Closed", (roundId:BigNumber) => {
             if(roundId.toNumber() == jackpotContext.roundId){
-                console.log("Round closed!")
                 jackpotContext.setRoundState("closed")
             }
         })
@@ -73,7 +72,6 @@ export default function useRound(){
             
             jackpotContext.winnerId!.current = winnerId
             jackpotContext.setRoundState("ended")
-            console.log('winner id: ', winnerId)
           })
     }
 }

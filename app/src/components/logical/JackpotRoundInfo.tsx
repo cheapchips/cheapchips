@@ -126,7 +126,7 @@ const JackpotRoundInfo = () => {
     useEffect(() => {
         (async() => {
             if(jackpotContext.roundState == "closed"){
-                console.log("closed 1")
+                // console.log("closed 1")
                 setDepositTimer(0)
             }else {
                 setDepositTimer(60)
@@ -144,7 +144,7 @@ const JackpotRoundInfo = () => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
         setActive(true)
         if(jackpotContext.players!.length >= 3){
-            console.log('Enough players joined. starting timer')
+            // console.log('Enough players joined. starting timer')
             countdownEndTime()
         }
     }, [web3, jackpotContext])
@@ -176,7 +176,7 @@ const JackpotRoundInfo = () => {
         }
         const roundTickets = (await readJackpot.getRoundData(jackpotContext.roundId)).tickets
         const localPlayerId = await readJackpot.getPlayerIdInRound(jackpotContext.roundId)
-        console.log(localPlayerId, 'price pool', jackpotContext.prizePool)
+        // console.log(localPlayerId, 'price pool', jackpotContext.prizePool)
         if(localPlayerId === undefined) {
             setWinChance(0)
             return

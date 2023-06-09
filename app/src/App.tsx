@@ -77,16 +77,13 @@ function App() {
   const [roundId, setRoundId] = useState<number>()
   const [players, setPlayers] = useState<Player[]>([])
   const [prizePool, setPrizePool] = useState<number>()
-  const [endTime, setEndTime] = useState<number>(60)
+  const [endTime] = useState<number>(60)
   const [roundState, setRoundState] = useState<RoundState>("default")
 
   //test
-  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+  // const [playersDeposit, setPlayersDeposit] = useState<number>(0)
   const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
 
-  useEffect(() => {
-    console.log(players)
-  }, [players])
 
   function addPlayer(newPlayer:Player) {
     setPlayers(prevPlayers => [...prevPlayers, newPlayer])
@@ -142,7 +139,6 @@ function App() {
 
   useEffect(() => {
     if(roundState === "ended"){
-      console.log('reset ROUND')
       setPlayers([])
       setPrizePool(0)
       setRoundState("default")
