@@ -104,6 +104,15 @@ const JackpotRoundInfo = () => {
             dark:bg-darkBgActive
             animate-pulse
         `,
+        winChanceCtn: `
+            flex justify-center items-center
+            text-lg
+            border-b border-lightBorder dark:border-darkBorder
+            pb-2
+        `,
+        winChanceValue: `
+            font-semibold text-accentColor
+        `,
     }
 
     const web3 = useContext(Web3Context)
@@ -112,10 +121,12 @@ const JackpotRoundInfo = () => {
     const [active, setActive] = useState<boolean>(false)
     const [timer, setTimer] = useState<NodeJS.Timer>()
     const [depositTimer, setDepositTimer] = useState<number>(60)
+    const [winChance, setWinChance] = useState<number>(0)
 
     useEffect(() => {
         (async() => {
             if(jackpotContext.roundState == "closed"){
+                console.log("closed 1")
                 setDepositTimer(0)
             }else {
                 setDepositTimer(60)
@@ -123,6 +134,10 @@ const JackpotRoundInfo = () => {
             }
         })()
     }, [jackpotContext.roundState])
+
+    useEffect(() => {
+        updateWinChance()
+    }, [jackpotContext.prizePool])
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
@@ -144,12 +159,28 @@ const JackpotRoundInfo = () => {
             const timeLeft = Math.floor((endTime - Date.now())/ 1000)
             if(timeLeft <= 0) {
                 setDepositTimer(0)
+                clearInterval(_timer)
                 return
             }
             setDepositTimer(timeLeft)
         }, 1000)
 
         setTimer(_timer)
+    }
+
+    async function updateWinChance() {
+        if(jackpotContext.prizePool === 0){
+            setWinChance(0)
+            return
+        }
+        const roundTickets = (await readJackpot.getRoundData(jackpotContext.roundId)).tickets
+        const localPlayerId = await readJackpot.getPlayerIdInRound(jackpotContext.roundId)
+        if(localPlayerId === -1) {
+            setWinChance(0)
+            return
+        } 
+        const localPlayerTickets = roundTickets.filter((id:number) => id === localPlayerId).length
+        setWinChance(localPlayerTickets / roundTickets.length)
     }
 
     return (
@@ -174,8 +205,8 @@ const JackpotRoundInfo = () => {
                     <span className={styles.infoTitle}>Prize pool:
                         <span className={styles.infoValue + styles.infoValuePrizePool}>{jackpotContext.prizePool}/{jackpotContext.maxPlayers! * jackpotContext.maxChipsDeposit!}</span>
                     </span>
-                    <span className={styles.infoTitle}>Game starts in:
-                        <span className={styles.infoValue + styles.infoValueTimer}>{depositTimer}s</span>
+                    <span className={styles.infoTitle}>{depositTimer === 0 ? "Game in progress..." : "Game starts in:"}
+                        <span className={styles.infoValue + styles.infoValueTimer}>{depositTimer !== 0 ? (depositTimer + "s") : ""}</span>
                     </span>
                     <span className={styles.infoTitle}>Round id:
                         <span className={styles.infoValue}>{jackpotContext.roundId}</span>
@@ -209,6 +240,18 @@ const JackpotRoundInfo = () => {
                 }
             </div>
 
+            <div className={styles.winChanceCtn}>
+                {
+                    active
+                    ?
+                        <span>Win chance:
+                            <span className={styles.winChanceValue}> {Math.round((winChance * 100)).toString()}% </span>
+                        </span>
+                    :
+                        <></>
+                }
+            </div>
+            
         </div>
     )
 

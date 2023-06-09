@@ -18,6 +18,8 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
     const [,readChipStable] = useChipStable()
     
     useEffect(() => {
+        console.log('123')
+        console.log(web3.address, web3.jackpot, web3.chipStable, web3.linkToken)
         if(!web3.address || !web3.jackpot || !web3.chipStable || !web3.linkToken) return
         if(!active){
             setActive(true)
@@ -29,12 +31,14 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
 
     async function getFeesBalance() {
         const feesBalance = await readJackpot.checkFeesBalance()
-        setFeeBalance(feesBalance)
+        console.log(Number(feesBalance))
+        setFeeBalance(Number(feesBalance))
     }
 
     async function getChipsStableBalance(){
         const chipStableBalance = await readChipStable.getBalance()
-        setChipStableBalance(chipStableBalance)
+        console.log(chipStableBalance.toNumber())
+        setChipStableBalance(chipStableBalance.toNumber())
     }
 
     const profileStyles = {
@@ -134,13 +138,19 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
         `,
         profileSecondaryContentDetailsBtn: `
             lg:px-3 py-1 md:px-2 mx-1
-            border border-lightBorder dark:border-darkBorder
             bg-lightBgActive dark:bg-darkBgActive
             2xl:text-xs xl:text-xxxs lg:text-xxxs md:text-xxxxs
             xl:overflow-hidden xl:whitespace-nowrap
             hover:text-black dark:hover:text-accentColor
             transition ease-in-out hover:scale-110
             font-semibold rounded-md
+        `,
+        profileMyDetailsBtn: `
+            border border-lightBorder dark:border-darkBorder
+        `,
+        profileBuyBalanceBtn: `
+            border
+            ${!chipStableBalance || !feeBalance || chipStableBalance === 0 || feeBalance === 0 ? "border-accentColor dark:border-accentColor" : "border-lightBorder dark:border-darkBorder"}
         `,
         inactiveBg: `
             bg-lightBgActive
@@ -197,7 +207,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
                                         <span className="select-none">Token balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{chipStableBalance ? chipStableBalance?.toString().substring(0,5) : "..."}</span>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.chipsBalanceValue}>{chipStableBalance ? chipStableBalance?.toString().substring(0,5) : "0"}</span>
                                         <img className={profileStyles.chipsLogo} src={chipsLogo} draggable={false} alt="CheapChips mini logo" ></img>
                                     </div>
                                 </div>
@@ -206,7 +216,7 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
                                         <span className="select-none">Link balance:</span>
                                     </div>
                                     <div className={profileStyles.profileBalanceRowContent}>
-                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{feeBalance ? feeBalance?.toString().substring(0, 4) : "..."}</span>
+                                        <span className={profileStyles.profileBalancesValue + profileStyles.linkBalanceValue}>{feeBalance ? feeBalance?.toString().substring(0, 4) : "0"}</span>
                                         <img className={profileStyles.chainlinkLogo} src={chainlinkLogo} draggable={false} alt="Chainlink mini logo" />
                                     </div>
                                 </div>
@@ -238,8 +248,8 @@ const ProfileHeader = (props:{onClickBuyBalance:() => void, onClickMyDetails:() 
                             <span className={profileStyles.profileSecondaryContentValue}>{web3.address!}</span>
                         </div>
                         <div className={profileStyles.profileSecondaryContentDetailsBtnCtn}>
-                            <button onClick={() => props.onClickMyDetails()} className={profileStyles.profileSecondaryContentDetailsBtn}>My details</button>
-                            <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn}>Buy Balance</button>
+                            <button onClick={() => props.onClickMyDetails()} className={profileStyles.profileSecondaryContentDetailsBtn + profileStyles.profileMyDetailsBtn}>My details</button>
+                            <button onClick={() => props.onClickBuyBalance()} className={profileStyles.profileSecondaryContentDetailsBtn + profileStyles.profileBuyBalanceBtn}>Buy Balance</button>
                         </div>
                     </>
                     :

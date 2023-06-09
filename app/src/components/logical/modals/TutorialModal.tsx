@@ -2,6 +2,56 @@ import { useState } from "react"
 import SvgIcon from "../../layout/SvgIcon"
 import ModalSkeleton from "../ModalSkeleton"
 
+import page1video from "../../../assets/tutorial/faucet_tutorial.mp4"
+
+const TutorialIntro = (props:{onClickSkip:() => void}) => {
+
+    return (
+        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+            <span>Welcome to <span className="text-accentColor">CheapChips {`👋`}</span>!</span>
+            <span>Before you play, we'd like to introduce the game system to you.</span>
+            <span>You can <button onClick={props.onClickSkip} className="border px-3 rounded-md border-lightBorder dark:border-darkBorder">skip</button> this tutorial if you prefer.</span>
+        
+            <br />
+            <span>Now, let's get started!</span>
+            <span>Use the navigation bar at the bottom to move through the tutorial.</span>
+            <span className="underline underline-offset-4">You can always go back to previous steps!</span>
+        </div>
+    )
+}
+
+const TutorialPage1 = () => {
+
+    return (
+        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+
+            <span>First, you'll need to get some MATIC and LINK</span>
+            <span>(if you have some already, you can skip this step).</span>
+            <span>Check out this quick video: </span>
+            <br />
+            <video controls >
+                <source src={page1video} type="video/mp4" />
+            </video>
+            <br />
+            <span>Once you obtain some LINK and MATIC, move on to the next step {`😀`}</span>
+
+        </div>
+    )
+
+}
+
+const TutorialPage2 = () => {
+
+    return (
+        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+            
+            <span>Nice! now that we have some MATIC, we can go ahead and mint some CHIPS</span>
+            
+
+        </div>
+    )
+}
+
 const TutorialModal = (
     props: {
         pages: number
@@ -30,20 +80,22 @@ const TutorialModal = (
         `,
         navDot: `
             flex
-            w-6 h-6
+            w-3 h-3
             rounded-full
-            bg-lightText
-            dark:bg-darkText
+            border border-lightBorder dark:border-darkBorder
         `,
         navDotActive: `
-            bg-sky-500
-            dark:bg-sky-500
+            bg-accentColor
+            dark:bg-accentColor
+        `,
+        navArrowCtn: `
+            p-3
+            cursor-pointer
         `,
         navArrow: `
-            w-6 h-6
-            fill-lightText
-            dark:fill-darkText
-            cursor-pointer
+            w-4 h-4
+            fill-lightBorder
+            dark:fill-darkBorder
         `,
     }
 
@@ -64,6 +116,19 @@ const TutorialModal = (
         }
         (dir === "left" ? setCurrentPage(currentPage-1) : setCurrentPage(currentPage+1))
     }
+
+    const renderTutorialPages = () => {
+        switch(currentPage){
+            case 0:
+                return <TutorialIntro onClickSkip={() => props.onClickClose()}/>
+            case 1:
+                return <TutorialPage1 />
+            case 2:
+                return <TutorialPage2 />
+            default:
+                return null;
+        }
+    }
     
     const NavigationArrow = (props: {dir: "left" | "right"}) => {
 
@@ -79,7 +144,7 @@ const TutorialModal = (
         }
 
         return (
-            <div onClick={() => navigatePages(props.dir)}>
+            <div className={tutorialStyles.navArrowCtn} onClick={() => navigatePages(props.dir)}>
                 <SvgIcon
                     style={tutorialStyles.navArrow}
                     viewBox={iconsData[props.dir].viewBox}
@@ -111,19 +176,7 @@ const TutorialModal = (
         <ModalSkeleton title="Tutorial" size={'Big'} onClickClose={props.onClickClose}>
             
             <div className={tutorialStyles.ctn}>
-                {currentPage === 0
-                ?
-                    <div className="">WELCOME</div>
-                :
-                currentPage === 1
-                ?
-                    <div className="">HELLO</div>
-                :
-                currentPage === 2
-                ?
-                    <div className="">YO</div>
-                : ""
-                }
+                {renderTutorialPages()}
             </div>
             
             <div className={tutorialStyles.navCtn}>

@@ -25,7 +25,7 @@ import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types
             font-content
         `,
         titleCtn: `
-            flex h-fit items-center
+            flex h-fit items-center font-content
             fill-lightText dark:fill-darkText
             xl:p-2 lg:p-1
             border-b border-lightBorder dark:border-darkBorder
@@ -91,7 +91,7 @@ const JackpotArchives = () => {
 
         useEffect(() => {
             if(!isArchivesFetched) return
-            console.log(123)
+            console.log('updating archives')
             setArchivedRounds([])
             fetchArchivedRounds()
         }, [web3.chipStableBalance]) 

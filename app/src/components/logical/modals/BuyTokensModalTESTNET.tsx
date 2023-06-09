@@ -111,19 +111,25 @@ const BuyTokensModalTESTNET = (
     }
 
     const LinkDepositPanel = () => {
+        
+        const web3 = useContext(Web3Context)
+        const [writeLinkToken, readLinkToken] = useLinkToken()
+        const [writeJackpot, readJackpot] = useJackpot()
 
         const [val, setVal] = useState<number>()
         const [deposit, setDeposit] = useState<number>()
         const [allowance, setAllowance] = useState<number>()
-        const [writeLinkToken, readLinkToken] = useLinkToken()
-        const [writeJackpot, readJackpot] = useJackpot()
-        
-        const web3 = useContext(Web3Context)
 
         useEffect(() => {
             if(!web3.address || !web3.chipStable || !web3.linkToken) return
             update()
         }, [web3.chipStableBalance, web3.linkTokenBalance])
+
+        // allowance case
+        useEffect(() => {
+            if(!writeLinkToken || !readLinkToken) return
+            update()
+        }, [writeLinkToken, readLinkToken])
 
         const update = async () => {
             await getCurrentAllowance()
@@ -143,6 +149,7 @@ const BuyTokensModalTESTNET = (
 
         const getCurrentLinkBalance = async ():Promise<void> => {
             const balance = await readLinkToken.checkBalance()
+            console.log('link balance', balance)
             !balance ? web3.setLinkTokenBalance("0") : web3.setLinkTokenBalance(balance)
         }
 
@@ -164,10 +171,10 @@ const BuyTokensModalTESTNET = (
                 <div className={styles.depositCtn}>
                     <span className={styles.depositTitle}>LINK amount to deposit: </span>
                     <input className={styles.depositInput} type="number" min="0" placeholder="0" onChange={(e) => setVal(+e.target.value)} />
-                    <span className={styles.depositBalanceInfo}>Balance: {!web3.linkTokenBalance ? "..." : web3.linkTokenBalance}</span>
+                    <span className={styles.depositBalanceInfo}>LINK Balance: {!web3.linkTokenBalance ? "..." : web3.linkTokenBalance}</span>
                 </div>
                 <span>Current allowance: {!allowance ? "..." : allowance} </span>
-                <span>Current deposit: {!deposit ? "..." : (deposit.toString()).substring(0, 5)}</span>
+                <span>LINK already deposited: {!deposit ? "..." : (deposit.toString()).substring(0, 5)}</span>
                 <button onClick={() => submitDeposit(val)} className={styles.button + ((allowance! >= val!) ? styles.sufficientAllowance : styles.insufficientAllowance)}>Deposit</button>
                 <span className="w-1/2 text-center">{(val! > +web3.linkTokenBalance!) ? "Not enough balance" : (!val || allowance! >= val!) ? "" : "You will need to allow this amount before you can deposit it"}</span>
             </>

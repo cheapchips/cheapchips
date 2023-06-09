@@ -45,7 +45,8 @@ const styles = {
         flex justify-center items-center flex-col gap-4
         border border-lightBorder dark:border-darkBorder
         bg-lightBg dark:bg-darkBg
-        drop-shadow-2xl rounded-lg
+        drop-shadow-2xl
+        rounded-lg
         transition-all duration-1000
     `,
     winnerBlockText: `
