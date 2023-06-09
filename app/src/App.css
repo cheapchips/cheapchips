@@ -1,42 +1,57 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  --duration: .45s;
+  --duration-end: .9s;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.dark {
+  color-scheme: dark;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.fadein_anim {
+  animation: fade-in ease-out .25s;
+}
+
+.background_anim {
+  background-size: 400%;
+  -webkit-animation: bg 12s ease infinite;
+  -moz-animation: bg 12s ease infinite;
+  animation: bg 12s ease infinite;
+}
+
+.participate_withdrawn_glow {
+  -webkit-box-shadow:0 0 6px #ffe601; 
+  -moz-box-shadow: 0 0 6px #ffe601; 
+  box-shadow:0 0 6px #ffe601;
+}
+
+.participate_win_glow {
+  -webkit-box-shadow:0 0 6px #34d399; 
+  -moz-box-shadow: 0 0 6px #34d399; 
+  box-shadow:0 0 6px #34d399;
+}
+
+.accent_color_button_glow {
+  -webkit-box-shadow:0 0 6px #f59e0b; 
+  -moz-box-shadow: 0 0 6px #f59e0b; 
+  box-shadow:0 0 6px #f59e0b;
+}
+
+.text_shadow {
+  text-shadow: .5px .5px .5px rgba(0,0,0,0.5);
+}
+
+@keyframes bg {
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    background-position: 100% 50%;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
