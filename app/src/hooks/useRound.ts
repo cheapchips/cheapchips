@@ -15,13 +15,23 @@ export default function useRound(){
         web3.jackpot!.removeAllListeners("RoundEnded")
         web3.jackpot!.removeAllListeners("Closed")
         web3.jackpot!.removeAllListeners("Withdrawal")
-        // ?
+        web3.chipStable!.removeAllListeners("Transfer")
 
         listenForChipsWithdrawal()
         listenForChipsDeposit()
         listenForRandomNumber()
         listenForClose()
+        listenForMint()
     }, [jackpotContext.roundId])
+
+    function listenForMint(){
+        web3.chipStable!.on("Transfer", (from:string, to:string, amount:BigNumber) => {
+            if(from === "0x0000000000000000000000000000000000000000" && to === web3.address){
+                const newBalance = +web3.chipStableBalance! + amount.toNumber()
+                web3.setChipStableBalance(newBalance.toString())
+            }
+        })
+    }
     
     function listenForChipsDeposit(){
         web3.jackpot!.on("Deposit", (from:string, id:number, amount:BigNumber) => {

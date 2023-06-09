@@ -5,7 +5,7 @@ import DropdownMenu from "./DropdownMenu"
 import SvgIcon from "../layout/SvgIcon"
 import useTheme from "../../hooks/useTheme"
 
-const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void, connected:boolean}) => {
+const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void, connected:boolean, tutorialOnClick:() => void}) => {
 
     const [theme, toggleTheme] = useTheme()
 
@@ -93,33 +93,23 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void
 
     // links, data, customization (nav right side)
     const navDropdownData = {
-        support: [
-            {
-                title: "Live Support",
-                url: "discord.com",
-            },
-            {
-                title: "FAQ",
-                url: "cheapchips.xyz/faq",
-            },
-        ],
         community: [
             {
-                title: "Governance",
-                url: "cheapchips.xyz/governance",
+                title: "Discord Server",
+                url: "https://discord.gg/gQyeeHnV",
             },
             {
-                title: "Discord Server",
-                url: "discord.com/invite/sldjhkflidfjsdf",
+                title: "GitHub",
+                url: "https://github.com/cheapchips/cheapchips",
             },
             {
                 title: "Twitter",
-                url: "twitter.com",
+                url: "https://twitter.com/cheapchips_xyz",
             }
         ]
     }
 
-    const navMainLinksData = [{title: "CHEAPCHIPS", onClick: () => {}},{title: "BUY TOKENS", onClick: () => {props.connected ? props.buyOnClick() : {}}}]
+    const navMainLinksData = [{title: "CHEAPCHIPS", onClick: () => {}},{title: "BUY TOKENS", onClick: props.connected ? () => props.buyOnClick() : () => {}},{title: "TUTORIAL", onClick: props.tutorialOnClick ? () => props.tutorialOnClick() : () => {}}]
     const MainLinks = navMainLinksData.map((button, index) => 
         <button key={index} className={styles.contentText + styles.contentButton} onClick={() => button.onClick()}>
             <span>{button.title}</span>
@@ -148,9 +138,6 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void
                         />
                     </div>
 
-                    <div className={styles.contentText}>
-                        <DropdownMenu buttonText="SUPPORT" dropdownOpts={navDropdownData.support}/>
-                    </div>
                     <div className={styles.contentText}>
                         <DropdownMenu buttonText="COMMUNITY" dropdownOpts={navDropdownData.community}/>
                     </div>

@@ -136,8 +136,9 @@ const JackpotRoundInfo = () => {
     }, [jackpotContext.roundState])
 
     useEffect(() => {
+        if(!jackpotContext.prizePool || !jackpotContext.roundId) return
         updateWinChance()
-    }, [jackpotContext.prizePool])
+    }, [jackpotContext.prizePool, jackpotContext.roundId])
 
     useEffect(() => {
         if(!web3.address || !jackpotContext.endTime || !jackpotContext.maxPlayers || !jackpotContext.prizePool || !jackpotContext.maxChipsDeposit) return
@@ -175,7 +176,8 @@ const JackpotRoundInfo = () => {
         }
         const roundTickets = (await readJackpot.getRoundData(jackpotContext.roundId)).tickets
         const localPlayerId = await readJackpot.getPlayerIdInRound(jackpotContext.roundId)
-        if(localPlayerId === -1) {
+        console.log(localPlayerId, 'price pool', jackpotContext.prizePool)
+        if(localPlayerId === undefined) {
             setWinChance(0)
             return
         } 

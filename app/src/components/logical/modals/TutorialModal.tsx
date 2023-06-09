@@ -2,12 +2,54 @@ import { useState } from "react"
 import SvgIcon from "../../layout/SvgIcon"
 import ModalSkeleton from "../ModalSkeleton"
 
-import page1video from "../../../assets/tutorial/faucet_tutorial.mp4"
+const tutorialStyles = {
+    ctn: `
+        flex justify-center content-center items-center
+        xl:p-2
+        md:p-1
+        grow
+        select-none
+    `,
+    navCtn: `
+        flex justify-center items-center
+        xl:h-12
+        lg:h-10
+        md:h-8
+    `,
+    navPanelCtn: `
+        flex flex-flow-row justify-center items-center gap-1
+    `,
+    navDot: `
+        flex
+        w-3 h-3
+        rounded-full
+        border border-lightBorder dark:border-darkBorder
+    `,
+    navDotActive: `
+        bg-accentColor
+        dark:bg-accentColor
+    `,
+    navArrowCtn: `
+        p-3
+        cursor-pointer
+    `,
+    navArrow: `
+        w-4 h-4
+        fill-lightBorder
+        dark:fill-darkBorder
+    `,
+
+
+    tutorialContentCtn: `
+        flex flex-col justify-center items-center 
+        w-3/4 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs
+    `,
+}
 
 const TutorialIntro = (props:{onClickSkip:() => void}) => {
 
     return (
-        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+        <div className={tutorialStyles.tutorialContentCtn}>
             <span>Welcome to <span className="text-accentColor">CheapChips {`👋`}</span>!</span>
             <span>Before you play, we'd like to introduce the game system to you.</span>
             <span>You can <button onClick={props.onClickSkip} className="border px-3 rounded-md border-lightBorder dark:border-darkBorder">skip</button> this tutorial if you prefer.</span>
@@ -21,32 +63,73 @@ const TutorialIntro = (props:{onClickSkip:() => void}) => {
 }
 
 const TutorialPage1 = () => {
-
+    
     return (
-        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+        <div className={tutorialStyles.tutorialContentCtn}>
 
             <span>First, you'll need to get some MATIC and LINK</span>
             <span>(if you have some already, you can skip this step).</span>
             <span>Check out this quick video: </span>
             <br />
-            <video controls >
-                <source src={page1video} type="video/mp4" />
-            </video>
+                <iframe width="720" height="420" src="https://www.youtube.com/embed/GLxcJ3cJ_Nk" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen={true} ></iframe>
             <br />
             <span>Once you obtain some LINK and MATIC, move on to the next step {`😀`}</span>
 
         </div>
     )
-
+    
 }
 
 const TutorialPage2 = () => {
+    
+    return (
+        <div className={tutorialStyles.tutorialContentCtn}>
+            
+            <span className="text-center">Nice! now that we have some MATIC, we can go ahead and mint some CHIPS</span>
+            <span>Here's a video showing you how to do that: </span>
+            <br />
+                <iframe width="720" height="420" src="https://www.youtube.com/embed/rj-4Hk6d8E8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen={true} ></iframe>
+            <br />
+
+            <span>Now it's time for the final step. Let's go! 🏃‍♀️</span>
+
+
+        </div>
+    )
+}
+
+const TutorialPage3 = () => {
 
     return (
-        <div className="flex flex-col w-2/3 xl:leading-9 lg:leading-6 md:leading-4 xl:text-lg lg:text-sm md:text-xxs sm:text-xxxxs">
+        <div className={tutorialStyles.tutorialContentCtn}>
             
-            <span>Nice! now that we have some MATIC, we can go ahead and mint some CHIPS</span>
+            <span>Okay, final step!</span>
+            <span>It's time to deposit some LINK tokens to contract's service fees pool</span>
+            <span className="text-center">(!) This way, the contract can be more efficient with LINK service fees, and we only have to deposit the LINK once.</span>
+            <br />
+                <iframe width="720" height="420" src="https://www.youtube.com/embed/WNCLErOrtks" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen={true} ></iframe>
+            <br />
+
+            <span>Ok, that wasn't so hard! Now we're able to play 😀</span>
+
+
+        </div>
+    )
+}
+
+const TutorialPage4 = () => {
+    
+    return (
+        <div className={tutorialStyles.tutorialContentCtn}>
             
+            <span>All done!</span>
+            <span>Here's a bonus deposit & gameplay demo: </span>
+            <br />
+                <iframe width="720" height="420" src="https://www.youtube.com/embed/dvChWcCpEk0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen={true} ></iframe>
+            <br />
+
+            <span>Good luck and have fun! 😎</span>
+
 
         </div>
     )
@@ -61,43 +144,6 @@ const TutorialModal = (
 
     const [currentPage, setCurrentPage] = useState<number>(0)
 
-    const tutorialStyles = {
-        ctn: `
-            flex justify-center items-center
-            xl:p-2
-            md:p-1
-            grow
-            select-none
-        `,
-        navCtn: `
-            flex justify-center items-center
-            xl:h-12
-            lg:h-10
-            md:h-8
-        `,
-        navPanelCtn: `
-            flex flex-flow-row justify-center items-center gap-1
-        `,
-        navDot: `
-            flex
-            w-3 h-3
-            rounded-full
-            border border-lightBorder dark:border-darkBorder
-        `,
-        navDotActive: `
-            bg-accentColor
-            dark:bg-accentColor
-        `,
-        navArrowCtn: `
-            p-3
-            cursor-pointer
-        `,
-        navArrow: `
-            w-4 h-4
-            fill-lightBorder
-            dark:fill-darkBorder
-        `,
-    }
 
     // This will be needed for non-tutorial modals later (Click on dot[x] => moves to page[x])
 
@@ -111,7 +157,6 @@ const TutorialModal = (
 
     function navigatePages(dir: "left" | "right" ):void {
         if((currentPage === 0 && dir === "left") || (currentPage === (props.pages -1) && dir === "right")){
-            console.log('invalid navigation attempt')
             return
         }
         (dir === "left" ? setCurrentPage(currentPage-1) : setCurrentPage(currentPage+1))
@@ -125,6 +170,10 @@ const TutorialModal = (
                 return <TutorialPage1 />
             case 2:
                 return <TutorialPage2 />
+            case 3:
+                return <TutorialPage3 />
+            case 4:
+                return <TutorialPage4 />
             default:
                 return null;
         }
@@ -173,7 +222,7 @@ const TutorialModal = (
     }
 
     return (
-        <ModalSkeleton title="Tutorial" size={'Big'} onClickClose={props.onClickClose}>
+        <ModalSkeleton title="Tutorial" size={'Big'} closeBtnDisabled={currentPage === props.pages - 1 ? false : true} onClickClose={() => props.onClickClose()}>
             
             <div className={tutorialStyles.ctn}>
                 {renderTutorialPages()}

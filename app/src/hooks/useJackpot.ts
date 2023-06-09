@@ -67,7 +67,7 @@ export default function useJackpot():[any, any]{
     async function getRoundData(roundId:number):Promise<RoundData | undefined>{
         const [numberOfPlayers, tickets,, endTime, randomNumber, status] = await web3.jackpot!.getRoundData(roundId)
         const formattedEndTime = new Date(endTime.toNumber() * 1000)
-        const formattedWinnerIndex = randomNumber.mod(tickets.length).toNumber()
+        const formattedWinnerIndex = tickets.length > 0 ?  randomNumber.mod(tickets.length).toNumber() : -1
         const formattedWinnerId = tickets[formattedWinnerIndex]
 
         return {

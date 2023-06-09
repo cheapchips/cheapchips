@@ -159,17 +159,17 @@ function App() {
         {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
         {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
 
-        {tutorialVisible && <TutorialModal pages={3} onClickClose={toggleTutorialVisible} />}
+        {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
         {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
         {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
         {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
         <MainWrapper>
 
-          <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} connected={connected} />
+          <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} tutorialOnClick={toggleTutorialVisible} connected={connected} />
 
           {/* white testblock */}
-          <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' > 
+          {/* <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' > 
 
             <button onClick={() => {
 
@@ -217,7 +217,7 @@ function App() {
             <span className='font-content'>Buy tokens modal</span>
           </button>
 
-          </div>
+          </div> */}
           
           <Panel panelType='side'>
             <LobbyHeader />
