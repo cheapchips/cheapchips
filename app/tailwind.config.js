@@ -8,7 +8,14 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        content: ["Roboto mono"]
+      },
+      animation: {
+        'bounce-slow': 'bounce 1.5s ease-in infinite',
+      },
       screens: {
+        'sm': {'max': '767px'},
       },
       colors: {
         'darkMainWrapperFrom': '#0c2159',
@@ -18,9 +25,9 @@ export default {
         'darkBg': '#101a30',
         'darkBgActive': '#15213d',
         'darkBorder': '#334155',
-        'lightMainWrapperFrom': '#c4daf5',
-        'lightMainWrapperVia': '#bcd5f7',
-        'lightMainWrapperTo': '#bcd6f5',
+        'lightMainWrapperFrom': '#c7e0ff',
+        'lightMainWrapperVia': '#e3efff',
+        'lightMainWrapperTo': '#d7e7fc',
         'lightText': '#000826',
         'lightBg': '#eff6ff',
         'lightBgActive': '#e0efff',

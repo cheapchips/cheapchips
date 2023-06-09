@@ -13,15 +13,17 @@ const config: HardhatUserConfig = {
     coinmarketcap: process.env.COINMARKETCAP_API_KEY
   },
   networks: {
-    // hardhat: {
-    //   // gas: 2100000,
-    //   gasPrice: 300000000000,
-    //   forking: {
-    //     enabled: process.env.FORK === "true" ? true : false,
-    //     blockNumber: 42981138,
-    //     url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`
-    //   }
-    // },
+    mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.MUMBAI_API_KEY}`,
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY!],
+
+    //   // gasPrice: 300000000000,
+    //   // forking: {
+    //   //   enabled: process.env.FORK === "true" ? true : false,
+    //   //   blockNumber: 42981138,
+    //   //   url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_API_KEY}`
+    //   // }
+    },
     hardhat: {
       gasPrice: 300000000000,
       forking: {

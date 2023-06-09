@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .jackpot_center_bar_light {
+    background: linear-gradient(#b4cef0, #b4cef0) no-repeat center/2px 100%;
+}
+.jackpot_center_bar_dark {
+    background: linear-gradient(#334155, #334155) no-repeat center/2px 100%;
+  }
+}

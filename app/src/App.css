@@ -1,7 +1,57 @@
+:root {
+  --duration: .45s;
+  --duration-end: .9s;
+}
+
 .dark {
   color-scheme: dark;
 }
 
-.blurred > *:not(#modal) {
-  filter: blur(1.5rem);
+.fadein_anim {
+  animation: fade-in ease-out .25s;
+}
+
+.background_anim {
+  background-size: 400%;
+  -webkit-animation: bg 12s ease infinite;
+  -moz-animation: bg 12s ease infinite;
+  animation: bg 12s ease infinite;
+}
+
+.participate_withdrawn_glow {
+  -webkit-box-shadow:0 0 6px #ffe601; 
+  -moz-box-shadow: 0 0 6px #ffe601; 
+  box-shadow:0 0 6px #ffe601;
+}
+
+.participate_win_glow {
+  -webkit-box-shadow:0 0 6px #34d399; 
+  -moz-box-shadow: 0 0 6px #34d399; 
+  box-shadow:0 0 6px #34d399;
+}
+
+.accent_color_button_glow {
+  -webkit-box-shadow:0 0 6px #f59e0b; 
+  -moz-box-shadow: 0 0 6px #f59e0b; 
+  box-shadow:0 0 6px #f59e0b;
+}
+
+.text_shadow {
+  text-shadow: .5px .5px .5px rgba(0,0,0,0.5);
+}
+
+@keyframes bg {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

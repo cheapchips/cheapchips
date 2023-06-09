@@ -1,12 +1,10 @@
 import './App.css'
-import { useState } from 'react'
 
 // layout components
 import LoadingScreen from './components/layout/LoadingScreen'
 import MainWrapper from './components/layout/MainWrapper'
 import Panel from './components/layout/Panel'
 import Navbar from './components/logical/Navbar'
-import LobbyCtn from './components/layout/LobbyCtn'
 import MainContentCtn from './components/layout/MainContentCtn'
 import JackpotMainCtn from './components/layout/JackpotMainCtn'
 import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
@@ -15,127 +13,246 @@ import JackpotBottomCtn from './components/layout/JackpotBottomCtn'
 import LobbyHeader from './components/logical/LobbyHeader'
 import ProfileHeader from './components/logical/ProfileHeader'
 import Deposit from './components/logical/Deposit'
-import JackpotInfo from './components/logical/JackpotInfo'
+import JackpotRoundInfo from './components/logical/JackpotRoundInfo'
 import JackpotArchives from './components/logical/JackpotArchives'
-import Modal from './components/logical/Modal'
+import TutorialModal from './components/logical/modals/TutorialModal'
+import Jackpot from './components/logical/Jackpot'
+
+// modals
+import BuyTokensModalTESTNET from './components/logical/modals/BuyTokensModalTESTNET'
+import InstallMetamaskModal from './components/logical/modals/InstallMetamaskModal'
+import SwitchNetworkModal from './components/logical/modals/SwitchNetworkModal'
+import ArchivedRoundModal from './components/logical/modals/ArchivedRoundModal'
+import MyDetailsModal from './components/logical/modals/MyDetailsModal'
 
 // hooks
+import { useState, useEffect, useRef } from 'react'
 import useConnectWallet from './hooks/useConnectWallet'
-import useDeposit from './hooks/useDeposit'
-import useTheme from './hooks/useTheme'
 import useLoadingScreen from './hooks/useLoadingScreen'
-import useModal from './hooks/useModal'
+import useModal from './hooks/useModal' 
+
+// contracts
+import {ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, LinkTokenInterface, LinkTokenInterface__factory} from "../../contracts/typechain-types"
+import { ethers } from 'ethers'
+
+// context
+import Web3Context from './contexts/Web3Context'
+import JackpotContext from './contexts/JackpotContext'
+
+// local testing
+import formatTicketsToPlayers from './hooks/utils/formatTicketsToPlayers'
+import { TxHash, TxStatus } from './types/useTransactionTypes'
+import Lobby from './components/logical/lobby/Lobby'
+import { Player } from './types/Player'
+import useTheme from './hooks/useTheme'
+import RoundState from './types/RoundState'
 
 function App() {
 
-  const [connected, provider, signer, connect] = useConnectWallet()
-  const [theme, toggleTheme] = useTheme()
+  // hooks
+  const [metamask, correctNetwork, connected, provider, signer, connect] = useConnectWallet()
   const loading = useLoadingScreen()
-  const depositData = useDeposit()
-  const [
-    depositAmount,
-    defaultDepositAmount,
-    minDepositAmount,
-    maxDepositAmount,
-    handleDepositPercentage,
-    handleDepositInput,
-    handleDepositTx
-  ] = depositData
-  const [modalVisible, toggleModalVisible] = useModal()
-  const [active, setActive] = useState(true)
+  const [,] = useTheme()
 
+  // modals
+  const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
+  const [tutorialVisible, toggleTutorialVisible] = useModal()
+  const [myDetailsVisible, toggleMyDetailsVisible] = useModal()
+  const [,toggleInstallMetamaskvisible] = useModal()
+  const [archivedJackpotVisible, toggleArchivedJackpotVisible] = useModal()
+  
+  // web3 states
+  const [chipStable, setChipStable] = useState<ChipStable>()
+  const [jackpot, setJackpot] = useState<ChipsJackpot>()
+  const [linkToken, setLinkToken] = useState<LinkTokenInterface>()
+  const [chipStableBalance, setChipStableBalance] = useState<string>()
+  const [linkTokenBalance, setLinkTokenBalance] = useState<string>()
+  const [txStatus, setTxStatus] = useState<TxStatus>("nonexist")
+  const [txHash, setTxHash] = useState<TxHash>("")
+  const [txErrorMessage, setTxErrorMessage] = useState<string>()
+  const [address, setAddress] = useState<string>()
+  
+  // jackpot states
+  const winnerId = useRef(-1)
+  const [roundId, setRoundId] = useState<number>()
+  const [players, setPlayers] = useState<Player[]>([])
+  const [prizePool, setPrizePool] = useState<number>()
+  const [endTime, setEndTime] = useState<number>(60)
+  const [roundState, setRoundState] = useState<RoundState>("default")
+
+  //test
+  const [playersDeposit, setPlayersDeposit] = useState<number>(0)
+  const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
+
+  useEffect(() => {
+    console.log(players)
+  }, [players])
+
+  function addPlayer(newPlayer:Player) {
+    setPlayers(prevPlayers => [...prevPlayers, newPlayer])
+  }
+
+  function incrementRoundId() {
+    setRoundId(prev => prev ? prev + 1 : 0)
+  }
+
+  function incrementPrizePool(ticketAmount:number) {
+    setPrizePool(prizePool => prizePool! + ticketAmount)
+  }
+
+  function toggleArchivedJackpotModal(roundId:number) {
+    setArchivedJackpotId(roundId)
+    toggleArchivedJackpotVisible()
+  }
+  
+  useEffect(() => {
+    if(connected && provider && signer && correctNetwork){
+      (async() => {
+        
+        const chip = ChipStable__factory.connect("0xC3013DF5d62c3D29Ed302BA2D76dC47e06BD254a", signer)
+        const jackpot = ChipsJackpot__factory.connect("0xB9e0E83E8664dB7FCd9a1a120B047d40e2656c54", signer)
+        const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
+        const address = await signer.getAddress()
+        
+        // web3 context
+        setChipStable(chip)
+        setChipStableBalance((await chip.balanceOf(address)).toNumber().toString())
+        setLinkTokenBalance(ethers.utils.formatUnits((await linkToken.balanceOf(address)),"ether"))
+        setAddress(address)
+        setJackpot(jackpot)
+        setLinkToken(linkToken)
+
+        const roundId = await jackpot.getCurrentRoundId()
+        const roundData = await jackpot.getRoundData(roundId)
+        const localPlayerId = await jackpot.getPlayerIdInRound(roundId)
+        const players = formatTicketsToPlayers(roundData[1], localPlayerId, address)
+        
+        // jackpot context
+        setPlayers(players)
+        setRoundId(roundId.toNumber())
+        setPrizePool(roundData[1].length)
+
+        const roundStates:RoundState[] = ["default", "closed", "ended"]
+        setRoundState(roundStates[roundData[5]])
+
+
+      })()
+    }
+  }, [connected, correctNetwork])
+
+  useEffect(() => {
+    if(roundState === "ended"){
+      console.log('reset ROUND')
+      setPlayers([])
+      setPrizePool(0)
+      setRoundState("default")
+    }
+  }, [roundId])
+  
   if(loading){
     return <LoadingScreen />
   }
-  else return (
-    <MainWrapper>
+  return (
+    <Web3Context.Provider value={{address, provider, signer, chipStable, chipStableBalance, linkToken, linkTokenBalance, jackpot, tx: {status: txStatus, hash: txHash, errorMessage:txErrorMessage}, setTxStatus, setTxHash, setTxErrorMessage, setChipStableBalance, setLinkTokenBalance }}>
+      <JackpotContext.Provider value={{roundId, roundState, maxPlayers: 100,  players, prizePool, endTime, minChipsDeposit: 1, maxChipsDeposit: 5, defaultChipsDeposit: 1, winnerId, addPlayer, incrementRoundId, incrementPrizePool, setRoundState, toggleArchivedJackpotModal}} >
 
-      {modalVisible ? <Modal size='Big' onClickClose={toggleModalVisible}>Test</Modal> : <></>}
+        {connected && !correctNetwork && <SwitchNetworkModal onClickClose={() => {}} closeBtnDisabled={true} />}
+        {!metamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
 
-      <Navbar
-        theme={theme}
-        themeBtnOnClick={() => toggleTheme()}
-        walletConnected={connected}
-        connectWalletProps={{
-          onClickFunction: connect,
-          text: "CONNECT WALLET",
-          clickable: true,
-          active: true
-        }}
-      />
-      
-      <Panel panelType='side'>
+        {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
+        {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
+        {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
+        {(archivedJackpotVisible && archivedJackpotId !== undefined) && <ArchivedRoundModal roundId={archivedJackpotId} onClickClose={toggleArchivedJackpotVisible} onClickWithdraw={()=>{}}/>}
 
-        <LobbyHeader
-          playerCount={42}
-          maxPlayerCount={100}
-          timeTillRaffleStartPercentage={44}
-          lobbyId='0'
-          active={active}
-        />
+        <MainWrapper>
 
-        <LobbyCtn>
+          <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} tutorialOnClick={toggleTutorialVisible} connected={connected} />
 
-        </LobbyCtn>
+          {/* white testblock */}
+          {/* <div id="test" className='absolute text-sm top-4 left-[23%] flex gap-4 underline border' > 
 
-      </Panel>
-      
-      <Panel panelType='main'>
+            <button onClick={() => {
 
-        <MainContentCtn>
+            const rand_addr = Math.random().toString(36).substring(2,9)
+            const rand_ticket = Math.floor(Math.random() * (5 - 1 + 1) + 1)
+            const newPlayer = {
+              address: rand_addr,
+              ticketAmount: rand_ticket,
+              id: players.length,
+            }
+            if(players.length >= 3) return
+            setPlayers(players=>[...players, newPlayer])
+            setPlayersDeposit(playersDeposit + rand_ticket)
+          }}>  
+            <span className="font-content">Add player</span>
+          </button>
 
-          <JackpotMainCtn>
-            <button onClick={() => setActive(!active)}>
-              <span className="text-xxs">Toggle active</span>
-              <br />
-              <span>{depositAmount}</span>
-            </button>
-            <br />
-            <button onClick={() => toggleModalVisible()}>
-              <span className='text-xxs'>Modal</span>
-            </button>
-          </JackpotMainCtn>
+          <button onClick={() => {
+              setRoundState("closed")
+            }}>
+            <span className="font-content">Start jackpot</span>
+          </button>
 
-          <JackpotBottomCtn>
-            <Deposit
-              active={active}
-              depositData={depositData}
-            />
-          </JackpotBottomCtn>
+          <button onClick={() => {
+            winnerId.current = 0
+            setRoundState("ended")
+          }}>End jackpot</button>
 
-          <JackpotBottomCtn>
-            <JackpotInfo
-              active={active}
-              prizePool={215}
-              jackpotRoundId={2}
-              playerCount={42}
-              maxPlayerCount={100}
-              maxDepositAmount={5}
-              timeLeftTillJackpot={92}
-              maxTimeLeftTillJackpot={120}
-            />
-          </JackpotBottomCtn>
-         
-        </MainContentCtn>
+          <button onClick={() => {
+            incrementRoundId()
+          }}>Add archive</button>
 
-      </Panel>
+            <button onClick={() => toggleTutorialVisible()}>
+            <span className='font-content'>Tutorial modal</span>
+          </button>
 
-      <Panel panelType='side'>
+            <button onClick={() => setRoundId(roundId => roundId! + 1)}>
+            <span className='font-content'>Increment roundId</span>
+          </button>
 
-          <ProfileHeader
-            active={active}
-            address='0x748912caD3137E208483281929779A45f3C9Eb55'
-            chipsBalance={105}
-            linkBalance={12}
-          />
+          <button onClick={() => {
+            if(!connected) return
+            toggleBuyTokensVisible()
+          }}>
+            <span className='font-content'>Buy tokens modal</span>
+          </button>
 
-          <JackpotArchives
-            active={active}
-          />
+          </div> */}
           
-      </Panel>
+          <Panel panelType='side'>
+            <LobbyHeader />
+            <Lobby />
+          </Panel>
+          
+          <Panel panelType='main'>
+            <MainContentCtn>
 
-    </MainWrapper>
+              <JackpotMainCtn>
+                <Jackpot/>
+              </JackpotMainCtn>
+
+              <JackpotBottomCtn>
+                <Deposit />
+              </JackpotBottomCtn>
+
+              <JackpotBottomCtn>
+                <JackpotRoundInfo />
+              </JackpotBottomCtn>
+            
+            </MainContentCtn>
+          </Panel>
+
+          <Panel panelType='side'>
+              <ProfileHeader
+                onClickBuyBalance={toggleBuyTokensVisible}
+                onClickMyDetails={toggleMyDetailsVisible}
+              />
+              <JackpotArchives />
+          </Panel>
+
+        </MainWrapper>
+      </JackpotContext.Provider>
+    </Web3Context.Provider>
   )
 }
 
