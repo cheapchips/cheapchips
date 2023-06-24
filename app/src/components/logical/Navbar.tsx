@@ -96,7 +96,7 @@ const Navbar = (props:{walletOnClick:() => Promise<void>, buyOnClick: () => void
         community: [
             {
                 title: "Discord Server",
-                url: "https://discord.gg/gQyeeHnV",
+                url: "https://discord.gg/QHRZNyhk",
             },
             {
                 title: "GitHub",
