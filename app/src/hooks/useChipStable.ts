@@ -1,18 +1,17 @@
-import { useContext } from "react";
 import useContractFunction from "./useContractFunction";
 import { etherToWei } from "./utils/web3unitsConversion";
-import Web3Context from "../contexts/Web3Context";
+import useWeb3Context from "./useWeb3Context";
 
 
 export default function useChipStable():[any, any]{
 
-    const web3 = useContext(Web3Context)
+    const web3Context = useWeb3Context()
     
-    const [performApproveTx] = useContractFunction(web3.chipStable?.approve!)    
-    const [performMintTx] = useContractFunction(web3.chipStable?.mint!)
+    const [performApproveTx] = useContractFunction(web3Context.chipStable.approve)    
+    const [performMintTx] = useContractFunction(web3Context.chipStable.mint)
 
     function approve(amount:number){
-        performApproveTx(web3.jackpot!.address, etherToWei(amount))
+        performApproveTx(web3Context.jackpot.address, etherToWei(amount))
     }
 
     function mint(){
@@ -20,12 +19,12 @@ export default function useChipStable():[any, any]{
     }
 
     async function getBalance(){
-        const balance = await web3.chipStable!.balanceOf(web3.address!)
+        const balance = await web3Context.chipStable.balanceOf(web3Context.address)
         return balance
     }
 
     async function checkAllowance(){
-        return (await web3.chipStable!.allowance(web3.address!, web3.jackpot!.address)).toString()
+        return (await web3Context.chipStable.allowance(web3Context.address, web3Context.jackpot.address)).toString()
     }
 
     return [{approve, mint}, {checkAllowance, getBalance}]

@@ -4,11 +4,15 @@ import { ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, L
 import { TxHash, TxStatus } from "../types/useTransactionTypes"
 import Web3ContextProviderInterface from "../types/Web3ContextProviderInterface"
 import { ethers } from "ethers"
-import Navbar from "../components/logical/Navbar"
+import useConnectWallet from "../hooks/useConnectWallet"
+import Skeleton from "../components/layout/Skeleton"
+import SwitchNetworkModal from "../components/logical/modals/SwitchNetworkModal"
+import InstallMetamaskModal from "../components/logical/modals/InstallMetamaskModal"
+import useModal from "../hooks/useModal"
 
 
 
-const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:Web3ContextProviderInterface) => {
+const Web3ContextProvider = ({children}:Web3ContextProviderInterface) => {
 
     const [chipStable, setChipStable] = useState<ChipStable>()
     const [jackpot, setJackpot] = useState<ChipsJackpot>()
@@ -21,13 +25,17 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
     const [address, setAddress] = useState<string>()
     const [isReady, setIsReady] = useState<boolean>(false)
 
+    const [isMetamask, walletState, provider, signer, connect] = useConnectWallet()
+    const [,toggleInstallMetamaskvisible] = useModal()
+
+
     useEffect(() => {
-        if(walletState === "READY" && web3Signer){
+        if(walletState === "READY" && signer){
             (async() => {
-                const address = await web3Signer.getAddress()
-                const chip = ChipStable__factory.connect("0xC3013DF5d62c3D29Ed302BA2D76dC47e06BD254a", web3Signer)
-                const jackpot = ChipsJackpot__factory.connect("0xB9e0E83E8664dB7FCd9a1a120B047d40e2656c54", web3Signer)
-                const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", web3Signer)
+                const address = await signer.getAddress()
+                const chip = ChipStable__factory.connect("0xC3013DF5d62c3D29Ed302BA2D76dC47e06BD254a", signer)
+                const jackpot = ChipsJackpot__factory.connect("0xB9e0E83E8664dB7FCd9a1a120B047d40e2656c54", signer)
+                const linkToken = LinkTokenInterface__factory.connect("0x326C977E6efc84E512bB9C30f76E30c160eD06FB", signer)
                 
 
                 setChipStable(chip)
@@ -39,13 +47,13 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
                 setIsReady(true)
             })()
         }
-    }, [walletState, web3Signer])
+    }, [walletState, signer])
 
     if(isReady) return (
         <Web3Context.Provider value={{
             address,
-            provider: web3Provider,
-            signer: web3Signer,
+            provider: provider,
+            signer: signer,
             chipStable,
             linkToken,
             linkTokenBalance,
@@ -64,6 +72,9 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
 
     return(
         <>
+        <Skeleton connect={connect} />
+        {walletState === "WRONG_NETWORK" && <SwitchNetworkModal onClickClose={() => { console.log("CLOSE") }} closeBtnDisabled={true} />}
+        {!isMetamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />} 
         </>
     )
 

@@ -1,32 +1,24 @@
-import { useContext } from "react";
 import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
-import Web3Context from "../contexts/Web3Context";
 import useContractFunction from "./useContractFunction";
+import useWeb3Context from "./useWeb3Context";
 
 export default function useLinkToken():[any, any]{
 
-    const web3 = useContext(Web3Context)
+    const web3Context = useWeb3Context()
 
-    const [performApproveTx] = useContractFunction(web3.linkToken?.approve!)
+    const [performApproveTx] = useContractFunction(web3Context.linkToken.approve)
     
     function approve(amount:number){
-        const {linkToken, jackpot} = web3
-        if(!linkToken || !jackpot) return
+        const {jackpot} = web3Context
         performApproveTx(jackpot.address, etherToWei(amount))
     }
 
     async function checkAllowance(){
-        // const {linkToken, jackpot, signer} = web3
-        // if(!linkToken || !jackpot || !signer) return
-        const address = await web3.signer!.getAddress()
-        return weiToEther(await web3.linkToken!.allowance(address, web3.jackpot!.address))
+        return weiToEther(await web3Context.linkToken.allowance(web3Context.address, web3Context.jackpot.address))
     }
 
     async function checkBalance() {
-        // const {linkToken, signer} = web3
-        // if(!linkToken || !signer) return
-        const address = await web3.signer!.getAddress()
-        return weiToEther(await web3.linkToken!.balanceOf(address))
+        return weiToEther(await web3Context.linkToken.balanceOf(web3Context.address))
     }
 
     return [

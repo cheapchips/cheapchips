@@ -41,37 +41,36 @@ import Web3ContextProvider from './contexts/Web3ContextProvider'
 import JackpotContextProvider from './contexts/JackpotContextProvider'
 import DevPanel from './components/logical/DevPanel'
 import JackpotContext from './contexts/JackpotContext'
+import RoundListener from './components/logical/RoundListener'
+import Skeleton from './components/layout/Skeleton'
 
 function App() {
 
   // hooks
-  const [isMetamask, walletState, provider, signer, connect] = useConnectWallet()
+  // const [isMetamask, walletState, provider, signer, connect] = useConnectWallet()
   const loading = useLoadingScreen()
   const [,] = useTheme()
 
   // modals
   const [buyTokensVisible, toggleBuyTokensVisible] = useModal()
-  const [tutorialVisible, toggleTutorialVisible] = useModal()
   const [myDetailsVisible, toggleMyDetailsVisible] = useModal()
-  const [,toggleInstallMetamaskvisible] = useModal()
+  const [tutorialVisible, toggleTutorialVisible] = useModal()
+
   
   
   if(loading){
     return <LoadingScreen />
   }
   return (
-    <>
-    {/* temp */}
-    {walletState !== "READY" && <button onClick={connect}>CONNECT!</button> }
-    <Web3ContextProvider walletState={walletState} web3Provider={provider} web3Signer={signer}>
+    <>    
+    <Web3ContextProvider>
       <JackpotContextProvider>
 
-        {walletState === "WRONG_NETWORK" && <SwitchNetworkModal onClickClose={() => { console.log("CLOSE") }} closeBtnDisabled={true} />}
-        {!isMetamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />}
 
-        {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
-        {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
         {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
+        {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
+        {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
+
 
         <JackpotContext.Consumer>
           {context => (
@@ -84,10 +83,12 @@ function App() {
             : <></>  
           )} 
         </JackpotContext.Consumer>
+
+        <RoundListener />
         
         <MainWrapper>
 
-          <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} tutorialOnClick={toggleTutorialVisible} connected={walletState !== "NOT_CONNECTED" ? true : false} />
+          <Navbar walletOnClick={async() => {return}} buyOnClick={toggleBuyTokensVisible} tutorialOnClick={toggleTutorialVisible} connected={true} />
           <DevPanel />
           
           <Panel panelType='side'>

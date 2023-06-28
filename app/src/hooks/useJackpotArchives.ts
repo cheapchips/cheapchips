@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import Web3Context from "../contexts/Web3Context";
-import JackpotContext from "../contexts/JackpotContext";
+import { useEffect, useState } from "react";
 import ArchivedJackpot from "../types/ArchivedJackpot";
 import useJackpot from "./useJackpot";
 import { ChipsJackpotCoreInterface } from "../../../contracts/typechain-types";
+import useWeb3Context from "./useWeb3Context";
+import useJackpotContext from "./useJackpotContext";
 
 export default function useJackpotArchives():ArchivedJackpot[]{
-    const web3Context = useContext(Web3Context)
-    const jackpotContext = useContext(JackpotContext)
+    const web3Context = useWeb3Context()
+    const jackpotContext = useJackpotContext()
     const [,readJackpot] = useJackpot()
 
     const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])

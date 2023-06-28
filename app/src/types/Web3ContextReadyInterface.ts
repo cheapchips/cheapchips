@@ -5,18 +5,18 @@ import { ChipStable } from "../../../contracts/typechain-types"
 import { Signer } from "ethers"
 import TxInfo from "./TxInfo"
 import { TxHash, TxStatus } from "./useTransactionTypes"
+import Web3ContextInterface from "./Web3ContextInterface"
 
 
-
-export default interface Web3ContextInterface {
-  address: string | undefined
-  provider: Web3Provider | undefined
-  signer: Signer | undefined
-  chipStable: ChipStable | undefined
-  linkToken: LinkTokenInterface | undefined
-  linkTokenBalance: string | undefined
-  jackpot: ChipsJackpot | undefined
-  chipStableBalance: string | undefined
+export default interface Web3ContextReadyInterface extends Web3ContextInterface {
+  address: string
+  provider: Web3Provider
+  signer: Signer
+  chipStable: ChipStable
+  linkToken: LinkTokenInterface
+  linkTokenBalance: string
+  jackpot: ChipsJackpot
+  chipStableBalance: string
   tx: TxInfo,
   setTxStatus: (status:TxStatus) => void
   setTxHash: (hash: TxHash) => void

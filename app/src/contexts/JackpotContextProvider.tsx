@@ -18,6 +18,7 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
     const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
 
 
+
     function addPlayer(newPlayer:Player) {
         setPlayers(prevPlayers => [...prevPlayers, newPlayer])
     }

@@ -1,7 +1,6 @@
 import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
 import useContractFunction from "./useContractFunction";
 import useWeb3Context from "./useWeb3Context";
-import { useEffect } from "react";
 
 
 
@@ -19,15 +18,10 @@ export default function useJackpot():[any, any]{
 
     const web3Context = useWeb3Context()
 
-    useEffect(() => {
-        console.log(web3Context.jackpot)
-    }, [web3Context.jackpot])
-
-    // illegallll
-    const [performDepositTx] = useContractFunction(web3Context.jackpot!.deposit!)
-    const [performDepositFeesTx] = useContractFunction(web3Context.jackpot!.depositFees!)
-    const [performCloseRoundTx] = useContractFunction(web3Context.jackpot!.closeRound!)
-    const [performWithdrawTx] = useContractFunction(web3Context.jackpot!.withdrawPrize!)
+    const [performDepositTx] = useContractFunction(web3Context.jackpot.deposit)
+    const [performDepositFeesTx] = useContractFunction(web3Context.jackpot.depositFees)
+    const [performCloseRoundTx] = useContractFunction(web3Context.jackpot.closeRound)
+    const [performWithdrawTx] = useContractFunction(web3Context.jackpot.withdrawPrize)
 
     function depositFees(amount:number){
         performDepositFeesTx(etherToWei(amount))
@@ -46,24 +40,20 @@ export default function useJackpot():[any, any]{
     }
 
     async function checkFeesBalance(){
-        if(!web3Context.jackpot) return
         return weiToEther(await web3Context.jackpot.balanceFees())
     }
 
     async function getCurrentRoundId(){
-        if(!web3Context.jackpot) return
         return (await web3Context.jackpot.getCurrentRoundId()).toString()
     }
 
     async function getPlayerIdInRound(roundId:number){
-        if(!web3Context.jackpot) return
         const {id, exists} = await web3Context.jackpot.getPlayerIdInRound(roundId)
         if(exists) return id;
         return undefined;
     }
 
     async function getParticipationStatus(roundId:number) {
-        if(!web3Context.jackpot) return
         const status = await web3Context.jackpot.getParticipationStatus(roundId)
 
         switch(status){
@@ -74,7 +64,6 @@ export default function useJackpot():[any, any]{
         }
     }
     async function getRoundData(roundId:number):Promise<RoundData | undefined>{
-        if(!web3Context.jackpot) return
         const [numberOfPlayers, tickets,, endTime, randomNumber, status] = await web3Context.jackpot.getRoundData(roundId)
         const formattedEndTime = new Date(endTime.toNumber() * 1000)
         const formattedWinnerIndex = tickets.length > 0 ?  randomNumber.mod(tickets.length).toNumber() : -1
@@ -91,7 +80,6 @@ export default function useJackpot():[any, any]{
     }
 
     async function getRoundDataRange(startId:number, stopId: number){
-        if(!web3Context.jackpot) return
         const rounds = await web3Context.jackpot.getRoundDataRange(startId, stopId)
         return rounds
     }
@@ -100,12 +88,10 @@ export default function useJackpot():[any, any]{
     // debug
 
     async function checkUpkeep(){
-        if(!web3Context.jackpot) return
         return (await web3Context.jackpot.checkUpkeep("0x"))
     }
 
     async function getTotalFeeForLastRound(){
-        if(!web3Context.jackpot) return
         return (await web3Context.jackpot.getTotalFeeForLastRound()).toString()
     }
 

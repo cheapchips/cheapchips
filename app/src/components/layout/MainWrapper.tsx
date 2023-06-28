@@ -1,5 +1,4 @@
 import MainWrapperProps from "../../proptypes/WrapperProps"
-import useRound from "../../hooks/useRound"
 
 const MainWrapper = (props:MainWrapperProps) => {
 
@@ -17,7 +16,6 @@ const MainWrapper = (props:MainWrapperProps) => {
             // dark:bg-gradient-to-tr dark:from-darkMainWrapperFrom dark:via-darkMainWrapperVia dark:to-darkMainWrapperTo
     }
 
-    useRound()
     
     return (
         <div className={mainWrapperStyles.wrapper}>
