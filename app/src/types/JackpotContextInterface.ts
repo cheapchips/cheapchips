@@ -12,9 +12,10 @@ export default interface JackpotContextInterface{
     defaultChipsDeposit: number | undefined
     endTime: number | undefined
     winnerId: React.MutableRefObject<number> | undefined
+    archivedJackpotId: number | undefined
     addPlayer: (newPlayer:Player) => void
     incrementRoundId: () => void
     incrementPrizePool: (ticketAmount:number) => void
     setRoundState: (state: RoundState) => void
-    toggleArchivedJackpotModal: (roundId:number) => void
+    toggleArchivedJackpotModal: (roundId:number | undefined) => void
 }

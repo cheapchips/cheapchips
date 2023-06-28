@@ -123,7 +123,7 @@ const ArchivedRoundModal = (props:{roundId:number, onClickClose:() => void, onCl
     useEffect(() => {
         setFullRoundData(undefined)
         fetchRoundData()
-    }, [web3.chipStableBalance])
+    }, [web3?.chipStableBalance])
 
     async function fetchRoundData() {
 

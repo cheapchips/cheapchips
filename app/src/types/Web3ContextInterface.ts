@@ -3,7 +3,7 @@ import { ChipsJackpot } from "../../../contracts/typechain-types"
 import { LinkTokenInterface } from "../../../contracts/typechain-types"
 import { ChipStable } from "../../../contracts/typechain-types"
 import { TxStatus, TxHash } from "./useTransactionTypes"
-import { Signer } from "ethers"
+import { Signer, providers } from "ethers"
 
 type TxInfo = {
   status: TxStatus

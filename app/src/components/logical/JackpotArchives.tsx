@@ -82,7 +82,7 @@ const JackpotArchives = () => {
         const [previousRoundId, setPreviousRoundId] = useState<number>()
 
         useEffect(() => {
-            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
+            if(!web3?.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
             fetchArchivedRounds()
             setActive(true)
             setIsArchivesFetched(true)
@@ -94,7 +94,7 @@ const JackpotArchives = () => {
             // console.log('updating archives')
             setArchivedRounds([])
             fetchArchivedRounds()
-        }, [web3.chipStableBalance]) 
+        }, [web3?.chipStableBalance]) 
 
         // debug
         // useEffect(() => {
