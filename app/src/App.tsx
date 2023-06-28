@@ -60,6 +60,9 @@ function App() {
     return <LoadingScreen />
   }
   return (
+    <>
+    {/* temp */}
+    {walletState !== "READY" && <button onClick={connect}>CONNECT!</button> }
     <Web3ContextProvider walletState={walletState} web3Provider={provider} web3Signer={signer}>
       <JackpotContextProvider>
 
@@ -72,7 +75,7 @@ function App() {
 
         <JackpotContext.Consumer>
           {context => (
-            (context.archivedJackpotId !== undefined)
+            (context !== undefined && context.archivedJackpotId !== undefined)
             ? <ArchivedRoundModal 
                 roundId={context.archivedJackpotId} 
                 onClickClose={() => context.toggleArchivedJackpotModal(undefined)} 
@@ -85,7 +88,7 @@ function App() {
         <MainWrapper>
 
           <Navbar walletOnClick={connect} buyOnClick={toggleBuyTokensVisible} tutorialOnClick={toggleTutorialVisible} connected={walletState !== "NOT_CONNECTED" ? true : false} />
-          {/* <DevPanel /> */}
+          <DevPanel />
           
           <Panel panelType='side'>
             <LobbyHeader />
@@ -121,6 +124,7 @@ function App() {
         </MainWrapper>
       </JackpotContextProvider>
     </Web3ContextProvider>
+    </>
   )
 }
 

@@ -4,6 +4,7 @@ import { ChipStable, ChipStable__factory, ChipsJackpot, ChipsJackpot__factory, L
 import { TxHash, TxStatus } from "../types/useTransactionTypes"
 import Web3ContextProviderInterface from "../types/Web3ContextProviderInterface"
 import { ethers } from "ethers"
+import Navbar from "../components/logical/Navbar"
 
 
 
@@ -18,6 +19,7 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
     const [txHash, setTxHash] = useState<TxHash>("")
     const [txErrorMessage, setTxErrorMessage] = useState<string>()
     const [address, setAddress] = useState<string>()
+    const [isReady, setIsReady] = useState<boolean>(false)
 
     useEffect(() => {
         if(walletState === "READY" && web3Signer){
@@ -34,11 +36,12 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
                 setAddress(address)
                 setJackpot(jackpot)
                 setLinkToken(linkToken)
+                setIsReady(true)
             })()
         }
     }, [walletState, web3Signer])
 
-    return (
+    if(isReady) return (
         <Web3Context.Provider value={{
             address,
             provider: web3Provider,
@@ -57,6 +60,11 @@ const Web3ContextProvider = ({children, walletState, web3Provider, web3Signer}:W
         }}>
             {children}
         </Web3Context.Provider>
+    )
+
+    return(
+        <>
+        </>
     )
 
 }

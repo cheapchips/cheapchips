@@ -1,17 +1,13 @@
 import { ContractFunction, ContractTransaction } from "ethers"
-import { useContext } from "react"
 import { PerformType} from "../types/useTransactionTypes"
-import Web3Context from "../contexts/Web3Context"
-
-// const [perform, TxStatus, txHash] = useTrasaction(jackpot.deposit)
-// perform(10)
+import useWeb3Context from "./useWeb3Context"
 
 export default function useContractFunction<T extends ContractFunction>(transaction: T):[PerformType<T>]{
     
-    const web3 = useContext(Web3Context)
+    const web3Context = useWeb3Context()
     
     async function perform(...args: Parameters<T>){
-        const {setTxHash, setTxStatus, setTxErrorMessage} = web3
+        const {setTxHash, setTxStatus, setTxErrorMessage} = web3Context
         try {
             setTxStatus("created")
             const tx = await transaction(...args) as ContractTransaction

@@ -1,11 +1,11 @@
-import {useState, useEffect, useContext } from "react"
+import {useState, useEffect } from "react"
 import Blockies from "react-blockies"
 import useResponsiveSizes from "../../hooks/useReponsiveIconSize"
-import JackpotContext from "../../contexts/JackpotContext"
 import JackpotConfetti from "./JackpotConfetti"
 import { Player } from "../../types/Player"
 import _ from "lodash"
 import useJackpot from "../../hooks/useJackpot"
+import useJackpotContext from "../../hooks/useJackpotContext"
 
 interface JackpotBlocksInterface{
     displayPlayers:(Player | null)[]
@@ -57,7 +57,7 @@ const styles = {
 
 const JackpotBlocks = ({displayPlayers, setDisplayPlayers}:JackpotBlocksInterface) => {
 
-    const jackpotContext = useContext(JackpotContext)
+    const jackpotContext = useJackpotContext()
 
 
     useEffect(() => {
@@ -97,7 +97,8 @@ const WinnerBlock = (props:{winner:Player | undefined}) => {
     const [,,blockiesSize] = useResponsiveSizes()
     const [,readJackpot] = useJackpot()
     const [fade, setFade] = useState<boolean>(false)
-    const jackpotContext = useContext(JackpotContext)
+    const jackpotContext = useJackpotContext()
+
     const [status, setStatus] = useState<string>()
 
     useEffect(() => {
@@ -131,7 +132,7 @@ const WinnerBlock = (props:{winner:Player | undefined}) => {
 
 const Jackpot = () => {
 
-    const jackpotContext = useContext(JackpotContext)  
+    const jackpotContext = useJackpotContext()
     const [animateJackpot, setAnimateJackpot] = useState<boolean>(false)
     const [animationTimer, setAnimationTimer] = useState<NodeJS.Timer>()
     const [displayPlayers, setDisplayPlayers] = useState<(Player | null)[]>(new Array(7).fill(null, 0, 7))

@@ -12,7 +12,7 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
     const winnerId = useRef(-1)
     const [roundId, setRoundId] = useState<number>()
     const [players, setPlayers] = useState<Player[]>([])
-    const [prizePool, setPrizePool] = useState<number>()
+    const [prizePool, setPrizePool] = useState<number>(0)
     const [endTime] = useState<number>(60)
     const [roundState, setRoundState] = useState<RoundState>("default")
     const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
@@ -27,7 +27,7 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
     }
 
     function incrementPrizePool(ticketAmount:number) {
-        setPrizePool(prizePool => prizePool! + ticketAmount)
+        setPrizePool(prizePool => prizePool + ticketAmount)
     }
     
     function toggleArchivedJackpotModal(roundId:number | undefined){
@@ -59,6 +59,7 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
           setPrizePool(0)
           setRoundState("default")
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roundId])
 
     return(

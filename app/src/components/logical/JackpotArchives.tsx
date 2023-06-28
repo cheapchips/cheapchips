@@ -5,9 +5,11 @@ import Web3Context from "../../contexts/Web3Context"
 import JackpotContext from "../../contexts/JackpotContext"
 import ArchivedJackpot from "../../types/ArchivedJackpot"
 import ParticipationStatus from "../../types/ParticipationStatus"
-import { useEffect, useContext, useState } from "react"
+import { useEffect, useState } from "react"
+import useJackpotContext from "../../hooks/useJackpotContext"
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ChipsJackpotCoreInterface } from "../../../../contracts/typechain-types"
+import useWeb3Context from "../../hooks/useWeb3Context"
 
     const styles = {
         mainCtn: `
@@ -73,8 +75,8 @@ const ArchivedRoundList = ({archivedRounds}:{archivedRounds:ArchivedJackpot[]}) 
 
 const JackpotArchives = () => {
 
-        const web3 = useContext(Web3Context)
-        const jackpotContext = useContext(JackpotContext)
+        const web3 = useWeb3Context()
+        const jackpotContext = useJackpotContext()
         const [active, setActive] = useState<boolean>(false)
         const [,readJackpot] = useJackpot()
         const [archivedRounds, setArchivedRounds] = useState<ArchivedJackpot[]>([])
@@ -82,7 +84,8 @@ const JackpotArchives = () => {
         const [previousRoundId, setPreviousRoundId] = useState<number>()
 
         useEffect(() => {
-            if(!web3?.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
+            if(!web3 || !jackpotContext) return
+            if(!web3.address || !jackpotContext.roundId || !jackpotContext.endTime || isArchivesFetched) return
             fetchArchivedRounds()
             setActive(true)
             setIsArchivesFetched(true)
@@ -90,27 +93,12 @@ const JackpotArchives = () => {
         },[jackpotContext])
 
         useEffect(() => {
+            // after withdrawal
             if(!isArchivesFetched) return
             // console.log('updating archives')
             setArchivedRounds([])
             fetchArchivedRounds()
         }, [web3?.chipStableBalance]) 
-
-        // debug
-        // useEffect(() => {
-        //     (async () => {
-        //         const round = await getArchivedRoundData(0)
-        //         const participantId = await readJackpot.getPlayerIdInRound(previousRoundId)
-        //         const newRoundToArchive:ArchivedJackpot = {
-        //             prizePool: round.roundData.tickets.length as number,
-        //             participationStatus: round.participantStatus as ParticipationStatus,
-        //             participantId: participantId as number,
-        //             endTime: round.roundData.endTime.toLocaleDateString('en-US'),
-        //             roundId: round.roundData.id as number,
-        //         }
-        //         setArchivedRounds(prev => [newRoundToArchive, ...prev])
-        //     })()
-        // }, [jackpotContext.roundId])
         
         useEffect(() => {
             (async() => {
@@ -126,7 +114,7 @@ const JackpotArchives = () => {
                     roundId: round.roundData.id as number,
                 }
                 setArchivedRounds(prev => [newRoundToArchive, ...prev])
-                setPreviousRoundId(roundId => roundId! + 1)
+                setPreviousRoundId(roundId => roundId !== undefined ? roundId + 1 : undefined)
             })()
         }, [jackpotContext.roundId])
 
@@ -139,7 +127,7 @@ const JackpotArchives = () => {
         
         async function fetchArchivedRounds () {
 
-            const rounds = await readJackpot.getRoundDataRange(0, jackpotContext.roundId! - 1) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
+            const rounds = await readJackpot.getRoundDataRange(0, jackpotContext.roundId !== undefined ? jackpotContext.roundId - 1 : undefined) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
             // debug
             // const rounds = await readJackpot.getRoundDataRange(0, 2) as ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]
 
