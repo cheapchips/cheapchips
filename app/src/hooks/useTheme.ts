@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
+import useRunOnceOnMount from "./useRunOnceOnMount"
 
 export default function useTheme():[string, () => void] {
     
     const [theme, setTheme] = useState<string | null>(localStorage.getItem("THEME"))
 
-    useEffect(() => {
+    useRunOnceOnMount(() => {
         detectTheme()
-        // console.log('theme', localStorage.getItem("THEME"))
-    }, [])
+    })
 
     useEffect(() => {
         if(!theme) return

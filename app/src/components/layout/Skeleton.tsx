@@ -15,7 +15,7 @@ import MainContentCtn from "./MainContentCtn";
 import MainWrapper from "./MainWrapper";
 import Panel from "./Panel";
 
-export default function Skeleton({connect}:{connect: () => Promise<void>}){
+export default function Skeleton({connected, connect}:{connected:boolean, connect: () => Promise<void>}){
 
     const [tutorialVisible, toggleTutorialVisible] = useModal()
     
@@ -23,7 +23,7 @@ export default function Skeleton({connect}:{connect: () => Promise<void>}){
         <>
         {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
         <MainWrapper>
-          <Navbar walletOnClick={connect} buyOnClick={() => {return}} tutorialOnClick={toggleTutorialVisible} connected={false} />
+          <Navbar walletOnClick={connect} buyOnClick={() => {return}} tutorialOnClick={toggleTutorialVisible} connected={connected} />
           <Panel panelType='side'>
             {/* <LobbyHeader /> */}
             {/* <Lobby /> */}

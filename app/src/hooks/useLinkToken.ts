@@ -2,7 +2,20 @@ import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
 import useContractFunction from "./useContractFunction";
 import useWeb3Context from "./useWeb3Context";
 
-export default function useLinkToken():[any, any]{
+interface UseLinkTokenWriteInterface {
+    approve: (amount:number) => void
+}
+
+interface UseLinkTokenReadInterface {
+    checkAllowance: () => Promise<string>
+    checkBalance: () => Promise<string>
+}
+
+
+type UseLinkTokenInterface = [UseLinkTokenWriteInterface, UseLinkTokenReadInterface]
+
+
+export default function useLinkToken():UseLinkTokenInterface{
 
     const web3Context = useWeb3Context()
 

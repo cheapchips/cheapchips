@@ -64,9 +64,6 @@ function App() {
   return (
     <>    
     <Web3ContextProvider>
-      <JackpotContextProvider>
-
-
         {myDetailsVisible && <MyDetailsModal onClickClose={toggleMyDetailsVisible}/>}
         {buyTokensVisible && <BuyTokensModalTESTNET onClickClose={toggleBuyTokensVisible} />}
         {tutorialVisible && <TutorialModal pages={5} onClickClose={toggleTutorialVisible} />}
@@ -123,7 +120,6 @@ function App() {
           </Panel>
 
         </MainWrapper>
-      </JackpotContextProvider>
     </Web3ContextProvider>
     </>
   )

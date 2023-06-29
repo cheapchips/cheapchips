@@ -1,9 +1,22 @@
 import useContractFunction from "./useContractFunction";
 import { etherToWei } from "./utils/web3unitsConversion";
 import useWeb3Context from "./useWeb3Context";
+import { BigNumber } from "ethers";
+
+interface UseChipStableWriteInterface {
+    approve: (amount:number) => void
+    mint: () => void
+}
+
+interface UseChipStableReadInterface {
+    checkAllowance: () => Promise<string>
+    getBalance: () => Promise<BigNumber>
+}
+
+type UseChipStableInterface = [UseChipStableWriteInterface, UseChipStableReadInterface]
 
 
-export default function useChipStable():[any, any]{
+export default function useChipStable():UseChipStableInterface{
 
     const web3Context = useWeb3Context()
     

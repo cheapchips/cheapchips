@@ -1,16 +1,15 @@
-import { useEffect } from "react"
-
 import { BigNumber } from "ethers";
 import useJackpot from "./useJackpot";
 import useWeb3Context from "./useWeb3Context";
 import useJackpotContext from "./useJackpotContext";
+import useRunOnceOnMount from "./useRunOnceOnMount";
 
 export default function useRound(){
     const web3Context = useWeb3Context()
     const jackpotContext = useJackpotContext()
     const [,readJackpot ] = useJackpot()
 
-    useEffect(() => {
+    useRunOnceOnMount(() => {
         web3Context.jackpot.removeAllListeners("Deposit")
         web3Context.jackpot.removeAllListeners("RoundEnded")
         web3Context.jackpot.removeAllListeners("Closed")
@@ -22,7 +21,8 @@ export default function useRound(){
         listenForRandomNumber()
         listenForClose()
         listenForMint()
-    }, [jackpotContext.roundId])
+    })
+
 
     function listenForMint(){
         web3Context.chipStable.on("Transfer", (from:string, to:string, amount:BigNumber) => {
@@ -66,11 +66,12 @@ export default function useRound(){
     function listenForRandomNumber(){
         web3Context.jackpot.on("RoundEnded", async(roundId:BigNumber, randomNumber:BigNumber) => {
 
-            const { tickets } = await readJackpot.getRoundData(roundId)
+            const { tickets } = await readJackpot.getRoundData(roundId.toNumber())
             const ticketWinnerIndex = randomNumber.mod(tickets.length).toNumber()
             const winnerId = tickets[ticketWinnerIndex]
-            
-            jackpotContext.winnerId!.current = winnerId
+
+            if(!jackpotContext.winnerId) return
+            jackpotContext.winnerId.current = winnerId
             jackpotContext.setRoundState("ended")
           })
     }

@@ -9,6 +9,8 @@ import Skeleton from "../components/layout/Skeleton"
 import SwitchNetworkModal from "../components/logical/modals/SwitchNetworkModal"
 import InstallMetamaskModal from "../components/logical/modals/InstallMetamaskModal"
 import useModal from "../hooks/useModal"
+import JackpotContextProvider from "./JackpotContextProvider"
+
 
 
 
@@ -24,6 +26,7 @@ const Web3ContextProvider = ({children}:Web3ContextProviderInterface) => {
     const [txErrorMessage, setTxErrorMessage] = useState<string>()
     const [address, setAddress] = useState<string>()
     const [isReady, setIsReady] = useState<boolean>(false)
+    const [isJackpotContextReady, setIsJackpotContextReady] = useState<boolean>(false)
 
     const [isMetamask, walletState, provider, signer, connect] = useConnectWallet()
     const [,toggleInstallMetamaskvisible] = useModal()
@@ -66,15 +69,23 @@ const Web3ContextProvider = ({children}:Web3ContextProviderInterface) => {
             setChipStableBalance,
             setLinkTokenBalance
         }}>
-            {children}
+            <JackpotContextProvider
+                setIsJackpotContextReady={setIsJackpotContextReady}
+            >
+                {isJackpotContextReady 
+                ? children 
+                : <Skeleton connected={walletState !== "NOT_CONNECTED" ? true : false } connect={connect} />}
+
+                {/* {children} */}
+            </JackpotContextProvider>
         </Web3Context.Provider>
     )
 
     return(
         <>
-        <Skeleton connect={connect} />
         {walletState === "WRONG_NETWORK" && <SwitchNetworkModal onClickClose={() => { console.log("CLOSE") }} closeBtnDisabled={true} />}
         {!isMetamask && <InstallMetamaskModal onClickClose={toggleInstallMetamaskvisible} closeBtnDisabled={true} />} 
+        <Skeleton connected={walletState !== "NOT_CONNECTED" ? true : false } connect={connect} />
         </>
     )
 

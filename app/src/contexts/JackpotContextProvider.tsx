@@ -1,13 +1,14 @@
 import JackpotContext from "./JackpotContext"
 import JackpotContextProviderInterface from "../types/JackpotContextProviderInterface"
-import { useContext, useEffect, useRef, useState } from "react"
-import Web3Context from "./Web3Context"
+import { useEffect, useRef, useState } from "react"
 import formatTicketsToPlayers from "../hooks/utils/formatTicketsToPlayers"
 import RoundState from "../types/RoundState"
 import { Player } from "../types/Player"
+import useWeb3Context from "../hooks/useWeb3Context"
+import useRunOnceOnMount from "../hooks/useRunOnceOnMount"
 
-export default function JackpotContextProvider({children}:JackpotContextProviderInterface){
-    const web3Context = useContext(Web3Context)
+export default function JackpotContextProvider({children, setIsJackpotContextReady}:JackpotContextProviderInterface){
+    const web3Context = useWeb3Context()
 
     const winnerId = useRef(-1)
     const [roundId, setRoundId] = useState<number>()
@@ -16,8 +17,6 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
     const [endTime] = useState<number>(60)
     const [roundState, setRoundState] = useState<RoundState>("default")
     const [archivedJackpotId, setArchivedJackpotId] = useState<number>()
-
-
 
     function addPlayer(newPlayer:Player) {
         setPlayers(prevPlayers => [...prevPlayers, newPlayer])
@@ -35,24 +34,22 @@ export default function JackpotContextProvider({children}:JackpotContextProvider
         setArchivedJackpotId(roundId)
     }
 
-    useEffect(() => {
-        const jackpot = web3Context?.jackpot
-        if(jackpot){
-            (async() => {
-                const roundId = await jackpot.getCurrentRoundId()
-                const roundData = await jackpot.getRoundData(roundId)
-                const localPlayerId = await jackpot.getPlayerIdInRound(roundId)
-                const players = formatTicketsToPlayers(roundData[1], localPlayerId, web3Context.address === undefined ? "" : web3Context.address)
+    useRunOnceOnMount(async() => {
+        const jackpot = web3Context.jackpot
 
-                setPlayers(players)
-                setRoundId(roundId.toNumber())
-                setPrizePool(roundData[1].length)
+        const roundId = await jackpot.getCurrentRoundId()
+        const roundData = await jackpot.getRoundData(roundId)
+        const localPlayerId = await jackpot.getPlayerIdInRound(roundId)
+        const players = formatTicketsToPlayers(roundData[1], localPlayerId, web3Context.address === undefined ? "" : web3Context.address)
 
-                const roundStates:RoundState[] = ["default", "closed", "ended"]
-                setRoundState(roundStates[roundData[5]])
-            })()
-        }
-    }, [web3Context?.address, web3Context?.jackpot])
+        setPlayers(players)
+        setRoundId(roundId.toNumber())
+        setPrizePool(roundData[1].length)
+
+        const roundStates:RoundState[] = ["default", "closed", "ended"]
+        setRoundState(roundStates[roundData[5]])
+        setIsJackpotContextReady(true)
+    })
 
     useEffect(() => {
         if(roundState === "ended"){

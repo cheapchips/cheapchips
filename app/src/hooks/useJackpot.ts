@@ -1,8 +1,8 @@
 import { etherToWei, weiToEther } from "./utils/web3unitsConversion";
 import useContractFunction from "./useContractFunction";
 import useWeb3Context from "./useWeb3Context";
-
-
+import { ChipsJackpotCoreInterface } from "../../../contracts/typechain-types";
+import ParticipationStatus from "../types/ParticipationStatus";
 
 interface RoundData {
     id: number,
@@ -13,8 +13,29 @@ interface RoundData {
     status: number
 }
 
+interface UseJackpotWriteInterface{
+    depositFees: (amount:number) => void
+    deposit: (amount:number) => void
+    closeRound: () => void
+    withdrawPrize: (roundId:number) => void
+}
 
-export default function useJackpot():[any, any]{
+interface UseChipStableReadInterface{
+    checkFeesBalance: () => Promise<string>
+    getCurrentRoundId: () => Promise<string>
+    getRoundData: (roundId: number) => Promise<RoundData>
+    getRoundDataRange: (startId:number, stopId: number) => Promise<ChipsJackpotCoreInterface.ArchivedRoundStructOutput[]>
+    getTotalFeeForLastRound: () => Promise<string>
+    getPlayerIdInRound: (roundId: number) => Promise<number | undefined>
+    getParticipationStatus: (roundId: number) => Promise<ParticipationStatus>
+    checkUpkeep: () => Promise<[boolean, string] & {upkeepNeeded: boolean; perfomData: string}>    
+
+}
+
+type UseJackpotInterface = [UseJackpotWriteInterface, UseChipStableReadInterface]
+
+
+export default function useJackpot():UseJackpotInterface{
 
     const web3Context = useWeb3Context()
 
@@ -53,7 +74,7 @@ export default function useJackpot():[any, any]{
         return undefined;
     }
 
-    async function getParticipationStatus(roundId:number) {
+    async function getParticipationStatus(roundId:number):Promise<ParticipationStatus> {
         const status = await web3Context.jackpot.getParticipationStatus(roundId)
 
         switch(status){
@@ -61,9 +82,10 @@ export default function useJackpot():[any, any]{
             case 1: return "win"
             case 2: return "lose"
             case 3: return "withdrawn"
+            default: return "none"
         }
     }
-    async function getRoundData(roundId:number):Promise<RoundData | undefined>{
+    async function getRoundData(roundId:number):Promise<RoundData>{
         const [numberOfPlayers, tickets,, endTime, randomNumber, status] = await web3Context.jackpot.getRoundData(roundId)
         const formattedEndTime = new Date(endTime.toNumber() * 1000)
         const formattedWinnerIndex = tickets.length > 0 ?  randomNumber.mod(tickets.length).toNumber() : -1
@@ -97,7 +119,10 @@ export default function useJackpot():[any, any]{
 
     return [
         {depositFees, deposit, closeRound, withdrawPrize}, 
-        {checkFeesBalance, getCurrentRoundId, getRoundData, getRoundDataRange, getTotalFeeForLastRound, getPlayerIdInRound, getParticipationStatus, checkUpkeep}
+        {checkFeesBalance, getCurrentRoundId, getRoundData,
+         getRoundDataRange, getTotalFeeForLastRound, getPlayerIdInRound,
+         getParticipationStatus, checkUpkeep
+        }
     ]
     
 }

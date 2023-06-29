@@ -5,34 +5,34 @@ import WalletState from "../types/WalletState"
 
 declare global {
     interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ethereum: any
     }
 }
 
-/**
- * 1. Connect wallet with dapp (via connect wallet button) (once)
- * 2. Connect wallet to blockchain (every time, after connection button fades away [auto])
- */
+type ConnectFunction = () => Promise<void>
 
-// network?:string
-export default function useConnectWallet(): [boolean, WalletState, Web3Provider | undefined, JsonRpcSigner | undefined, () => Promise<void>]{
+type UseConnectWalletInterface = [
+    boolean,
+    WalletState,
+    Web3Provider | undefined,
+    JsonRpcSigner | undefined,
+    ConnectFunction
+]
+
+
+export default function useConnectWallet(): UseConnectWalletInterface{
     
     const [isMetamask, setIsMetamask] = useState<boolean>(true)
     const [provider, setProvider] = useState<Web3Provider>()
     const [signer, setSigner] = useState<JsonRpcSigner>()
     const [walletState, setWalletState] = useState<WalletState>("NOT_CONNECTED")
 
-    // const [networkId, setNetworkId] = useState<number>()
     const TESTNET_NETWORK = 80001
 
     useEffect(() => {
         setIsMetamask(window.ethereum ? true : false)
     }, [])
-
-    // useEffect(() => {
-    //     console.log(walletState)
-    // }, [walletState])
-
 
     const setupProviderAndSigner = async() => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -59,7 +59,6 @@ export default function useConnectWallet(): [boolean, WalletState, Web3Provider 
                 window.location.reload()
             })
 
-            // chainId:any
             window.ethereum.on("chainChanged", () => {
                 window.location.reload()
             })       
@@ -71,6 +70,4 @@ export default function useConnectWallet(): [boolean, WalletState, Web3Provider 
 
     return [isMetamask, walletState, provider, signer, connect]
 
-    // connected = is wallet connected State
-    // connect = function to connect the wallet through metamask
 }

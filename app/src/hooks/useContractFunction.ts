@@ -2,6 +2,26 @@ import { ContractFunction, ContractTransaction } from "ethers"
 import { PerformType} from "../types/useTransactionTypes"
 import useWeb3Context from "./useWeb3Context"
 
+type ProviderRpcErrorData = {
+    code: number
+    data: string
+    message: string
+}
+
+type ProviderRpcError = {
+    code: number
+    message: string
+    data: ProviderRpcErrorData
+}
+
+function isProviderRpcError(error:unknown): error is ProviderRpcError{
+    return  !!error && 
+            typeof error === "object" &&
+            "code" in error &&
+            "message" in error &&
+            "data" in error
+}
+
 export default function useContractFunction<T extends ContractFunction>(transaction: T):[PerformType<T>]{
     
     const web3Context = useWeb3Context()
@@ -17,10 +37,12 @@ export default function useContractFunction<T extends ContractFunction>(transact
             console.log(receipt)
 
             setTxStatus("done")
-            // console.log(tx)
             
-        } catch (error: any) {
-            console.log(error)
+        } catch (error:unknown) {
+            // if(!(error instanceof Object)) return
+            // console.log(error.constructor.name)
+            if(!isProviderRpcError(error)) return
+
             if(error.code === 4001){
                 setTxStatus("denied")
                 return
